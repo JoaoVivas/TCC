@@ -1,0 +1,6 @@
+\babel@toc {brazil}{}\relax 
+\contentsline {chapter}{\numberline {1}INTRODUÇÃO}{11}{chapter.1}%
+\contentsline {chapter}{\numberline {2}CONCLUSÃO}{13}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Trabalhos futuros}{14}{section.2.1}%
+\contentsline {chapter}{\hbox to\@tempdima {\hfil } APENDICE~A\ -- Tarefas da Avaliação Heurística}{15}{section*.2}%
+\contentsline {chapter}{\hbox to\@tempdima {\hfil } REFER\^ENCIAS}{15}{section*.1}%
