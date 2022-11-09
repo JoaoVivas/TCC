@@ -1,40 +1,26 @@
 %%
+test
+s0 = [x(1);y(1);vx(1);vy(1)];
+s(:,1) = s0;
+u(1,:) = x;
+u(2,:) = y;
+u(3,:) = vx;
+u(4,:) = vy;
 
-% vel_x'       |0          0         1         0|  |des_x|     |0         0     0        0| |des_xb|
-%              |                                |  |     |     |                          | |      |
-% vel_y'       |0          0         0         1|  |des_y|     |0        0      0        0| |des_yb|
-%           =                                               +           
-% acel_x'      |-kx/mx     0     -bx/mx        0|  |vel_x|     |kx/mx  bx/mx    0        0| |vel_xb|
-%              |                                |  |     |     |                          | |     |
-% acel_y'      |0        -ky/my      0    -by/my|  |vel_y|     |0        0    ky/my  by/my| |vel_yb|    
+N = length(t)-1;
+for i=1:N
+    dt(i) = t(i+1)-t(i);
+    uhalf = u_t_interpolator(u(:,i),u(:,i+1),dt(i),dt(i)/2);
     
+    k1(:,i) = dynamic_model(s(:,i),u(:,i));
+    k2(:,i) = dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf);
+    k3(:,i) = dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf);
+    k4(:,i) = dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1));
 
-A = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
-B = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
-    
-x = [des_x;des_y;vel_x;vel_y];
-u = [des_xb;des_yb;vel_xb;vel_yb];
+    avg_dot = (k1(:,i) + 2*k2(:,i) + 2*k3(:,i) + k4(:,i))/6;
+    s(:,i+1) = s(:,i) + dt(i)*avg_dot;
+end
 
-%dx = [vel_x;vel_y;accel_x;accel_y];
-F = A*x+B*u;
-
-% Runge-Kutta
-%x(t)
-%xdot = f(t,x)
-%function f(t,x,u)
-%A = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
-%B = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
-%x = [des_x;des_y;vel_x;vel_y];
-%u = [des_xb;des_yb;vel_xb;vel_yb];
-%F = A*x+B*u;
-%x+1 = x+dt*F
-
-%x(t0) = x0
-dt(i) = t(i+1)-t(i);
-k1(i) = f(x(i),t(i),u(i));
-k2(i) = f(x(i)+k1(i)*dt(i)/2,t(i+1)/2,u(i));
-k3(i) = f(x(i)+k2(i)*dt(i)/2,t(i+1)/2,u(i));
-k4(i) = f(x(i)+k3(i)*dt(i),t(i+1),u(i));
-
-avg_dot = (k1(i) + 2*k2(i) + 2*k3(i) + k4(i))/6;
-x(i+1) = x(i) + dt(i)*avg_dot;
+plot(u(1,:),u(2,:))
+hold on
+plot(s(1,:),s(2,:))

@@ -3,9 +3,22 @@ clear all
 close all
 clc
 
+u1 = [0,0,1,1]
+u2 = [1,1,0,0]
+t1 = 0
+t2 = 1
+t = 1
+
+
+u_t_interpolator(u1,u2,t1,t2,t)
+%%
+clear all
+close all
+clc
+
 acc_max = 1000;
 jun_disv = 0.1;
-step_size = 0.001;
+step_size = 1;
 
 [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
 CommandArray = InputGcode(filename,PathName);
