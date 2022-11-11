@@ -46,7 +46,7 @@ end
 
 v = [];
 ddes = [];
-dt = [];
+dtt = [];
 a = [];
 dir = [];
 
@@ -88,13 +88,17 @@ for i=1:size(b_dt,2)
         if Nsteps > 0
             the_des = ones(1,Nsteps)*step_size;
             for j=1:Nsteps
-                the_v(j) = (vi^2 + 2*acc*step_size*j).^0.5;
+                the_v(j) = (vi^2 + 2*acc*step_size*j).^0.5;       
             end
             the_vi = [vi,the_v(1:length(the_v)-1)];
             the_delta_t = (the_v-the_vi)/acc;
             last_des = desi-step_size*Nsteps;
             antlast_v = the_v(length(the_v));
-            last_v = (antlast_v^2+2*acc*last_des).^0.5;
+            if antlast_v^2+2*acc*last_des <= 0
+                last_v = 0;
+            else
+                last_v = (antlast_v^2+2*acc*last_des).^0.5;
+            end
             last_delta_t = (last_v-antlast_v)/acc;
             the_des = [the_des,last_des];
             the_delta_t = [the_delta_t, last_delta_t];
@@ -112,7 +116,7 @@ for i=1:size(b_dt,2)
     end
     v = [v, the_v];
     ddes = [ddes, the_des];
-    dt = [dt, the_delta_t];
+    dtt = [dtt, the_delta_t];
     a = [a, the_a];
     dir = [dir, the_dir];
 end
@@ -135,8 +139,8 @@ a = [a,0];
 ax = [ax,0];
 ay = [ay,0];
 v = [0,v];
-t = [0,acumulator(dt)];
-dt = [dt,0];
+t = [0,acumulator(dtt)];
+dtt = [dtt,0];
 des = acumulator(ddes);
 x = acumulator(dx);
 y = acumulator(dy);
@@ -145,5 +149,5 @@ points(1,:) = x;
 points(2,:) = vx;
 points(3,:) = y;
 points(4,:) = vy;
-points(5,:) = dt;
+points(5,:) = dtt;
 points(6,:) = t;

@@ -1,4 +1,7 @@
 %%
+clc
+clear all
+close all
 test
 s0 = [x(1);y(1);vx(1);vy(1)];
 s(:,1) = s0;
