@@ -5,7 +5,7 @@ clc
 
 acc_max = 1000;
 jun_disv = 0.1;
-step_size = 0.001;
+step_size = 0.1;
 
 [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
 CommandArray = InputGcode(filename,PathName);

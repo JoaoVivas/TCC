@@ -2,10 +2,10 @@ function xdot = dynamic_model(x, u)
 % x,u mm mm/s
 mx = 200; % g
 my = 200; % g
-kx = 1000000; 
-ky = 1000000;
-bx = 100000;
-by = 100000;
+kx = 100000; 
+ky = 100000;
+bx = 100;
+by = 100;
 
 A = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
 B = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
