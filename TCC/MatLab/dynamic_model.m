@@ -1,15 +1,4 @@
-function xdot = dynamic_model(x, u)
-% x,u mm mm/s
-mx = 200; % g
-my = 200; % g
-kx = 100000; 
-ky = 100000;
-bx = 100;
-by = 100;
-
-A = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
-B = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
-
+function xdot = dynamic_model(x, u, A, B)
 %x = [des_x;des_y;vel_x;vel_y];
 %u = [des_xb;des_yb;vel_xb;vel_yb];
 %dx = [vel_x;vel_y;accel_x;accel_y];

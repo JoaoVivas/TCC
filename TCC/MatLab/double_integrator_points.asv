@@ -108,7 +108,7 @@ for i = 1 : Np-1
     x_ca=-3*(x_i-x_n)/(2*deltaT)-(f_i+f_n)/4;
     
     f_c = A*x_c+B*u_c;
- %%
+   %%
     
     delta = f_c-x_ca;
     

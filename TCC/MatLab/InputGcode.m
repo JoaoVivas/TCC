@@ -1,4 +1,4 @@
-function [ CommandArray ] = InputGcode( filename, PathName)
+function [ CommandArray ] = InputGcode(filename, PathName)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 FileName=strcat(PathName,filename);
