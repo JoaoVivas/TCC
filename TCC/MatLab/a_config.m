@@ -2,7 +2,7 @@
 clc;
 clear all;
 close all;
-%% Sistema Dinâmico
+% Sistema Dinâmico
 
 % x,u mm mm/s
 mx = 200; % g
@@ -17,11 +17,11 @@ A = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
 B = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
 
 % Gerador de Comandos
-global junction_speed
-min_x = ;
-max_x = ;
-min_y = ;
-max_y = ;
+global junction_speed max_acc max_vel jun_disv des_step_size min_x max_x min_y max_y t_step_size
+min_x = -0.0001;
+max_x = 200.0001;
+min_y = -0.0001;
+max_y = 200.0001;
 
 max_acc = 1000;
 max_vel = 1000;
@@ -30,7 +30,7 @@ junction_speed = 0.1;
 jun_disv = 0.1;
 
 des_step_size = 0.1;
-t_step_size = ;
+t_step_size = 0.1;
 
 %% Otimização
 global options nonlcon lcon objective_fun def_bounds

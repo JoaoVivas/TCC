@@ -1,6 +1,7 @@
 %% 
-config
-
+if exist('run','var') == 1
+    a_config
+end
 %% Input Gcode from Gcode file
  
 % [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
@@ -8,364 +9,42 @@ filename = 'Gcode_teste.gcode';
 PathName = 'C:\Users\JoaoVivas\JoaoVivas\TCC\MatLab\';
 CommandArray = InputGcode(filename,PathName);
 
-%% Command Generation
+%Command Generation
 
 gcode_x = [0,CommandArray(1,:)];
 gcode_y = [0,CommandArray(2,:)];
 gcode_v = [CommandArray(5,:)./60,0];
 
-[x,y,vx,vy,t] = command_generator(gcode_x,gcode_y,gcode_v);
-
-
-[g_des_tot,g_dir] = directionator(g_x',g_y');
-%p_vx(1) = 0;
-%p_vy(1) = 0;
-g_v = [0];
-b_v = [0];
-b_des = [];
-b_dt = [];
-b_a = [];
-b_dir = [];
-
-for i=1:(size(gcode_v_d,2)-1)
-    g_v(i+1) = junction_speed_calc(g_dir(:,i),g_dir(:,i+1),gcode_v_d(i+1),jun_disv,acc_max);
-    %p_vx(i+1) = p_v(i+1)*dir(1,i);
-    %p_vy(i+1) = p_v(i+1)*dir(2,i);
-    [vec_t,vec_des,vec_v,vec_a,vec_dir] = refined_trapzoid_generator(g_v(i),g_v(i+1),gcode_v_d(i),acc_max,g_des_tot(i),g_dir(:,i));
-    b_dt = [b_dt,vec_t];
-    b_des = [b_des,vec_des];
-    b_v = [b_v,vec_v];
-    b_a = [b_a,vec_a];
-    b_dir = [b_dir,vec_dir];
-end
-%b_a(size(b_dt,2)) = 0;
-%b_dir(1,size(b_dt,2)) = 0;
-%b_dir(2,size(b_dt,2)) = 0;
-
-% step_size = 1;
-% Des = V*delta_t
-% Vf^2 = Vi^2 + 2*acc*Des
-% Des = Vi*delta_t+ acc*delta_t^2/2
-%    delta_t = (v_d-v_f)/acc;
-
-v = [];
-ddes = [];
-dtt = [];
-a = [];
-dir = [];
-
-for i=1:size(b_dt,2)
-    the_v = [];
-    the_des = [];
-    the_a = [];
-    the_delta_t = [];
-    the_vi = [];
-    the_dir = [];
-    
-    desi = b_des(i);   
-    vi = b_v(i);
-    acc = b_a(i);
-    
-    Nsteps = round(desi/step_size)-1;
-    if acc == 0
-        if Nsteps > 0
-            the_v = ones(1,Nsteps)*vi;
-            delta_t = step_size/vi;
-            the_delta_t = ones(1,Nsteps)*delta_t;
-            the_des = ones(1,Nsteps)*step_size;
-            last_des = desi-step_size*Nsteps;
-            last_delta_t = last_des/vi;
-            last_vi = vi;
-            the_des = [the_des, last_des];
-            the_delta_t = [the_delta_t, last_delta_t];
-            the_v = [the_v, last_vi];
-            the_a = ones(1,Nsteps+1)*acc; 
-            the_dir = [b_dir(:,i)*ones(1,Nsteps),b_dir(:,i)];
-        else
-            the_des = desi;
-            the_v = vi;
-            the_delta_t = desi/vi;
-            the_a = acc;
-            the_dir = b_dir(:,i);
-        end
-    else
-        if Nsteps > 0
-            the_des = ones(1,Nsteps)*step_size;
-            for j=1:Nsteps
-                the_v(j) = (vi^2 + 2*acc*step_size*j).^0.5;       
-            end
-            the_vi = [vi,the_v(1:length(the_v)-1)];
-            the_delta_t = (the_v-the_vi)/acc;
-            last_des = desi-step_size*Nsteps;
-            antlast_v = the_v(length(the_v));
-            if antlast_v^2+2*acc*last_des <= 0
-                last_v = 0;
-            else
-                last_v = (antlast_v^2+2*acc*last_des).^0.5;
-            end
-            last_delta_t = (last_v-antlast_v)/acc;
-            the_des = [the_des,last_des];
-            the_delta_t = [the_delta_t, last_delta_t];
-            the_v = [the_v, last_v];
-            the_a = ones(1,Nsteps+1)*acc; 
-            the_dir = [b_dir(:,i)*ones(1,Nsteps),b_dir(:,i)];
-        else
-            the_des = desi;
-            the_v = (vi^2+2*acc*desi).^0.5;
-            the_delta_t = (the_v-vi)/acc;
-            the_a = acc;
-            the_dir = b_dir(:,i);
-        end
-        
-    end
-    v = [v, the_v];
-    ddes = [ddes, the_des];
-    dtt = [dtt, the_delta_t];
-    a = [a, the_a];
-    dir = [dir, the_dir];
-end
-dx = [0];
-dy = [0];
-vx = [0];
-vy = [0];
-ax = [];
-ay = [];
-
-for i=1:length(ddes)
-   dx = [dx,ddes(i)*dir(1,i)];
-   dy = [dy,ddes(i)*dir(2,i)];
-   vx = [vx,v(i)*dir(1,i)];
-   vy = [vy,v(i)*dir(2,i)];
-   ax = [ax,a(i)*dir(1,i)];
-   ay = [ay,a(i)*dir(2,i)];
-end
-a = [a,0];
-ax = [ax,0];
-ay = [ay,0];
-v = [0,v];
-t = [0,acumulator(dtt)];
-dtt = [dtt,0];
-des = acumulator(ddes);
-x = acumulator(dx);
-y = acumulator(dy);
-
-points(1,:) = x;
-points(2,:) = vx;
-points(3,:) = y;
-points(4,:) = vy;
-points(5,:) = dtt;
-points(6,:) = t;
+%[x,y,vx,vy,t] = CommandGenerator(gcode_x,gcode_y,gcode_v);
 
 %% Fmincon Otimizer
 
+x(1,:) = des_x;
+x(2,:) = vel_x;
+x(3,:) = des_x; % des_ux
+x(4,:) = vel_x; % vel_ux
+x(5,:) = des_y;
+x(6,:) = vel_y;
+x(7,:) = des_y; % des_ux
+x(8,:) = vel_y; % vel_uy
+x(9,:) = t;
 
 optimal = [];
-optimaly = [];
-
-%tic % inicializacao da contagem de tempo
-
-%deslocamento_ya(gridN1+1:gridN+gridN1)=0.01*sin(omega*delta*(1:gridN));
-%velocidade_ya(gridN1+1:gridN+gridN1)=0.01*omega*cos(omega*delta*(1:gridN));
-
-deslocamento_xb_entrada = points(1,:);
-velocidade_xb_entrada = points(2,:);
-
-deslocamento_xb = deslocamento_xb_entrada;
-velocidade_xb = velocidade_xb_entrada;
-
-deslocamento_yb_entrada = points(3,:);
-velocidade_yb_entrada = points(4,:);
-
-deslocamento_yb = deslocamento_yb_entrada;
-velocidade_yb = velocidade_yb_entrada;
-
-Temptot = sum(points(5,:));
-deltats = points(5,:);
-
-Np = size(deslocamento_xb_entrada,2);
-
-% Funcao que sera minimizada
-desvio_min = @(x) (x(2:Np+1) - deslocamento_xb_entrada)*(x(2:Np+1) - deslocamento_xb_entrada)'+(x(2+4*Np:5*Np+1) - deslocamento_yb_entrada)*(x(2 + 4*Np:5*Np+1) - deslocamento_yb_entrada)'
-
-% Ai encima estamos minimizando o quadrado de todos os desvios entre a
-% posicao requerida e posicao de entrada
-
-% requerida       - posicao (inicialmente) gerada pelo gcode; posicao ideal
-% simulada        - posicao do bico da impressora simulada com a entrada requerida sem controle
-
-% entrada efetiva - posicao de entrada de acordo do sistema de controle
-% real efetiva    - posicao do bico da impressora simulada com a entrada efetiva com controle
-
-
-%  |||                    |||
-%  |||                    |||
-%  |||------------------- |||
-%  |||                    |||
-%  |||                    |||
-%  -->       mola         -->
-%   y     amortecedor      x
-% requerida eh o y inicial do problema 
-% simulada eh o x inicial do problema
-% entrada efetiva eh o y final do problema 
-% real efetiva eh o x final do problema
-
-
-% Equacao de movimento do sistema
-
-% m*x..+b*x.+k*x=k*y+b*y.
-
-% passando a equacao acima pra espaco de estados;
-% X.=A*X+F
-%onde
-
-%X.=[x.  x.. ]';
-%X=[x  x. ]';
-%A=[0 1 ; -k/m -b/m];
-%F=[0 k*y+b*y'];
-
-
-% Chute inicial dos parametros
-
-deslocamento_x(1:Np)=deslocamento_xb(1:Np);
-velocidade_x(1:Np)=velocidade_xb(1:Np);
-
-deslocamento_y(1:Np)=deslocamento_yb(1:Np);
-velocidade_y(1:Np)=velocidade_yb(1:Np);
-
-% Essa variavel x representa o vetor de dados do problema;
-
-%Para um dado valor de deslocamento tema seguinte configuracao:
-
-% No ponto 1, a impressora esta na posicao inicial e com velocidade 0.
-% O algoritmo eh livre pra encontrar a melhor trajetoria desde o ponto 1
-% ateh o ponto gridN1
-
-%Apos, entre os pontos 1+gridN1 e gridN+gridN1 a impressora deve serguir
-%uma trajetoria pre definida 
-
-% Por fim de 1+gridN+gridN1 a gridN+2*gridN1 impressora eh livre pra escolher uma
-% trajetoria ateh parar. 
-
-x(1)=Temptot;
-x(2: 1 + Np)=deslocamento_x;
-x(2 + 1*Np     : 1 + Np * 2)=velocidade_x;
-x(2 + 2*Np     : 1 + Np * 3)=deslocamento_xb;
-x(2 + 3*Np     : 1 + Np * 4)=velocidade_xb;
-x(2 + 4*Np     : 1 + Np * 5)=deslocamento_y;
-x(2 + 5*Np     : 1 + Np * 6)=velocidade_y;
-x(2 + 6*Np     : 1 + Np * 7)=deslocamento_yb;
-x(2 + 7*Np     : 1 + Np * 8)=velocidade_yb;
-x(2 + 8*Np     : 1 + Np * 9)=deltats;
-
-xx=x; % guardo o vetor x em outro vetor xx
-
-% Dados da otimizacao 
-
-% No linear inequality or equality constraints
-
-A = [];
-bx = [];
-Aeq = [];
-Beq = [];
-
-% Valores minimos que o meu sistema nao pode alcancar
-
-tempo=0;
-deslocamento_xb_lb=-ones(1,Np)*.0001;
-velocidade_xb_lb=-ones(1,Np)*1000;
-
-deslocamento_x_lb=deslocamento_xb_lb;
-velocidade_x_lb=velocidade_xb_lb;
-
-deslocamento_yb_lb=-ones(1,Np)*.0001;
-velocidade_yb_lb=-ones(1,Np)*1000;
-
-deslocamento_y_lb=deslocamento_yb_lb;
-velocidade_y_lb=velocidade_yb_lb;
-
-deltats_lb(1:Np) = 0;
-
-% Essa variavel x representa o vetor de dados do problema;
-
-lb(1)=tempo;
-lb(2: 1 + Np)=deslocamento_x_lb;
-lb(2 + 1*Np     : 1 + Np * 2)=velocidade_x_lb;
-lb(2 + 2*Np     : 1 + Np * 3)=deslocamento_xb_lb;
-lb(2 + 3*Np     : 1 + Np * 4)=velocidade_xb_lb;
-lb(2 + 4*Np     : 1 + Np * 5)=deslocamento_y_lb;
-lb(2 + 5*Np     : 1 + Np * 6)=velocidade_y_lb;
-lb(2 + 6*Np     : 1 + Np * 7)=deslocamento_yb_lb;
-lb(2 + 7*Np     : 1 + Np * 8)=velocidade_yb_lb;
-lb(2 + 8*Np     : 1 + Np * 9)=deltats_lb;
-
-% upper bound
-
-tempo=Temptot*1.1;
-deslocamento_xb_ub(1:Np)=250;
-velocidade_xb_ub(1:Np)=1000;
-
-deslocamento_x_ub =deslocamento_xb_ub;
-velocidade_x_ub =velocidade_xb_ub;
-
-deslocamento_yb_ub(1:Np)=250;
-velocidade_yb_ub(1:Np)=1000;
-
-deslocamento_y_ub =deslocamento_yb_ub;
-velocidade_y_ub =velocidade_yb_ub;
-
-deltats_ub(1:Np) = 1;
-
-
-% Essa variavel x representa o vetor de dados do problema;
-
-ub(1)=tempo;
-ub(2: 1 + Np)=deslocamento_x_ub;
-ub(2 + 1*Np     : 1 + Np * 2)=velocidade_x_ub;
-ub(2 + 2*Np     : 1 + Np * 3)=deslocamento_xb_ub;
-ub(2 + 3*Np     : 1 + Np * 4)=velocidade_xb_ub;
-ub(2 + 4*Np     : 1 + Np * 5)=deslocamento_y_ub;
-ub(2 + 5*Np     : 1 + Np * 6)=velocidade_y_ub;
-ub(2 + 6*Np     : 1 + Np * 7)=deslocamento_yb_ub;
-ub(2 + 7*Np     : 1 + Np * 8)=velocidade_yb_ub;
-ub(2 + 8*Np     : 1 + Np * 9)=deltats_ub;
-
-%%
-
-% Propiedades do otimizador
-
-options = optimoptions(@fmincon, 'TolFun', 0.0000000001, 'MaxIter', 100000, ...
-                       'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.0001, 'Algorithm', 'sqp');
-% Solve for the best simulation time + control input
+[lb,ub] = def_bounds(x);
+[A_eq,b_eq,A_ineq,b_ineq] = lcon(optimal);
 
 if isempty(optimal)
-         optimal=xx;
+         optimal=x;
 end
 
-   % Algorimo da otimizacao    
-   nonlcon=@double_integrator_points;
-   
-optimal = fmincon(desvio_min,optimal, A, bx, Aeq, Beq, lb, ub, ...
-              nonlcon,options);
-          
-
-tempo_total_convergido=optimal(1);
-%tempo = deltat*(1:Np);
-deslocamento_x_convergido=optimal(2: 1 + Np);
-velocidade_x_convergido=optimal(2 + 1*Np     : 1 + Np * 2);
-deslocamento_xb_convergido=optimal(2 + 2*Np     : 1 + Np * 3);
-velocidade_xb_convergido=optimal(2 + 3*Np     : 1 + Np * 4); 
-deslocamento_y_convergido=optimal(2  + 4*Np:1 + Np*5);
-velocidade_y_convergido=optimal(2 + 5*Np     : 1 + Np * 6);
-deslocamento_yb_convergido=optimal(2 + 6*Np     : 1 + Np * 7);
-velocidade_yb_convergido=optimal(2 + 7*Np     : 1 + Np * 8);
-deltats_convergido= optimal(2 + 8*Np     : 1 + Np * 9);
-
-optimal = optimal/1.05;
+optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
+                      A_eq, b_eq, lb, ub, nonlcon, options);
 
 %% Input Shaper
 
 %% Dynamic Simulation
+[s,u] = runge_kutta(s0,u,t,dynamic_model);
+
 
 s0 = [x(1);y(1);vx(1);vy(1)];
 s(:,1) = s0;
