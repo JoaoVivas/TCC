@@ -1,149 +1,46 @@
-% command generator function
-function [x,y,vx,vy,dt] = CommandGenerator(gcode_x,gcode_y,gcode_v)
-% First stage velocity progression calculation
-global jun_disv max_acc
+function [des,vel,acc,dir,dt] = CommandGenerator(gcode_x,gcode_y,gcode_v)
+global jun_disv max_acc dt_step_size
 [gcode_des,gcode_dir] = directionator(gcode_x',gcode_y');
 
-%p_vx(1) = 0;
-%p_vy(1) = 0;
 vector_v = [0];
-b_v = [0];
-b_des = [];
-b_dt = [];
-b_a = [];
-b_dir = [];
+input_vel = [];
+input_des = [];
+input_dt = [];
+input_acc = [];
+input_dir = [];
+
+vel = [];
+des = [];
+dt = [];
+acc = [];
+dir = [];
 
 for i=1:(size(gcode_v,2)-1)
     vector_v(i+1) = junction_speed_calc(gcode_dir(:,i),gcode_dir(:,i+1),gcode_v(i+1),jun_disv,max_acc);
-    %p_vx(i+1) = p_v(i+1)*dir(1,i);
-    %p_vy(i+1) = p_v(i+1)*dir(2,i);
     [vec_t,vec_des,vec_v,vec_a,vec_dir] = refined_trapzoid_generator(vector_v(i),vector_v(i+1),gcode_v(i),max_acc,gcode_des(i),gcode_dir(:,i));
-    b_dt = [b_dt,vec_t];
-    b_des = [b_des,vec_des];
-    b_v = [b_v,vec_v];
-    b_a = [b_a,vec_a];
-    b_dir = [b_dir,vec_dir];
+    input_dt = [input_dt,vec_t];
+    input_des = [input_des,vec_des];
+    input_vel = [input_vel,vec_v];
+    input_acc = [input_acc,vec_a];
+    input_dir = [input_dir,vec_dir];
 end
-%b_a(size(b_dt,2)) = 0;
-%b_dir(1,size(b_dt,2)) = 0;
-%b_dir(2,size(b_dt,2)) = 0;
-
-% step_size = 1;
-% Des = V*delta_t
-% Vf^2 = Vi^2 + 2*acc*Des
-% Des = Vi*delta_t+ acc*delta_t^2/2
-%    delta_t = (v_d-v_f)/acc;
-b_t = [0,acumulator(b_dt)];
-plot(b_t,b_v)
-
-%% Second stage interpolation
-% 
-% v = [];
-% ddes = [];
-% dt = [];
-% a = [];
-% dir = [];
-% 
-% for i=1:size(b_dt,2)
-%     the_v = [];
-%     the_des = [];
-%     the_a = [];
-%     the_delta_t = [];
-%     the_vi = [];
-%     the_dir = [];
-%     
-%     desi = b_des(i);   
-%     vi = b_v(i);
-%     acc = b_a(i);
-%     
-%     Nsteps = round(desi/step_size)-1;
-%     if acc == 0
-%         if Nsteps > 0
-%             the_v = ones(1,Nsteps)*vi;
-%             delta_t = step_size/vi;
-%             the_delta_t = ones(1,Nsteps)*delta_t;
-%             the_des = ones(1,Nsteps)*step_size;
-%             last_des = desi-step_size*Nsteps;
-%             last_delta_t = last_des/vi;
-%             last_vi = vi;
-%             the_des = [the_des, last_des];
-%             the_delta_t = [the_delta_t, last_delta_t];
-%             the_v = [the_v, last_vi];
-%             the_a = ones(1,Nsteps+1)*acc; 
-%             the_dir = [b_dir(:,i)*ones(1,Nsteps),b_dir(:,i)];
-%         else
-%             the_des = desi;
-%             the_v = vi;
-%             the_delta_t = desi/vi;
-%             the_a = acc;
-%             the_dir = b_dir(:,i);
-%         end
-%     else
-%         if Nsteps > 0
-%             the_des = ones(1,Nsteps)*step_size;
-%             for j=1:Nsteps
-%                 the_v(j) = (vi^2 + 2*acc*step_size*j).^0.5;       
-%             end
-%             the_vi = [vi,the_v(1:length(the_v)-1)];
-%             the_delta_t = (the_v-the_vi)/acc;
-%             last_des = desi-step_size*Nsteps;
-%             antlast_v = the_v(length(the_v));
-%             if antlast_v^2+2*acc*last_des <= 0
-%                 last_v = 0;
-%             else
-%                 last_v = (antlast_v^2+2*acc*last_des).^0.5;
-%             end
-%             last_delta_t = (last_v-antlast_v)/acc;
-%             the_des = [the_des,last_des];
-%             the_delta_t = [the_delta_t, last_delta_t];
-%             the_v = [the_v, last_v];
-%             the_a = ones(1,Nsteps+1)*acc; 
-%             the_dir = [b_dir(:,i)*ones(1,Nsteps),b_dir(:,i)];
-%         else
-%             the_des = desi;
-%             the_v = (vi^2+2*acc*desi).^0.5;
-%             the_delta_t = (the_v-vi)/acc;
-%             the_a = acc;
-%             the_dir = b_dir(:,i);
-%         end
-%         
-%     end
-%     v = [v, the_v];
-%     ddes = [ddes, the_des];
-%     dt = [dt, the_delta_t];
-%     a = [a, the_a];
-%     dir = [dir, the_dir];
-% end
-% dx = [0];
-% dy = [0];
-% vx = [0];
-% vy = [0];
-% ax = [];
-% ay = [];
-% 
-% for i=1:length(ddes)
-%    dx = [dx,ddes(i)*dir(1,i)];
-%    dy = [dy,ddes(i)*dir(2,i)];
-%    vx = [vx,v(i)*dir(1,i)];
-%    vy = [vy,v(i)*dir(2,i)];
-%    ax = [ax,a(i)*dir(1,i)];
-%    ay = [ay,a(i)*dir(2,i)];
-% end
-% a = [a,0];
-% ax = [ax,0];
-% ay = [ay,0];
-% v = [0,v];
-% t = [0,acumulator(dt)];
-% dt = [dt,0];
-% des = acumulator(ddes);
-% x = acumulator(dx);
-% y = acumulator(dy);
-% 
-% points(1,:) = x;
-% points(2,:) = vx;
-% points(3,:) = y;
-% points(4,:) = vy;
-% points(5,:) = dt;
-% points(6,:) = t;
-
+input_vi = [0,acumulator(input_vel,0)];
+for i = 1:length(input_dt)
+    Nsteps = ceil(input_dt(i)/dt_step_size)-1;
+    if Nsteps > 0 
+        dt_interpol = [ones(1,Nsteps)*dt_step_size,input_dt(i)-dt_step_size*Nsteps];
+        dt = [dt, dt_interpol];
+        [des_interpol, vel_interpol, acc_interpol, dir_interpol] = t_array_interpolator(dt_interpol, input_acc(i), input_dir(:,i), input_vi(i));
+        acc = [acc, acc_interpol];
+        vel = [vel, vel_interpol];
+        des = [des, des_interpol];
+        dir = [dir, dir_interpol];
+    else
+        dt = [dt,input_dt(i)];
+        acc = [acc, input_acc(i)];
+        vel = [vel, input_vel(i)];
+        des = [des, input_des(i)];
+        dir = [dir, input_dir(:,i)];
+    end
+end
 end

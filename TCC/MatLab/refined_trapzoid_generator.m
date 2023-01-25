@@ -1,10 +1,10 @@
-function [t,des,v,a,dire] = refined_trapzoid_generator(v_i,v_f,v_d,acc,des_tot,dir)
+function [dt,des,vel,a,dire] = refined_trapzoid_generator(v_i,v_f,v_d,acc,des_tot,dir)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 v_p = ((v_i^2+v_f^2)/2+acc*des_tot)^0.5;
 des = [];
-v = [];
-t = [];
+vel = [];
+dt = [];
 a = [];
 dire = [];
 
@@ -15,33 +15,37 @@ if v_p > v_d
     
     % a = v/t; t = v/a
     % v = d/t; t = d/v
-    t_i = (v_d-v_i)/acc;
-    t_d = des_d/v_d;
+    dt_i = (v_d-v_i)/acc;
+    dt_d = des_d/v_d;
 %     t_d = (des_tot-((v_d^2)-(v_i^2+v_f^2)/2)/acc)/v_d
-    t_f = (v_d-v_f)/acc;
+    dt_f = (v_d-v_f)/acc;
+    
+    vel_i = v_d-v_i;
+    vel_d = 0;
+    vel_f = v_f-v_d;
     
     a_i = acc;
     a_d = 0;
     a_f = -acc;
     
     if des_i ~= 0
-        t = [t,t_i];
+        dt = [dt,dt_i];
         des = [des,des_i];
-        v = [v,v_d];
+        vel = [vel,vel_i];
         a = [a,a_i];
         dire = [dire,dir];
     end
     if des_d ~= 0
-        t = [t,t_d];
+        dt = [dt,dt_d];
         des = [des,des_d];
-        v = [v,v_d];
+        vel = [vel,vel_d];
         a = [a,a_d];
         dire = [dire,dir];
     end
     if des_f ~= 0
-        t = [t,t_f];
+        dt = [dt,dt_f];
         des = [des, des_f];
-        v = [v,v_f];
+        vel = [vel,vel_f];
         a = [a,a_f];
         dire = [dire,dir];
     end
@@ -49,23 +53,26 @@ else
     des_i = (v_p^2-v_i^2)/(2*acc);
     des_f = (v_p^2-v_f^2)/(2*acc);
     
-    t_i = (v_d-v_i)/acc;
-    t_f = (v_d-v_f)/acc;
+    dt_i = (v_d-v_i)/acc;
+    dt_f = (v_d-v_f)/acc;
+    
+    vel_i = v_p-v_i;
+    vel_f = v_f-v_p;
     
     a_i = acc;
     a_f = -acc;
     
     if des_i ~= 0
-        t = [t,t_i];
+        dt = [dt,dt_i];
         des = [des,des_i];
-        v = [v,v_p];
+        vel = [vel,vel_i];
         a = [a,a_i];
         dire = [dire,dir];
     end
     if des_f ~= 0
-        t = [t,t_f];
-        des = [des, des_f]
-        v = [v,v_f];
+        dt = [dt,dt_f];
+        des = [des, des_f];
+        vel = [vel,vel_f];
         a = [a,a_f];
         dire = [dire,dir];
     end
