@@ -23,7 +23,7 @@ max_x = 200.0001;
 min_y = -0.0001;
 max_y = 200.0001;
 
-max_acc = 1000;
+max_acc = 2000;
 max_vel = 1000;
 
 junction_speed = 0.1;
@@ -36,13 +36,22 @@ dt_step_size = 0.01;
 global options nonlcon lcon objective_fun def_bounds
 options = optimoptions(@fmincon, 'TolFun', 0.0000000001, 'MaxIter', 100000, ...
                        'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.0001, 'Algorithm', 'sqp');
+                       'DiffMinChange', 0.0001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
 
 % objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
-objective_fun = @desv_min;
-def_bounds=@fixed_bounds;
+% objective_fun = @desv_min_9;
+objective_fun = @desv_min_5;
+% objective_fun = @desv_min_4;
+
+% def_bounds=@fixed_bounds_9;
+def_bounds=@fixed_bounds_5;
+% def_bounds=@fixed_bounds_4;
+
 lcon=@empty_lcons;
-nonlcon=@double_integrator_points;
+
+% nonlcon=@double_integrator_points_x;
+nonlcon=@double_integrator_points_x_t;
+% nonlcon=@double_integrator_points;
 %%
 x_ub = ;
 vx_ub = ;

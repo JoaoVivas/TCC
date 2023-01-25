@@ -1,9 +1,9 @@
-function [lb,ub] = fixed_bounds(x)
+function [lb,ub] = fixed_bounds_9(x)
 global min_x min_y 
 global max_x max_y
 global max_vel
 
-N = length(x(9,:));
+N = length(x(1,:));
 base = ones(1,N);
 
 lb(1,:) = base*min_x;

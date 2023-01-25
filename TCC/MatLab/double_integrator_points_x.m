@@ -1,9 +1,9 @@
-function [c,ceq] = double_integretor_points_x_t(x)
+function [c,ceq] = double_integrator_points_x(x)
 %%
 % clc
 % clear all
 % %%
-global A_model B_model max_acc
+global A_model B_model max_acc t
 
 % x(1,:) = [0,1,2,3,4,5];
 % x(2,:) = [0,1,2,3,4,5];
@@ -11,7 +11,7 @@ global A_model B_model max_acc
 % x(4,:) = [0,1,2,3,4,5]; 
 % x(5,:) = [0,2,3,4,5,6];
 
-t = x(5,:);
+% t = x(5,:);
 
 des_x = x(1,:);
 des_y = x(2,:);
