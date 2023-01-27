@@ -40,7 +40,7 @@ for i = 1 : (length(t)-1)
     delta_x = (des_x(i+1)-des_x(i));
     delta_y = (des_y(i+1)-des_y(i));
     
-    acc_x(i+1) = 2*((delta_x/dt)-vel_x(i))/dt;
+    acc_x(i+1) = 2*((delta_x/dt)-vel_x(i))/dt; 
     acc_y(i+1) = 2*((delta_y/dt)-vel_y(i))/dt;
     vel_x(i+1) = vel_x(i)+acc_x(i+1)*dt;
     vel_y(i+1) = vel_y(i)+acc_y(i+1)*dt;

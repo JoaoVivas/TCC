@@ -30,7 +30,7 @@ junction_speed = 0.1;
 jun_disv = 0.1;
 
 des_step_size = 0.1;
-dt_step_size = 0.01;
+dt_step_size = 0.05;
 
 % Otimização
 global options nonlcon lcon objective_fun def_bounds
@@ -65,6 +65,14 @@ vy_lb = ;
 
 % Input Shaper
 
+SEG_TIME = .000100
+INV_SEG_TIME = 1. / SEG_TIME
+
+SPRING_FREQ=35.0
+DAMPING_RATIO=0.05
+
+CONFIG_FREQ=40.0
+CONFIG_DAMPING_RATIO=0.1
 % Dynamic Simulation
 
 dyn_model = @dynamic_model;
