@@ -35,13 +35,13 @@ junction_speed = 0.1;
 jun_disv = 0.1;
 
 des_step_size = 0.1;
-dt_step_size = 0.0009;
+dt_step_size = 0.001;
 
 % Otimização
 global options nonlcon lcon objective_fun def_bounds
-options = optimoptions(@fmincon, 'TolFun', 0.0000000001, 'MaxIter', 100000, ...
+options = optimoptions(@fmincon, 'TolFun', 0.000000001, 'MaxIter', 100000, ...
                        'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.00001, 'Algorithm', 'interior-point', 'StepTolerance', 1e-16); %'interior-point' 'sqp'
+                       'DiffMinChange', 0.0001, 'Algorithm', 'interior-point', 'StepTolerance', 1e-12); %'interior-point' 'sqp'
 
 % objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
 % objective_fun = @desv_min_9;
