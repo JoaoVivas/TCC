@@ -1,106 +1,32 @@
-\documentclass{uflamon}          % classe base para a monografia
+\documentclass{uflamon}
+
 \include{config}
 \include{dados_monografia}
 
-% para os exemplos do manual
-%\newenvironment{exemplomanual}{
-%\vspace{0.5cm}
-%\noindent\begin{minipage}{\textwidth}
-%\noindent\rule{\textwidth}{0.5pt}
-%\vspace{-1cm}
-%\begin{flushleft}
-%}{
-%\end{flushleft}
-%\vspace{-0.6cm}
-%\noindent\rule{\textwidth}{0.5pt}
-%\vspace{0.3cm}
-%\end{minipage}
-%}
-
-%\newenvironment{exemplomanuallista}{
-%\vspace{0.3cm}
-%\noindent\begin{minipage}{\textwidth - 0.5cm}
-%\noindent\rule{\textwidth}{0.5pt}
-%\vspace{-1cm}
-%\begin{flushleft}
-%}{
-%\end{flushleft}
-%\vspace{-0.6cm}
-%\noindent\rule{\textwidth}{0.5pt}
-%\vspace{0.3cm}
-%\end{minipage}
-%}
-
-% por conta de alguns exemplos
-%\usepackage{setspace}
-
-%##################################################
-
-
-% se vc já defendeu e tem o arquivo escaneado da folha de rosto, 
-% descomente e altere o nome do arquivo
 %\folhaAprovacaoAssinada{folharosto}
 
-% Aqui começa o documento propriamente dito
 \begin{document}
-
 \maketitle
 
 \include{agradecimentos}
 \include{resumo}
 
-
-%##################################################
-
-% Dados do guia
-%\begin{titlepage}
-%\pagestyle{empty}
-%\renewcommand{\baselinestretch}{1}
-%\enlargethispage{1.5cm}
-%\input{reitoria}
-%\cleardoublepage
-%\end{titlepage}
-
-%##################################################
-
-% descomente para habilitar a lista desejada
-\listoffigures                             % Lista de Figuras
-%\listofilustracoes
-%\listofgraficos							   % Lista de Gráficos
-\listoftables                              % Lista de Tabelas
-%\listofquadros							   % Lista de Quadros
-%\listofexemplos
-%\listofteoremas
-\tableofcontents                           % Sumário
+\listoffigures 
+\listoftables   
+\tableofcontents 
 
 \clearpage
 
 \pagestyle{ufla}
 
-%==============================================================================
-% incluindo os capitulos
 \include{introducao}
 \include{revisao_bibliografica}
 \include{metodologia}
 \include{resultados_e_discussao}
 \include{conclusao}
 
-%==============================================================================
-% Incluindo bibliografia
-%\bibliographystyle{plain}             % estilo para labels em numeros
-%\bibliographystyle{alpha}             % estilo para labels em iniciais
-\bibliographystyle{abntex2-alf}           % estilo para referências usando ABNT, 
-                                       % precisa instalar o abntex para usar!!!
-
-%inclui Referências Bibliográficas
-%inclui Referências Bibliográficas
+\bibliographystyle{abntex2-alf}      
 \referencias
-%\bibliography{refbib}			% arquivo exemplo refbib.bib
-%==============================================================================
-% Incluindo anexos num1erados com letras maiusculas.
-%\apendices
+\bibliography{referencias}			
 
-
-%==============================================================================
-% Fim do texto
 \end{document}
