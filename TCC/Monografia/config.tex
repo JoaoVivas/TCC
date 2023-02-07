@@ -1,0 +1,97 @@
+
+
+% Utilizacao de pacotes
+\usepackage[T1]{fontenc}         % usa fontes postscript com acentos
+\usepackage[brazil]{babel}       % hifenização e títulos em português do Brasil
+\usepackage[utf8]{inputenc}     % permite edição direta com acentos
+\usepackage{amsmath}             % pacote da AMS para Matemática Avançada
+\usepackage{amssymb}             % símbolos extras da AMS
+\usepackage{latexsym}            % símbolos extras do LaTeX
+\usepackage{graphicx}            % para inserção de gráficos
+\usepackage{listings}            % para inserção de código
+\usepackage{fancyvrb}            % para inserção de saídas de comandos
+%\usepackage{enumerate}           % para personalizar lista enumeradas 
+											%(incluso na classe)
+\usepackage{longtable}           % para tambelas muito grandes NOVO!!!!
+
+\usepackage{colortbl} % cores em tabelas
+\newcolumntype{Z}{|>{\columncolor[gray]{0.9}}l|} %cor cinza em células
+%\usepackage{array} % já incluso na classe
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{multirow} % para juntar duas linhas em uma só
+
+\usepackage{multicol} % para uso de várias colunas
+
+% cores para os links cruzados
+\usepackage{color}
+\definecolor{rltred}{rgb}{0.2,0,0}
+\definecolor{rltgreen}{rgb}{0,0.2,0}
+\definecolor{rltblue}{rgb}{0,0,0.2}
+
+\usepackage[colorlinks=true,
+            urlcolor=rltblue,       % \href{...}{...} external (URL)
+            filecolor=rltgreen,     % \href{...} local file
+            linkcolor=rltred,       % \ref{...} and \pageref{...}
+            citecolor=rltgreen,
+            pdftitle={Marques,Thiago},
+          pdfauthor={Thiago Almeida Martins Marques},
+          pdfsubject={Este texto tem por objetivo servir de exemplo da classe Uflamon.},
+          pdfkeywords={Comunicação Científica. 2. Pesquisa . 3. Pesquisa Científica. 
+ 					 4. Redação. 5. Monografia.}%
+]{hyperref} % para referência cruzadas
+%\usepackage{hyperref}            % para referência cruzadas
+\usepackage{subfigure}           % figuras dentro de figuras
+\usepackage{caption}            % remodelando o formato dos títulos de 
+                                 % tabelas e figuras
+
+% configuração padrão do listings   
+\lstset{
+   language=Java,
+   extendedchars=true,
+   tabsize=3,
+   basicstyle=\footnotesize\ttfamily,
+   stringstyle=\em,
+   showstringspaces=false 
+}
+
+% para referências de acordo com a ABNT
+% precisa instalar o abntex2 antes!!!
+% http://abntex.codigolivre.org.br/
+% comente se pretende usar outro padrão
+
+%abnt-emphasize=bf coloca o título das bibliografias em negrito
+%abnt-thesis-year=both
+\usepackage[alf,abnt-etal-cite=3,abnt-etal-list=3,abnt-url-package=url,abnt-emphasize=bf]{abntex2cite}
+
+% evite usar o hyperref com abntex, pode dar caca em urls... no linha anterior, informo
+% para incluir urls usando o pacote url e não o hyperref
+%
+% caso queira o hyperref com abntex, comente a linha anterior e descomente a seguinte
+%\usepackage[alf,abnt-etal-cite=3,abnt-etal-list=0,abnt-etal-text=emph]{abntex2cite}
+%
+% caso vc ainda use a versão anterior da abntex, comente a linha incluindo o abntex2cite
+% e descomente a próxima linha 
+%\usepackage[alf,abnt-etal-cite=3,abnt-etal-list=0,abnt-etal-text=emph]{abntcite}
+
+
+% redefinindo formatação de títulos de tabelas e figuras
+
+
+%==============================================================================
+% para os fãs do Word, descomente as linhas abaixo
+%\sloppy %mais espaço entre as linhas
+%\usepackage{identfirst} %identando-se a primeira linha de cada seção
+%\noindentfirst % Tire o comentário para manter o padrão do LaTeX.
+
+%==============================================================================
+% definido comandos na monografia - não é necessário na sua monografia 
+% apenas para exemplificar a definição de novos comandos
+\newcommand{\defs}[1]{\textsl{#1}}
+
+
+% Especificando hifenizações que por ventura LaTeX não saiba fazer
+% Por padrão 99,9% dos termos em português devem ser hifenizados corretamente.
+\hyphenation{hardware software Li-nux am-bien-te diag-nos-ti-car coor-de-na-ção 
+FAE-PE Recovery TelEduc Williams UFLA}
