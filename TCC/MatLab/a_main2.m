@@ -10,7 +10,7 @@
 % a_config
 % [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
 filename = 'Gcode_teste.gcode';
-PathName = 'C:\Users\JoaoVivas\JoaoVivas\TCC\MatLab\';
+PathName = '.\';
 CommandArray = InputGcode(filename,PathName);
 
 %Command Generation

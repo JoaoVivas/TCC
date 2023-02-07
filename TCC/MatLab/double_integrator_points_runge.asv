@@ -3,7 +3,7 @@ function [c,ceq] = double_integrator_points_runge(x)
 % clc
 % clear all
 % %%
-global max_acc
+global A_model B_model max_acc
 
 % x(1,:) = [0,1,2,3,4,5];
 % x(2,:) = [0,1,2,3,4,5];
@@ -59,16 +59,20 @@ for i = 1 : (length(t)-1)
     c = [c max_acc-AccelXb max_acc-AccelYb];
 end
 
+
+x(1,:) = des_x;
+x(2,:) = des_y;
+x(3,:) = des_x; 
+x(4,:) = des_y; 
 % t = t_base;
 % x(5,:) = t_base;
 
 s0_base = [des_x(1);vel_x(1);des_y(1);vel_y(1)];
-u_base(1,:) = des_xb;
-u_base(2,:) = vel_xb;
-u_base(3,:) = des_yb;
-u_base(4,:) = vel_yb;
+u_base(1,:) = des_x;
+u_base(2,:) = vel_x;
+u_base(3,:) = des_y;
+u_base(4,:) = vel_y;
 
-[s_base,~] = runge_kutta(s0_base,u_base,t,@dynamic_model);
+[s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
 
-ceq = [s_base(1,:) - x(1,:) s_base(3,:) - x(2,:)];
 end

@@ -35,28 +35,28 @@ junction_speed = 0.1;
 jun_disv = 0.1;
 
 des_step_size = 0.1;
-dt_step_size = 0.001;
+dt_step_size = 0.0009;
 
 % Otimização
 global options nonlcon lcon objective_fun def_bounds
 options = optimoptions(@fmincon, 'TolFun', 0.0000000001, 'MaxIter', 100000, ...
                        'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.0001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
+                       'DiffMinChange', 0.00001, 'Algorithm', 'interior-point', 'StepTolerance', 1e-16); %'interior-point' 'sqp'
 
 % objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
 % objective_fun = @desv_min_9;
-% objective_fun = @desv_min_5;
-objective_fun = @desv_min_4;
+objective_fun = @desv_min_5;
+% objective_fun = @desv_min_4;
 
 % def_bounds=@fixed_bounds_9;
-% def_bounds=@fixed_bounds_5;
-def_bounds=@fixed_bounds_4;
+def_bounds=@fixed_bounds_5;
+% def_bounds=@fixed_bounds_4;
 
 lcon=@empty_lcons;
 
-nonlcon=@double_integrator_points_x;
+% nonlcon=@double_integrator_points_x;
 % nonlcon=@double_integrator_points_x_t;
-% nonlcon=@double_integrator_points;
+nonlcon=@double_integrator_points_runge;
 % %%
 % x_ub = ;
 % vx_ub = ;
