@@ -3,7 +3,7 @@ function [c,ceq] = double_integrator_points_x(x)
 % clc
 % clear all
 % %%
-global A_model B_model max_acc t
+global A_model B_model max_acc t_base
 
 % x(1,:) = [0,1,2,3,4,5];
 % x(2,:) = [0,1,2,3,4,5];
@@ -31,11 +31,11 @@ acc_yb(1) = 0;
 %des = vi*t+at^2/2; a = 2*(des/t-vi)/t
 % Vf^2-Vi^2 = 2ades
 
-ceq=[des_x(1),des_y(1),t(1)];    
+ceq=[des_x(1),des_y(1)];    
 c=[];
 
-for i = 1 : (length(t)-1)
-    dt = t(i+1)-t(i);
+for i = 1 : (length(t_base)-1)
+    dt = t_base(i+1)-t_base(i);
     
     delta_x = (des_x(i+1)-des_x(i));
     delta_y = (des_y(i+1)-des_y(i));

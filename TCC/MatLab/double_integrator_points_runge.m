@@ -1,4 +1,4 @@
-function [c,ceq] = double_integrator_points_x_t(x)
+function [c,ceq] = double_integrator_points_runge(x)
 %%
 % clc
 % clear all

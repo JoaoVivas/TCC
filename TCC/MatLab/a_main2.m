@@ -22,7 +22,7 @@ gcode_v = [CommandArray(5,:)./60,0];
 [des,vel,acc,dir,dt] = CommandGenerator(gcode_x,gcode_y,gcode_v);
 
 
-t = [0,acumulator(dt,0)];
+% t = [0,acumulator(dt,0)];
 % des_ac = acumulator(des);
 % vel_ac = acumulator(vel);
 
@@ -61,10 +61,7 @@ t_base = [0,acumulator(dt,0)];
 
 x(1,:) = des_x;
 x(2,:) = des_y;
-x(3,:) = des_x; 
-x(4,:) = des_y; 
-% t = t_base;
-% x(5,:) = t_base;
+% x(3,:) = t_base;
 
 s0_base = [des_x(1);vel_x(1);des_y(1);vel_y(1)];
 u_base(1,:) = des_x;
@@ -72,7 +69,7 @@ u_base(2,:) = vel_x;
 u_base(3,:) = des_y;
 u_base(4,:) = vel_y;
 
-[s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
+[s_base,u_base] = runge_kutta2(s0_base,u_base,@dynamic_model);
 
 plot(u_base(1,:),u_base(3,:))
 hold on
@@ -86,11 +83,7 @@ optimal = [];
 [A_eq,b_eq,A_ineq,b_ineq] = lcon(optimal);
 
 if isempty(optimal)
-%          optimal=x;
-    optimal(1,:) = s_base(1,:);
-    optimal(2,:) = s_base(3,:);
-    optimal(3,:) = u_base(1,:);
-    optimal(4,:) = u_base(3,:);
+         optimal=x;
 end
 
 optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
