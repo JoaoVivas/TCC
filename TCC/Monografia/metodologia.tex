@@ -1,5 +1,7 @@
 \chapter{METODOLOGIA}
 
+\section{Materiais}
+
 \section{Modelagem dinâmica de uma impressora 3D}
 Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
 é considerado que os eixos são completamente independentes, 
@@ -11,7 +13,7 @@ representa a posição ideal e desejada pelo usuário (X1) e a
 segunda é a posição real considerando as forças inerciais e a 
 flexibilidade introduzida pela correia (X2) como na Figura 4.
 
-\section{Espaço de estados}
+\subsection{Espaço de estados}
 Organizando as equações de movimento dos eixos x e y da 
 impressora em espaço de estados em forma matricial, sendo 
 Dx, Vx, Ax, Dy, Vy, Ay as variáveis referentes à posição,
@@ -24,6 +26,14 @@ equação
 Na função não linear as igualdades são calculadas em cada ponto, 
 sendo os de índice "i" o ponto atual e "n" o próximo ponto.
 
+\section{Geração de Comando}
+
+\subsection{Leitura Gcode}
+\subsection{Curva rapezoidal de velocidade}
+\subsection{Interpolação}
+
+\section{Runge Kutta}
+
 \section{Função fmincon}
 Como o modelo matemático a ser otimizado é multivariável e 
 possuindo restrições não-lineares, a função FMINCON do ambiente 
@@ -33,7 +43,7 @@ flexibilidades do sistema que causam perturbações e vibrações
 indesejadas.
 É uma função baseada em gradientes que busca por todos os 
 mínimos locais de uma região que satisfaz outras restrições 
-estipuladas (ALBAGHDADI et al. 2021).
+estipuladas \cite{albaghdadi21}.
 Ela utiliza um conjunto de restrições superiores e inferiores 
 para cada ponto e otimiza a função considerando as restrições 
 estabelecidas pela função não linear, utilizando as equações de 
@@ -46,3 +56,7 @@ eq
 Sendo Dmx e Dmy os vetores com os pontos de deslocamento 
 calculados e Dmex e Dmey os vetores de deslocamento desejados, 
 ou seja, a trajetória requerida para a impressão.
+
+\subsection{Restrições lineares}
+\subsection{Restrições não lineares}
+\subsection{Cofiguração da Fmincon}

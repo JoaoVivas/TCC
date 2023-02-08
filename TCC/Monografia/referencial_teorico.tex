@@ -1,4 +1,4 @@
-\chapter{REVISÃO BIBLIOGRÁFICA}
+\chapter{REFERENCIAL TEÓRICO}
 
 \section{Manufatura Aditiva}
 O princípio básico por trás da manufatura aditiva (MA) é a 
@@ -15,9 +15,20 @@ produção de protótipos, mas também de peças utilizadas em
 produtos finais. Além disso, o termo não considerava o princípio 
 básico que unia essas tecnologias e assim o termo manufatura 
 aditiva foi apresentado e adotado pela American Society for 
-Testing and Materials (ASTM) (GIBSON et al., 2020).
+Testing and Materials (ASTM) \cite{gibson15}.
 
-\section{Fused Deposition Modeling}
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{Runge_kutta_comando_base_0001.jpg}
+    {\footnotesize Fonte: Elaborada pelo autor.}
+    \label{fig:label}
+\end{figure}
+
+\ref{fig:label} figura
+\subsection{Rapid Prototyping}
+
+\subsection{Fused Deposition Modeling}
 Fused Deposition Modeling (FDM) ou Fused Filament Fabrication 
 (FFF) é uma tecnologia categorizada como MA onde um filamento 
 de material é forçado dentro de uma câmara através, geralmente,
@@ -31,10 +42,10 @@ desejada utilizando mecanismos movidos de forma controlada,
 geralmente por motores de passos. O processo é repetido camada 
 por camada, de forma que elas estejam apoiadas por camadas 
 anteriores e a primeira camada continue fixa na plataforma ou 
-cama, até que o processo finalize (TURNER et al., 2014).
+cama, até que o processo finalize (TURNER et al., 2014) \cite{turner14}.
 
-\section{Desenvolvimento acadêmico em FDM}
-O trabalho de Vyavahare et al. (2020) apresenta algumas 
+\subsection{Desenvolvimento acadêmico em FDM}
+O trabalho de Vyavahare et al. (2020) \cite{vyavahare20} apresenta algumas 
 características sobre o desenvolvimento científico sobre 
 FDM ao longo dos anos, tendo como base 211 artigos diferentes 
 de 1994 a 2020. É apresentado um grande salto no número de 
@@ -55,7 +66,7 @@ aplicado a impressoras 3D FDM se deu em tempos recentes,
 sendo sua aplicação majoritária relacionada às máquinas de 
 Controle Numérico Computadorizado (CNC).
 
-\section{Look ahead}
+\subsection{Look ahead}
 No processo de impressão 3D são fornecidos para a impressora 
 uma sequência de pontos no espaço e limitações de velocidade 
 entre os mesmos. A velocidade nos pontos é compartilhada entre 
@@ -67,16 +78,35 @@ O algoritmo Look Ahead procura manter o máximo de velocidade
 possível entre movimentos distintos, evitando acelerações e 
 desacelerações desnecessárias, apesar de ser necessário um 
 pré-processamento desses pontos que introduzem um custo 
-computacional maior (YU et al. 2020).
+computacional maior (YU et al. 2020) \cite{yu20}.
 
-\section{Feedforward}
+\subsection{Curvas de velocidade}
+
+\section{Controle e Otimização}
+
+\subsection{Espaço de Estados}
+
+\subsection{Integradores numéricos}
+
+\subsubsection{Euller}
+
+\subsubsection{Runge Kutta}
+
+
+\subsection{Feedforward}
 Dentre os métodos de controle em aplicações FDM o Feedforward 
 é o mais eficiênte dada as limitações de custo em impressoras 
 3D comuns e é capaz de ter um impacto maior em sistemas 
 conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
-antes que ele aconteça (RAMANI et al. 2020; DUAN et al. 2018).
+antes que ele aconteça (RAMANI et al. 2020; DUAN et al. 2018) || \cite{ramani20}\cite{duan18}.
 
-\section{Input Shaper}
+\subsection{Feedback}
+
+\subsection{Objective Function Otimization}
+
+\section{Aplicações de Controle Impressora 3D}
+
+\subsection{Input Shaper}
 Conhecendo a trajetória desejada e conhecendo características 
 do sistema é possível computar os comandos fornecidos para 
 calcular uma série de comandos, levando em consideração as 
@@ -88,8 +118,12 @@ comando modificado em tempo real através de um filtro.
 Uma das abordagens desse tipo de filtro de comando é o 
 Input Shaper, onde variados Shapers são construídos levando 
 em consideração diferentes objetivos e restrições 
-(SINGHOSE, 1997).
+\cite{singhose97}.
 Essa abordagem vem sendo utilizada na comunidade Maker depois 
 da patente ter perdido o vigor, e tem aprimorado a área como
 um todo, empurrando os limites anteriores de velocidade e 
 precisão.
+
+\subsection{B-spline}
+
+\subsection{Robust Filter}
