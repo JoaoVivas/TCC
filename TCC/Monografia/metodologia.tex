@@ -2,6 +2,19 @@
 
 \section{Materiais}
 
+\section{Dados base e cofigurações}
+
+aceleração máxima
+desvio de junção
+delta tempo
+kx
+ky
+bx
+by
+mx
+my
+
+
 \section{Modelagem dinâmica de uma impressora 3D}
 Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
 é considerado que os eixos são completamente independentes, 
@@ -29,10 +42,157 @@ sendo os de índice "i" o ponto atual e "n" o próximo ponto.
 \section{Geração de Comando}
 
 \subsection{Leitura Gcode}
+
+Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo
+as informações dos eixos X, Y e do *feedrate* (F). Com base nesses valores
+uma matriz 3 por n é criada, n sendo o número de comandos lidos.
+
 \subsection{Curva rapezoidal de velocidade}
+Para a construção da curva de velocidade trapezoidal a partir da matriz de posições
+e *feedrate* é necessário o calculo das direções dos movimentos a serem realizados.
+
+As direções são representadas por vetores unitários calculados a partir
+do vetor deslocamento dividido pelo mesmo vetor normalizado. Sendo o vetor deslocamento
+obtido pela diferença entre dois vetores de posição sequenciais.
+
+\begin{equation}
+    \label{eq:dir_eq}
+    dir_{vector} = \frac{v}{norm(v)}
+\end{equation}
+
+Essas direções são utilizadas para o cálculo das velocidades pelo *look ahead*,
+considerando os valores de desvio de junta como  0.1 e aceleração maxima de $5000 mm/s^2$
+
+\begin{equation}
+    \label{eq:alpha}
+    \alpha = 2*asin\left(\frac{norm(dir_1+dir_2)}{2}\right)
+\end{equation}
+
+\begin{equation}
+    \label{eq:div}
+    div = \frac{1-sin\left(\frac{\alpha}{2}\right)}{sin(\frac{\alpha}{2})}
+\end{equation}
+
+\begin{equation}
+    \label{eq:R_jun}
+    R = \frac{jun_disv}{div}
+\end{equation}
+
+\begin{equation}
+    \label{eq:v_jun}
+    v_jun = \sqrt{acc_max*R}
+\end{equation}
+
+
+Calculamos então a velocidade de junção baseada no angulo das direções do movimento e
+nos parâmetros da aceleração máxima e desvio máximo de junção.
+
+A partir dessa matriz de posições e, agora também velocidades,
+utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
+
+Essa função separa o deslocamento total do movimento em 3 ou 2 fases de aceleração constante.
+É utilizado a equação x para o cálculo da velocidade pico
+
+\begin{equation}
+    \label{eq:v_p}
+    v_p = \sqrt{\frac{(v_i^2+v_f^2)}{2}+acc*des_{tot}}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_acc}
+    des_{segment} = \frac{(v_f^2-v_i^2)}{(2*acc_{segment})}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_no_acc}
+    des_{middle} = des_{total}-(des_{up}+des_{down})
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_acc}
+    dt_{segment} = \frac{(v_f-v_i)}{acc_{segment}}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_no_acc}
+    dt_d = \frac{des_d}{v_d}
+\end{equation}
+
+\begin{equation}
+    \label{eq:delta_vel}
+    \Delta vel = v_f-v_i
+\end{equation}
+
+\begin{equation}
+    \label{eq:acumulator_function}
+    \begin{split}
+        v_{0} &= init_{value} + v_{0} \\
+        v_k &= v_k+v_{k-1}
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \label{eq:N_steps}
+    N_{steps} = \lceil\frac{\Delta t_i}{\Delta t_{step_{size}}}-1\rceil
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_interpol_last_step}
+    \Delta t_{last_{step}}= \Delta t_i - \Delta t_{step_{size}}*N_{steps} 
+\end{equation}
+
+\begin{equation}
+    \label{eq:delta_des_interpol}
+    \Delta des_i = \Delta v_i*\Delta t_i+ \frac{acc_{segment}*\Delta t_i^2}{2} 
+\end{equation}
+
+
+**Matrizes de exemplo**
+
+A partir da comparação da velocidade pico com a velocidade desejada pelo *feedrate*.
+Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
+que são calculadas pelas equações x,x e x
+Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento
+que são calculadas a partir das equações x e x.
+
+Como resultado da função, obtemos uma nova matriz esta contendo informações
+sobre o a variação da posição, do tempo, da velocidade e sobre a aceleração e direção de deslocamento no ponto.
+
+A partir dessa matriz, utilizamos a função de interpolação para dividir cada intervalo dessa matriz em intervalos menores
+baseados em uma configuração de passo de interpolação, no caso baseado em passos de tempo.
+Assim criando-se uma nova matriz dos dados interpolados.
+
+A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
+Obtemos uma matriz de posições, velocidades e tempo.
+
 \subsection{Interpolação}
 
 \section{Runge Kutta}
+
+
+
+% s(:,1) = s0;
+    
+%     A = A_model;
+%     B = B_model;
+%     N = length(t)-1;
+%     for i=1:N
+%         dt(i) = t(i+1)-t(i);
+%         uhalf = u_t_interpolator(u(:,i),u(:,i+1),dt(i),dt(i)/2);
+
+%         k1(:,i) = dynamic_model(s(:,i),u(:,i),A,B);
+%         k2(:,i) = dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf,A,B);
+%         k3(:,i) = dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf,A,B);
+%         k4(:,i) = dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1),A,B);
+
+%         avg_dot = (k1(:,i) + 2*k2(:,i) + 2*k3(:,i) + k4(:,i))/6;
+%         s(:,i+1) = s(:,i) + dt(i)*avg_dot;
+%     end
+
+
+Para o calculo da estimativa da respota do sistema, utilizamos a função Runge Kutta
+Primeiramente calculamos os valores de k1,k2,k3 e k4, calculamos a média da derivada do vetor de variaveis
+e por fim o calculo do vetor x.
 
 \section{Função fmincon}
 Como o modelo matemático a ser otimizado é multivariável e 
@@ -58,5 +218,136 @@ calculados e Dmex e Dmey os vetores de deslocamento desejados,
 ou seja, a trajetória requerida para a impressão.
 
 \subsection{Restrições lineares}
+As matrizes de upper bound e lowerbound foram construidas com as seguites considerações:
+
+
+% N = length(x(5,:));
+% base = ones(1,N);
+
+% lb(1,:) = base*min_x;
+% lb(2,:) = base*min_y;
+% lb(3,:) = base*min_x; % des_ux
+% lb(4,:) = base*min_y; % vel_ux
+% lb(5,:) = base*-0.0002;
+
+% ub(1,:) = base*max_x;
+% ub(2,:) = base*max_y;
+% ub(3,:) = base*max_x; 
+% ub(4,:) = base*max_y; 
+% ub(5,:) = (x(5,:)+0.0002)*1.2;
+
+**considerações**
+
 \subsection{Restrições não lineares}
+Como restrições não lineares foi implementada uma função que compara
+o resultado do Runge Kutta com o vetor posição da fmincon.
+
+
+% t = x(5,:);
+
+% des_x = x(1,:);
+% des_y = x(2,:);
+% vel_x(1) = 0;
+% vel_y(1) = 0;
+% acc_x(1) = 0;
+% acc_y(1) = 0;
+
+% des_xb = x(3,:);
+% des_yb = x(4,:);
+% vel_xb(1) = 0;
+% vel_yb(1) = 0;
+% acc_xb(1) = 0;
+% acc_yb(1) = 0;
+
+% %dv = des/dt; da = dv/dt ; 
+% %des = vi*t+at^2/2; a = 2*(des/t-vi)/t
+% % Vf^2-Vi^2 = 2ades
+
+% ceq=[des_x(1),des_y(1),t(1), des_xb(1), des_yb(1)];    
+% c=[];
+
+% for i = 1 : (length(t)-1)
+%     dt = t(i+1)-t(i);
+    
+%     delta_x = (des_x(i+1)-des_x(i));
+%     delta_y = (des_y(i+1)-des_y(i));
+    
+%     acc_x(i+1) = 2*((delta_x/dt)-vel_x(i))/dt; 
+%     acc_y(i+1) = 2*((delta_y/dt)-vel_y(i))/dt;
+%     vel_x(i+1) = vel_x(i)+acc_x(i+1)*dt;
+%     vel_y(i+1) = vel_y(i)+acc_y(i+1)*dt;
+
+%     delta_xb = (des_xb(i+1)-des_xb(i));
+%     delta_yb = (des_yb(i+1)-des_yb(i));
+    
+%     acc_xb(i+1) = 2*((delta_xb/dt)-vel_xb(i))/dt;
+%     acc_yb(i+1) = 2*((delta_yb/dt)-vel_yb(i))/dt;
+%     vel_xb(i+1) = vel_xb(i)+acc_xb(i+1)*dt;
+%     vel_yb(i+1) = vel_yb(i)+acc_yb(i+1)*dt;
+
+%     AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
+%     AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
+    
+%     c = [c max_acc-AccelXb max_acc-AccelYb];
+    
+%     x_i = [des_x(i);vel_x(i);des_y(i);vel_y(i)];
+%     u_i = [des_xb(i);vel_xb(i);des_yb(i);vel_yb(i)];
+    
+%     f_i = A_model*x_i+B_model*u_i;
+    
+%     x_n = [des_x(i+1);vel_x(i+1);des_y(i+1);vel_y(i+1)];
+%     u_n = [des_xb(i+1);vel_xb(i+1);des_yb(i+1);vel_yb(i+1)];
+    
+%     f_n = A_model*x_n+B_model*u_n;
+    
+%     x_c =(x_i+x_n)/2+dt*(f_i-f_n)/8;
+%     u_c = (u_i+u_n)/2;
+    
+%     x_ca=-3*(x_i-x_n)/(2*dt)-(f_i+f_n)/4;
+    
+%     f_c = A_model*x_c+B_model*u_c;
+    
+%     delta = f_c-x_ca;
+%     ceq=[ceq delta'];
+% end
+
+
 \subsection{Cofiguração da Fmincon}
+Foi utilizado as seguintes configurações da função fmincon:
+
+**configurações**
+
+optimoptions(@fmincon, 'TolFun', 0.000000001, 'MaxIter', 100000, ...
+                       'MaxFunEvals', 700000, 'Display', 'iter', ...
+                       'DiffMinChange', 0.0001, 'Algorithm', 'interior-point', 'StepTolerance', 1e-12);
+
+adas
+
+
+Equações
+
+In line equations $x = 3$
+
+Full line equations
+
+$$y = x+3$$
+
+Referenceble equation
+
+\begin{equation}
+\label{eq:teste}
+x+1 = 6+7
+\end{equation}
+
+\begin{table}
+    \begin{center}
+    \caption{tabela de teste}
+    \label{tab:teste}
+    \begin{tabular}{c c c}
+        teste & teste2 & teste3 \\ \hline
+        1 & 2 & 3 \\
+        4 & 5 & x+1 \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+                       

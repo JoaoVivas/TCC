@@ -23,10 +23,7 @@ endstr=';-- END GCODE --';
 ReadFlag = 0;
 MoveFlag = 0;
 while ischar(tline)
-    % Store line in variable Line
     Line=tline;
-    % Failsafe #1. Check for END gcode.
-    % Failsafe #2. Avoid comment line.
     if strcmp(Line,'')
         tline = fgetl(fid);
         Line = tline;
