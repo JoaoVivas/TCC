@@ -80,6 +80,20 @@ desacelerações desnecessárias, apesar de ser necessário um
 pré-processamento desses pontos que introduzem um custo 
 computacional maior (YU et al. 2020) \cite{yu20}.
 
+
+Para a construção da curva de velocidade trapezoidal a partir da matriz de posições
+e *feedrate* é necessário o calculo das direções dos movimentos a serem realizados.
+
+As direções são representadas por vetores unitários calculados a partir
+do vetor deslocamento dividido pelo mesmo vetor normalizado. Sendo o vetor deslocamento
+obtido pela diferença entre dois vetores de posição sequenciais.
+
+Essas direções são utilizadas para o cálculo das velocidades pelo *look ahead*,
+considerando os valores de desvio de junta como  0.1 e aceleração maxima de $5000 mm/s^2$
+
+Calculamos então a velocidade de junção baseada no angulo das direções do movimento e
+nos parâmetros da aceleração máxima e desvio máximo de junção.
+
 Velocidade de cruzamento
 
 equações
@@ -89,7 +103,30 @@ Trapezoidal, S shape, etc
 
 equações
 
-\section{Controle e Otimização}
+
+A partir dessa matriz de posições e, agora também velocidades,
+utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
+
+Essa função separa o deslocamento total do movimento em 3 ou 2 fases de aceleração constante.
+É utilizado a equação x para o cálculo da velocidade pico
+
+A partir da comparação da velocidade pico com a velocidade desejada pelo *feedrate*.
+Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
+que são calculadas pelas equações x,x e x
+Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento
+que são calculadas a partir das equações x e x.
+
+Como resultado da função, obtemos uma nova matriz esta contendo informações
+sobre o a variação da posição, do tempo, da velocidade e sobre a aceleração e direção de deslocamento no ponto.
+
+A partir dessa matriz, utilizamos a função de interpolação para dividir cada intervalo dessa matriz em intervalos menores
+baseados em uma configuração de passo de interpolação, no caso baseado em passos de tempo.
+Assim criando-se uma nova matriz dos dados interpolados.
+
+A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
+Obtemos uma matriz de posições, velocidades e tempo.
+
+\section{Modelagem e Controle}
 
 texto
 
@@ -97,6 +134,18 @@ texto
 texto
 
 equações
+
+\subsection{Modelagem dinâmica impressora 3D}
+
+Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
+é considerado que os eixos são completamente independentes, 
+a flexibilidade da correia é aproximada utilizando um conjunto 
+mola amortecedor e a transmissão de movimento e torque dos 
+motores é considerada como ideal e não será abordada.
+Assim duas posições de estudo surgem para cada eixo, uma delas 
+representa a posição ideal e desejada pelo usuário (X1) e a 
+segunda é a posição real considerando as forças inerciais e a 
+flexibilidade introduzida pela correia (X2) como na Figura 4.
 
 \subsection{Integradores numéricos}
 
@@ -119,10 +168,9 @@ antes que ele aconteça (RAMANI et al. 2020; DUAN et al. 2018) || \cite{ramani20
 
 texto
 
-\subsection{Objective Function Otimization}
-texto
+\subsection{Feedback}
 
-\section{Aplicações de Controle Impressora 3D}
+\subsection{Model Predictive Control}
 
 \subsection{Input Shaper}
 Conhecendo a trajetória desejada e conhecendo características 
@@ -146,3 +194,28 @@ precisão.
 texo
 \subsection{Robust Filter}
 texto
+
+\subsection{Objective Function Otimization}
+texto
+
+\section{Matlab}
+
+\subsection{fmincon}
+
+Como o modelo matemático a ser otimizado é multivariável e 
+possuindo restrições não-lineares, a função FMINCON do ambiente 
+do MATLAB é utilizada para otimizar as variações de velocidade 
+de forma a diminuir o erro de trajetória associado às 
+flexibilidades do sistema que causam perturbações e vibrações 
+indesejadas.
+É uma função baseada em gradientes que busca por todos os 
+mínimos locais de uma região que satisfaz outras restrições 
+estipuladas \cite{albaghdadi21}.
+Ela utiliza um conjunto de restrições superiores e inferiores 
+para cada ponto e otimiza a função considerando as restrições 
+estabelecidas pela função não linear, utilizando as equações de 
+movimento para encontrar a resolução da EDO de maneira e 
+otimizar os parâmetros utilizando o algoritmo sqp, com o 
+objetivo de minimizar a seguinte função:
+
+
