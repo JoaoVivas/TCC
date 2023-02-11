@@ -17,24 +17,43 @@ básico que unia essas tecnologias e assim o termo manufatura
 aditiva foi apresentado e adotado pela American Society for 
 Testing and Materials (ASTM) \citeauthor{gibson15} (\citeyear{gibson15}).
 
-Incorpar com exemplos de manufatura aditiva
+Apesar da manufatura aditiva ter sido criada a mais de 30 anos, apenas
+a partir de 2009, quando a última patente mais relevante de *Fused Deposition Modeling* (FDM)
+expirou. Com isso, vários entusiastas começaram a desenvolver essa tecnologia de uma
+maneira "caseira", com o forte movimento RepRap. Por conta dessa característica
+"caseira" e um senso de comunidade, os desenvolvimentos em sua maioria eram
+de caráter *Open Source* e com uma mentalidade de acessibilizar essa tecnologia para as pessoas.
+Com os avanços tecnologicos feitos pela comunidade, empresas, pessoas e a mídia começaram
+a se interessar cada vez mais, aumentando a popularidade das impressoras 3D e por consequência
+trazendo muita atenção para a manufatura aditiva, que a partir dai, mais pesquisas, mais
+empresas se interessavam em desenvolver esse tipo de tecnologia, não somente FDM \cite{attaran17}.
 
-\begin{figure}[!htb]
-    \centering
-    \caption{teste}
-    \includegraphics[scale=0.5]{Runge_kutta_comando_base_0001.jpg}
-    {\footnotesize Fonte: Elaborada pelo autor.}
-    \label{fig:label}
-\end{figure}
+Atualmente, existe uma grande variedade de tecnologias e processos de manufatura aditiva.
+Estes variam na maneira com que depositam o material, nos principios físicos que utilizam e nos materias
+que podem ser utilizados. Como mencionado anteriormente, um dos métodos de manufatura aditiva mais populares
+é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade
+como as tecnologias baseadas na cura seletiva de resinas, *stereolithography* (SLA) e *Masked stereolithography Apparatus* (MSLA),
+alem de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo
+*selective laser melting* (SLM) e *selective laser
+sintering* (SLS) \cite{bikas16}.  
 
-\ref{fig:label} figura
+% \begin{figure}[!htb]
+%     \centering
+%     \caption{teste}
+%     \includegraphics[scale=0.5]{Runge_kutta_comando_base_0001.jpg}
+%     {\footnotesize Fonte: Elaborada pelo autor.}
+%     \label{fig:label}
+% \end{figure}
 
-\subsection{Fused Deposition Modeling}
+% \ref{fig:label} figura
+
+\section{Fused Deposition Modeling}
 Fused Deposition Modeling (FDM) ou Fused Filament Fabrication 
-(FFF) é uma tecnologia categorizada como MA onde um filamento 
-de material é forçado dentro de uma câmara através, geralmente,
-de rolos dentados onde em uma região específica esse material 
-é liquefeito. Por conta da pressão criada pelo filamento 
+(FFF) é uma das tecnologias MA mais populares como mencionado anteriormente.
+Ela se consiste por depositar material através de um processo 
+onde um filamento de material é forçado dentro de uma câmara através,
+geralmente, de rolos dentados onde em uma região específica esse 
+material é liquefeito. Por conta da pressão criada pelo filamento 
 adentrando a câmara, ainda no estado sólido como um pistão, 
 o material liquefeito é extrudado através de um bocal, 
 comumente fabricado de bronze. Então, o filamento liquefeito é 
@@ -52,8 +71,61 @@ de 1994 a 2020. É apresentado um grande salto no número de
 artigos publicados no tema em anos recentes (2015 a 2018) 
 (Figura 1), com 56\% dos temas trabalhados em torno da 
 otimização de parâmetros de impressão, acompanhado de 17\% de 
-trabalhos relacionados a aplicações utilizando o processo FDM 
+trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas x\%
+são relacionados a outros temas, incluindo avanços tecnologicos relacionados
+a melhorias de hardware e software desses dispositivos.
 (Figura 2).
+
+Podemos separar, de maneira simplificada, a porção de software de impressoras 3D
+FDM em três principais etapas: fatiamento (slicing), geração de comando e controle.
+A etapa de fatiamento involve a topologia e a criação de instruções a partir do modelo,
+é nessa fase onde se decide a sequência de movimentos e outros eventos.
+Já na etapa de geração de comando, as instruções criadas pelo fatiador (slicer) na etapa anterior
+são interpretadas e os comandos detalhados são gerados, por exemplo as curvas de velocidade.
+Esses comandos são utilizados para movimentar os motores e outros equipamentos da impressora.
+Na etapa de controle, uma etapa relativamente nova nas impressoras 3D mais acessíveis, 
+tecnicas de controle são utilizadas para se diminuir vibrações e variações indesejadas em quaisquer
+parâmetros controlados, como a temperatura do bico. Um dos grandes avanços nessa etapa
+foi a implementação da técnica de Input Shaping por um firmware Open Source de impressora 3D chamado Klipper.
+Após a inclusão dessa etapa, principalmente no controle dinâmico da impressora, as capacidades
+de velocidades e qualidade chegaram a outro patamar se comparados a impressoras que não implementam essa etapa \cite{klipperdoc}.
+
+\subsection{5 Section S curve}
+
+\subsection{Feedforward}
+Dentre os métodos de controle em aplicações FDM o Feedforward 
+é o mais eficiênte dada as limitações de custo em impressoras 
+3D comuns e é capaz de ter um impacto maior em sistemas 
+conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
+antes que ele aconteça (RAMANI et al. 2020; DUAN et al. 2018) || \cite{ramani20}\cite{duan18}.
+
+texto
+
+\subsubsection{Input Shaper}
+Conhecendo a trajetória desejada e conhecendo características 
+do sistema é possível computar os comandos fornecidos para 
+calcular uma série de comandos, levando em consideração as 
+características do sistema para que o comando de referência 
+seja modificado de forma à trajetória final ser o mais próximo 
+possível do comando de referência. Entretanto, ao invés de 
+computar todo o comando de referência, é possível obter um 
+comando modificado em tempo real através de um filtro. 
+Uma das abordagens desse tipo de filtro de comando é o 
+Input Shaper, onde variados Shapers são construídos levando 
+em consideração diferentes objetivos e restrições 
+\cite{singhose97}.
+Essa abordagem vem sendo utilizada na comunidade Maker depois 
+da patente ter perdido o vigor, e tem aprimorado a área como
+um todo, empurrando os limites anteriores de velocidade e 
+precisão.
+
+\subsubsection{B-spline}
+texo
+\subsubsection{Robust Filter}
+texto
+
+
+
 
 \section{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
@@ -78,8 +150,7 @@ O algoritmo Look Ahead procura manter o máximo de velocidade
 possível entre movimentos distintos, evitando acelerações e 
 desacelerações desnecessárias, apesar de ser necessário um 
 pré-processamento desses pontos que introduzem um custo 
-computacional maior (YU et al. 2020) \cite{yu20}.
-
+computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 
 Para a construção da curva de velocidade trapezoidal a partir da matriz de posições
 e *feedrate* é necessário o calculo das direções dos movimentos a serem realizados.
@@ -98,7 +169,8 @@ Velocidade de cruzamento
 
 equações
 
-\subsection{Curvas de velocidade}
+
+\subsection{Curvas de velocidade trapezoidal}
 Trapezoidal, S shape, etc
 
 equações
@@ -126,6 +198,9 @@ Assim criando-se uma nova matriz dos dados interpolados.
 A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
 Obtemos uma matriz de posições, velocidades e tempo.
 
+
+
+
 \section{Modelagem e Controle}
 
 texto
@@ -151,51 +226,13 @@ flexibilidade introduzida pela correia (X2) como na Figura 4.
 
 texto
 
-\subsubsection{Euller}
-texto equações
-
 
 \subsubsection{Runge Kutta}
 texto
 equações
 
-\subsection{Feedforward}
-Dentre os métodos de controle em aplicações FDM o Feedforward 
-é o mais eficiênte dada as limitações de custo em impressoras 
-3D comuns e é capaz de ter um impacto maior em sistemas 
-conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
-antes que ele aconteça (RAMANI et al. 2020; DUAN et al. 2018) || \cite{ramani20}\cite{duan18}.
 
-texto
-
-\subsection{Feedback}
-
-\subsection{Model Predictive Control}
-
-\subsection{Input Shaper}
-Conhecendo a trajetória desejada e conhecendo características 
-do sistema é possível computar os comandos fornecidos para 
-calcular uma série de comandos, levando em consideração as 
-características do sistema para que o comando de referência 
-seja modificado de forma à trajetória final ser o mais próximo 
-possível do comando de referência. Entretanto, ao invés de 
-computar todo o comando de referência, é possível obter um 
-comando modificado em tempo real através de um filtro. 
-Uma das abordagens desse tipo de filtro de comando é o 
-Input Shaper, onde variados Shapers são construídos levando 
-em consideração diferentes objetivos e restrições 
-\cite{singhose97}.
-Essa abordagem vem sendo utilizada na comunidade Maker depois 
-da patente ter perdido o vigor, e tem aprimorado a área como
-um todo, empurrando os limites anteriores de velocidade e 
-precisão.
-
-\subsection{B-spline}
-texo
-\subsection{Robust Filter}
-texto
-
-\subsection{Objective Function Otimization}
+\subsection{Objective Function Optimization}
 texto
 
 \section{Matlab}
