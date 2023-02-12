@@ -90,16 +90,25 @@ foi a implementação da técnica de Input Shaping por um firmware Open Source d
 Após a inclusão dessa etapa, principalmente no controle dinâmico da impressora, as capacidades
 de velocidades e qualidade chegaram a outro patamar se comparados a impressoras que não implementam essa etapa \cite{klipperdoc}.
 
-\subsection{5 Section S curve}
+% \subsection{Five-phase S-curve Velocity Model}
 
 \subsection{Feedforward}
 Dentre os métodos de controle em aplicações FDM o Feedforward 
 é o mais eficiênte dada as limitações de custo em impressoras 
 3D comuns e é capaz de ter um impacto maior em sistemas 
 conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
-antes que ele aconteça \cite{ramani20,duan18}.
-
-texto
+antes que ele aconteça. O método de feedback é mais eficiente em
+diminuir o impacto de excitações externas ou desconhecidas,
+entratanto não consegue prever os efeitos do sistema, se encaixando
+melhor em aplicações de usinagem utilizando CNCs (Computer Numerical Control),
+onde o valor dos equipamentos é maior e as forças envolvidas no corte
+influênciam mais do que as vibrações do próprio sistema.
+Já no caso das impressoras, quase 100\% dos efeitos é causado pelo próprio
+sistema. As principais limitações da aplicação de técnicas Feedforward
+em impressoras 3D são a dificuldade de montar um modelo representativo,
+a exigência computacional elevada e por fim a necessidade da simulação
+se extender do incio ao fim, pela dependência de se basear no estado 
+incial da impressão \cite{ramani20,duan18}.
 
 \subsubsection{Input Shaper}
 Conhecendo a trajetória desejada e conhecendo características 
@@ -114,18 +123,69 @@ Uma das abordagens desse tipo de filtro de comando é o
 Input Shaper, onde variados Shapers são construídos levando 
 em consideração diferentes objetivos e restrições 
 \cite{singhose97}.
-Essa abordagem vem sendo utilizada na comunidade Maker depois 
-da patente ter perdido o vigor, e tem aprimorado a área como
-um todo, empurrando os limites anteriores de velocidade e 
-precisão.
+Essa abordagem vem sendo explorada na comunidade Maker a partir de 2017 
+quando a última patente desse método expirou, e tem aprimorado a área como
+um todo, empurrando os limites anteriores de velocidade e precisão,
+sendo popularizada pelo Klipper \cite{klipperkinematic}.
 
-\subsubsection{B-spline}
-texo
-\subsubsection{Robust Filter}
-texto
+\subsubsection{filtered basis function (FBF)}
+The FBF method assumes that the desired trajectory to be tracked
+is fully known, and that the control trajectory can be expressed as
+a linear combination of basis functions having unknown coeffi-
+cients. The basis functions are forward filtered using the modeled
+dynamics of the system and the coefficients selected to minimize
+the errors in tracking a given desired trajectory.
+
+\subsubsection{limited-preview filtered B-splines}
+A major problem faced by most of the advanced methods
+(e.g., [7,8,10,11,18]) is that they require full preview (i.e., full knowl-
+edge) of the entire desired trajectory, which presents significant
+computational challenges for online implementation when the de-
+sired trajectory has a large number of samples (i.e., long duration).
+Moreover, they are not applicable in certain practical situations
+where only subsets of the desired trajectory are known before-
+hand, as in most modern computer numerical controllers (CNCs)
+which calculate desired trajectories in small batches using a look-
+ahead feature [19]. Some work has been done on alleviating the
+requirement for full preview in certain advanced methods. For ex-
+ample, a limited-preview approximate solution to full-preview sta-
+ble inversion [7,8] is proposed in [9], and in [15] iterative learning
+control is incorporated into the method using B-spline decomposi-
+tion, to address model uncertainty. However, most of the advanced
+methods (whether with full or limited preview) ar
 
 
+\subsubsection{Robust Filtered Basis Functions}
 
+However, the FBF approach faces at least two practical chal-
+lenges. The first is that its computational cost becomes very
+high as the length (number of samples) in the motion trajectory
+increases. To overcome this challenge, a limited preview version
+of FBF, viz., limited preview filtered B-splines (LPFBS), was
+proposed by Duan et al. [11]. LPFBS was shown to significantly
+reduce the computational cost of the FBF approach without
+significantly sacrificing its tracking performance, allowing it to
+be implemented successfully on a desktop 3-D printer [11]. A
+second challenge is that, being a purely feedforward technique,
+the tracking accuracy of the FBF approach degrades in the
+presence of inaccuracies in the plant model or uncertainty in
+the plant dynamics [11].
+In the presence of uncertainty in the plant dynamics, the
+tracking accuracy of feedforward controllers such as FBF can be
+
+solution, which facilitates LPFBS, is needed.
+Hence, this article (and its preliminary version [28]) makes
+the following contributions to the literature.
+1) It proposes a robust FBF approach that retains the ele-
+gance of the least-squares solution of the standard FBF
+approach by using a robust filter instead of nominal plant
+dynamics to filter basis functions.
+2) It proposes the inverse of an optimal feedforward con-
+troller that minimizes an error cost function for known
+plant uncertainty as a robust filter for use in robust FBF.
+3) It demonstrates the effectiveness of the proposed robust
+FBF approach using simulation examples and experi-
+ments on a desktop 3-D printer with dynamic uncertainty.
 
 \section{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
@@ -133,10 +193,7 @@ atuadores, motores, dentre outros componentes de uma impressora.
 Ele recebe como base uma série de comandos que precisam ser 
 interpretados e interpolados. Esse processo é responsável pelo 
 controle de velocidade, aceleração dentre outras atividades que 
-variam no tempo. O desenvolvimento científico nesta área 
-aplicado a impressoras 3D FDM se deu em tempos recentes, 
-sendo sua aplicação majoritária relacionada às máquinas de 
-Controle Numérico Computadorizado (CNC).
+variam no tempo \cite{yu20}. 
 
 \subsection{Look ahead}
 No processo de impressão 3D são fornecidos para a impressora 
@@ -152,107 +209,87 @@ desacelerações desnecessárias, apesar de ser necessário um
 pré-processamento desses pontos que introduzem um custo 
 computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 
-Para a construção da curva de velocidade trapezoidal a partir da matriz de posições
-e *feedrate* é necessário o calculo das direções dos movimentos a serem realizados.
-
-As direções são representadas por vetores unitários calculados a partir
-do vetor deslocamento dividido pelo mesmo vetor normalizado. Sendo o vetor deslocamento
-obtido pela diferença entre dois vetores de posição sequenciais.
-
-Essas direções são utilizadas para o cálculo das velocidades pelo *look ahead*,
-considerando os valores de desvio de junta como  0.1 e aceleração maxima de $5000 mm/s^2$
-
-Calculamos então a velocidade de junção baseada no angulo das direções do movimento e
-nos parâmetros da aceleração máxima e desvio máximo de junção.
-
-Velocidade de cruzamento
-
-equações
-
-
 \subsection{Curvas de velocidade trapezoidal}
-Trapezoidal, S shape, etc
-
-equações
-
-
-A partir dessa matriz de posições e, agora também velocidades,
-utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
-
-Essa função separa o deslocamento total do movimento em 3 ou 2 fases de aceleração constante.
-É utilizado a equação x para o cálculo da velocidade pico
-
-A partir da comparação da velocidade pico com a velocidade desejada pelo *feedrate*.
-Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
-que são calculadas pelas equações x,x e x
-Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento
-que são calculadas a partir das equações x e x.
-
-Como resultado da função, obtemos uma nova matriz esta contendo informações
-sobre o a variação da posição, do tempo, da velocidade e sobre a aceleração e direção de deslocamento no ponto.
-
-A partir dessa matriz, utilizamos a função de interpolação para dividir cada intervalo dessa matriz em intervalos menores
-baseados em uma configuração de passo de interpolação, no caso baseado em passos de tempo.
-Assim criando-se uma nova matriz dos dados interpolados.
-
-A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
-Obtemos uma matriz de posições, velocidades e tempo.
-
-
-
-
-\section{Modelagem e Controle}
-
-texto
+As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
+de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades desejadas
+de cada movimento, enquanto o algorítmo de lookahead calcula as velocidades
+de junção entre os movimentos, portanto ainda se faz necessário planejar
+o comportamento da velocidade ao longo do tempo do trajeto entre a velocidade incial
+e final do movimento.
+Uma das maneiras mais simples para a criação dessa curva de velocidade é
+a criação de uma curva trapezoidal, onde podemos separar o setor em 3 segmentos
+de aceleração constante. Em um primeiro momento uma crescente de velocidade até
+a velocidade desejada, seguido de um segmento de velocidade constante e por fim
+um segmento de desaceleração constante até a velocidade final.
+Alguns ajustes são feitos para as diferentes condições de velocidade inicial, final e
+velocidade máxima atingida com uma determinada aceleração máxima, que pode
+fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
 
 \subsection{Espaço de Estados}
-texto
 
-equações
+A maioria dos sistemas dinâmicos podem ser escritos através de uma formulação
+chamada de espaço de estados, que tem como objetivo expressar modelos 
+de equações diferencias parciais (EDP) ou ordinárias (EDO) de ordem superior
+como um conjunto de EDPs ou EDOs de primeira ordem.
+Essa formulação é construida a partir de um principio de autoregressão
+das equações. Na equação \ref{eq:edo_ex} podemos observar uma EDO de segunda ordem representando
+um sistema massa mola simples,
+logo abaixo (\ref{eq:espaco_de_estados_ex}) a mesmsa equação representada na formulação
+de espaço de estados \cite{hamilton94}.
 
-\subsection{Modelagem dinâmica impressora 3D}
+\begin{equation}
+    \label{eq:edo_ex}
+    m \ddot x+c \dot x+kx = f(t)
+\end{equation}
 
-Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
-é considerado que os eixos são completamente independentes, 
-a flexibilidade da correia é aproximada utilizando um conjunto 
-mola amortecedor e a transmissão de movimento e torque dos 
-motores é considerada como ideal e não será abordada.
-Assim duas posições de estudo surgem para cada eixo, uma delas 
-representa a posição ideal e desejada pelo usuário (X1) e a 
-segunda é a posição real considerando as forças inerciais e a 
-flexibilidade introduzida pela correia (X2) como na Figura 4.
-
-\subsection{Integradores numéricos}
-
-texto
-
+\begin{equation}
+    \label{eq:espaco_de_estados_ex}
+    \begin{bmatrix}
+        \dot x \\
+        \ddot x
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 & 1 \\
+        k/m & c/m
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        \dot x
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+        0 \\
+        1
+    \end{bmatrix}
+    f(t)
+\end{equation}
 
 \subsubsection{Runge Kutta}
 texto
 equações
 
+he solution of the initial value problem for the classical Runge-Kutta algo-
+rithms is based on the condition that they are equivalent to a Taylor series approxi-
+mation of a specified order. For problems that are characterized by solutions that are
+of an oscillatory nature, the coefficients of a Runge-Kutta algorithm can be selected
+such that this particular problem is solved without truncation errors. For oscillatory
+problems with complex eigenvalues that possess small real components, these methods
+can be more efficient than the classical Runge-Kutta methods. A similar approach for
+modifying the finite difference methods of St6rmer-Cowell has been developed by
+Stiefel and Bettis [1969], and for Adams-Bashforth-Moulton methods by Bettis
+[1969, 1970]. This paper presents modified Runge-Kutta algorithms of 3 stages, 4
+stages, and an embedded 3 stage-4 stage pair
+
 
 \subsection{Objective Function Optimization}
 texto
 
-\section{Matlab}
-
-\subsection{fmincon}
-
-Como o modelo matemático a ser otimizado é multivariável e 
-possuindo restrições não-lineares, a função FMINCON do ambiente 
-do MATLAB é utilizada para otimizar as variações de velocidade 
-de forma a diminuir o erro de trajetória associado às 
-flexibilidades do sistema que causam perturbações e vibrações 
-indesejadas.
-É uma função baseada em gradientes que busca por todos os 
-mínimos locais de uma região que satisfaz outras restrições 
-estipuladas \cite{albaghdadi21}.
-Ela utiliza um conjunto de restrições superiores e inferiores 
-para cada ponto e otimiza a função considerando as restrições 
-estabelecidas pela função não linear, utilizando as equações de 
-movimento para encontrar a resolução da EDO de maneira e 
-otimizar os parâmetros utilizando o algoritmo sqp, com o 
-objetivo de minimizar a seguinte função:
+In a different perspective, design variables and optimization objective functions are important
+elements when performing optimization. Some studies consider the quality and number of design
+variables to be crucial during optimization which also include the determination of other sub-parameters
+such as defining constraints, bounds and initial values. The coherence and ability to determine each
+value depends on designer’s vision and abilities that would finally lead to the optimal results out of the
+optimization process.
 
 
