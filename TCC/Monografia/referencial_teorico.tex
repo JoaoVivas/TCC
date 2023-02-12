@@ -37,15 +37,17 @@ alem de outras tecnologias menos acessíveis, mas com aplicações em diversas i
 *selective laser melting* (SLM) e *selective laser
 sintering* (SLS) \cite{bikas16}.  
 
-% \begin{figure}[!htb]
-%     \centering
-%     \caption{teste}
-%     \includegraphics[scale=0.5]{Runge_kutta_comando_base_0001.jpg}
-%     {\footnotesize Fonte: Elaborada pelo autor.}
-%     \label{fig:label}
-% \end{figure}
+\begin{figure}[!htb]
+    \begin{center}
+    \caption{teste}
+    \includegraphics[scale=0.6]{bikas15industries}
 
-% \ref{fig:label} figura
+    {\footnotesize Fonte: \citeauthor{bikas16}, \citeyear{bikas16}}
+    \label{fig:label}
+    \end{center}
+\end{figure}
+
+\ref{fig:label} figura
 
 \section{Fused Deposition Modeling}
 Fused Deposition Modeling (FDM) ou Fused Filament Fabrication 
@@ -75,6 +77,26 @@ trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas
 são relacionados a outros temas, incluindo avanços tecnologicos relacionados
 a melhorias de hardware e software desses dispositivos.
 (Figura 2).
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{vyan20npub}
+    
+    {\footnotesize Fonte: \citeauthor{vyavahare20}, \citeyear{vyavahare20}}
+    \label{fig:label2}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{vyan20oizzama}
+
+    {\footnotesize Fonte: \citeauthor{vyavahare20}, \citeyear{vyavahare20}}
+    \label{fig:label3}
+\end{figure}
+
+\ref{fig:label} figura
 
 Podemos separar, de maneira simplificada, a porção de software de impressoras 3D
 FDM em três principais etapas: fatiamento (slicing), geração de comando e controle.
@@ -123,10 +145,31 @@ Uma das abordagens desse tipo de filtro de comando é o
 Input Shaper, onde variados Shapers são construídos levando 
 em consideração diferentes objetivos e restrições 
 \cite{singhose97}.
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{inputshaperstepresponse1order}
+    \includegraphics[scale=0.5]{inputshaperstarcasepresponse}
+
+    {\footnotesize Fonte: \citeauthor{singhose97}, \citeyear{singhose97}}
+    \label{fig:label4}
+\end{figure}
+
 Essa abordagem vem sendo explorada na comunidade Maker a partir de 2017 
 quando a última patente desse método expirou, e tem aprimorado a área como
 um todo, empurrando os limites anteriores de velocidade e precisão,
 sendo popularizada pelo Klipper \cite{klipperkinematic}.
+
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{ringing-test}
+
+    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
+    \label{fig:label4}
+\end{figure}
 
 \subsubsection{filtered basis function (FBF)}
 The FBF method assumes that the desired trajectory to be tracked
@@ -135,6 +178,16 @@ a linear combination of basis functions having unknown coeffi-
 cients. The basis functions are forward filtered using the modeled
 dynamics of the system and the coefficients selected to minimize
 the errors in tracking a given desired trajectory.
+\cite{ramani17}
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{ramani17blockfbf}
+
+    {\footnotesize Fonte: \citeauthor{ramani17}, \citeyear{ramani17}}
+    \label{fig:label7}
+\end{figure}
 
 \subsubsection{limited-preview filtered B-splines}
 A major problem faced by most of the advanced methods
@@ -153,6 +206,7 @@ ble inversion [7,8] is proposed in [9], and in [15] iterative learning
 control is incorporated into the method using B-spline decomposi-
 tion, to address model uncertainty. However, most of the advanced
 methods (whether with full or limited preview) ar
+\cite{duan18}
 
 
 \subsubsection{Robust Filtered Basis Functions}
@@ -186,6 +240,17 @@ plant uncertainty as a robust filter for use in robust FBF.
 3) It demonstrates the effectiveness of the proposed robust
 FBF approach using simulation examples and experi-
 ments on a desktop 3-D printer with dynamic uncertainty.
+\cite{ramani20}
+
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{ramani20blockfbf}
+
+    {\footnotesize Fonte: \citeauthor{ramani20}, \citeyear{ramani20}}
+    \label{fig:label9}
+\end{figure}
 
 \section{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
@@ -209,6 +274,16 @@ desacelerações desnecessárias, apesar de ser necessário um
 pré-processamento desses pontos que introduzem um custo 
 computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{ramani20blockfbf}
+
+    {\footnotesize Fonte: \citeauthor{ramani20}, \citeyear{ramani20}}
+    \label{fig:label9}
+\end{figure}
+
 \subsection{Curvas de velocidade trapezoidal}
 As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
 de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades desejadas
@@ -225,9 +300,39 @@ Alguns ajustes são feitos para as diferentes condições de velocidade inicial,
 velocidade máxima atingida com uma determinada aceleração máxima, que pode
 fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
 
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.4]{lookaheadboth2}
+
+    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
+    \label{fig:label9}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.4]{lookaheaddir1}
+    \includegraphics[scale=0.4]{lookaheadtrap1}
+
+    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
+    \label{fig:label9}
+\end{figure}
+
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{trapezoidex}
+
+    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
+    \label{fig:label9}
+\end{figure}
+
+
 \subsection{Espaço de Estados}
 
-A maioria dos sistemas dinâmicos podem ser escritos através de uma formulação
+A maioria dos sistemas dinâmicos pode ser escritos através de uma formulação
 chamada de espaço de estados, que tem como objetivo expressar modelos 
 de equações diferencias parciais (EDP) ou ordinárias (EDO) de ordem superior
 como um conjunto de EDPs ou EDOs de primeira ordem.
@@ -265,31 +370,15 @@ de espaço de estados \cite{hamilton94}.
     f(t)
 \end{equation}
 
-\subsubsection{Runge Kutta}
-texto
-equações
-
-he solution of the initial value problem for the classical Runge-Kutta algo-
-rithms is based on the condition that they are equivalent to a Taylor series approxi-
-mation of a specified order. For problems that are characterized by solutions that are
-of an oscillatory nature, the coefficients of a Runge-Kutta algorithm can be selected
-such that this particular problem is solved without truncation errors. For oscillatory
-problems with complex eigenvalues that possess small real components, these methods
-can be more efficient than the classical Runge-Kutta methods. A similar approach for
-modifying the finite difference methods of St6rmer-Cowell has been developed by
-Stiefel and Bettis [1969], and for Adams-Bashforth-Moulton methods by Bettis
-[1969, 1970]. This paper presents modified Runge-Kutta algorithms of 3 stages, 4
-stages, and an embedded 3 stage-4 stage pair
-
+\subsubsection{Runge-Kutta}
+Runge Kutta é um algoritimo de integração numérica baseada na série de Tailor onde,
+nas formulações explicitas são calculados 4 coeficientes que são utilizados para estimar
+o próximo ponto, assim caracterizando um algoritmo iterativo de valor inicial \cite{bettis79,dormand80}.
 
 \subsection{Objective Function Optimization}
-texto
-
-In a different perspective, design variables and optimization objective functions are important
-elements when performing optimization. Some studies consider the quality and number of design
-variables to be crucial during optimization which also include the determination of other sub-parameters
-such as defining constraints, bounds and initial values. The coherence and ability to determine each
-value depends on designer’s vision and abilities that would finally lead to the optimal results out of the
-optimization process.
-
+Funções objetivo de otimização são elementos importantes na execução de algoritimos
+de otimização. Alguns estudos apontam que a qualidade e o número de variáveis de
+projeto cruciais para o resultado da otimização, além disso outros sub-parâmetros
+também são relevantes como restrições, limites e valores iniciais. A coerência entre
+estes fatores depende abilidade e de uma visão abrangente de seu criador \cite{albaghdadi21}.
 
