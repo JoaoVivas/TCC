@@ -180,12 +180,12 @@ sendo popularizada pelo Klipper \cite{klipperkinematic}.
 \end{figure}
 
 \subsubsection{filtered basis function (FBF)}
-The FBF method assumes that the desired trajectory to be tracked
-is fully known, and that the control trajectory can be expressed as
-a linear combination of basis functions having unknown coeffi-
-cients. The basis functions are forward filtered using the modeled
-dynamics of the system and the coefficients selected to minimize
-the errors in tracking a given desired trajectory.
+O método FBF necessita que a trajetória a ser rastreada seja totalmente
+conhecida e que a trajetória controlada possa ser expressa como
+uma combinação linear de funções base possuindo coeficientes desconhecidos.
+As funções base são utilizadas em um controle feedforward utilizando
+o modelo dinâmico do sistema e selecionando os coeficientes de maneira a
+minimizar os erros dada uma trajetória desejada.
 \cite{ramani17}
 
 \begin{figure}[!htb]
@@ -198,24 +198,29 @@ the errors in tracking a given desired trajectory.
 \end{figure}
 
 \subsubsection{limited-preview filtered B-splines}
-A major problem faced by most of the advanced methods
-(e.g., [7,8,10,11,18]) is that they require full preview (i.e., full knowl-
-edge) of the entire desired trajectory, which presents significant
-computational challenges for online implementation when the de-
-sired trajectory has a large number of samples (i.e., long duration).
-Moreover, they are not applicable in certain practical situations
-where only subsets of the desired trajectory are known before-
-hand, as in most modern computer numerical controllers (CNCs)
-which calculate desired trajectories in small batches using a look-
-ahead feature [19]. Some work has been done on alleviating the
-requirement for full preview in certain advanced methods. For ex-
-ample, a limited-preview approximate solution to full-preview sta-
-ble inversion [7,8] is proposed in [9], and in [15] iterative learning
-control is incorporated into the method using B-spline decomposi-
-tion, to address model uncertainty. However, most of the advanced
-methods (whether with full or limited preview) ar
-\cite{duan18}
+Uma das maiores dificuldades que os métodos avançados para o
+controle feedforward de trajetórias é a necesidade de se conhecer
+completamente a trajetória desejada, o que implica em um grande custo
+computacional, principalmente em situações onde são necessárias uma
+grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução
+e casos de longa duração.
+O limited-preview filtered B-splines divide a trajetória desejada em subgrupos
+com um número menor de amostras e utiliza um algorítmo de *receiding horizon* para
+calcular recursivamente os coeficientes da função B-spline que minimizam os erros
+de trajetória \cite{duan18}.
 
+A partir dessa otimização da divisão da trajetória em subgrupos, esse método
+conseguiu ser testado utilizando uma impressora 3D de verdade com modelos simples.
+Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
+
+\begin{figure}[!htb]
+    \centering
+    \caption{teste}
+    \includegraphics[scale=0.5]{duancubo}
+
+    {\footnotesize Fonte: \citeauthor{duan18}, \citeyear{duan18}}
+    \label{fig:duancubo}
+\end{figure}
 
 \subsubsection{Robust Filtered Basis Functions}
 
