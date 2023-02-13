@@ -223,38 +223,16 @@ Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
 \end{figure}
 
 \subsubsection{Robust Filtered Basis Functions}
-
-However, the FBF approach faces at least two practical chal-
-lenges. The first is that its computational cost becomes very
-high as the length (number of samples) in the motion trajectory
-increases. To overcome this challenge, a limited preview version
-of FBF, viz., limited preview filtered B-splines (LPFBS), was
-proposed by Duan et al. [11]. LPFBS was shown to significantly
-reduce the computational cost of the FBF approach without
-significantly sacrificing its tracking performance, allowing it to
-be implemented successfully on a desktop 3-D printer [11]. A
-second challenge is that, being a purely feedforward technique,
-the tracking accuracy of the FBF approach degrades in the
-presence of inaccuracies in the plant model or uncertainty in
-the plant dynamics [11].
-In the presence of uncertainty in the plant dynamics, the
-tracking accuracy of feedforward controllers such as FBF can be
-
-solution, which facilitates LPFBS, is needed.
-Hence, this article (and its preliminary version [28]) makes
-the following contributions to the literature.
-1) It proposes a robust FBF approach that retains the ele-
-gance of the least-squares solution of the standard FBF
-approach by using a robust filter instead of nominal plant
-dynamics to filter basis functions.
-2) It proposes the inverse of an optimal feedforward con-
-troller that minimizes an error cost function for known
-plant uncertainty as a robust filter for use in robust FBF.
-3) It demonstrates the effectiveness of the proposed robust
-FBF approach using simulation examples and experi-
-ments on a desktop 3-D printer with dynamic uncertainty.
-\cite{ramani20}
-
+Uma vulnerabilidade de algorítimos feedforward,
+especialmente a abordagem FBF e LPFBF é degradação
+da precisão a partir de inprecisões no modelo e
+pertubações na dinâmica da impressora.
+Levando isso em consideração \citeauthor{ramani20} (\citeyear{ramani20})
+propos um algoritimo construido com base no LPFBF.
+Nesse metodo é utilizado uma função de custo a ser minimizads
+de maneira a construir a dinâmica do modelo para ser consumida
+pelo algorítimo da LPFBF de maneira a ser mais robusta e resiliente
+a imprecisões e pertubações.
 
 \begin{figure}[!htb]
     \centering
