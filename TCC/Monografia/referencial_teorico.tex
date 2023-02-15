@@ -34,20 +34,19 @@ que podem ser utilizados. Como mencionado anteriormente, um dos métodos de manu
 é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade
 como as tecnologias baseadas na cura seletiva de resinas, *stereolithography* (SLA) e *Masked stereolithography Apparatus* (MSLA),
 alem de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo
-*selective laser melting* (SLM) e *selective laser
-sintering* (SLS) \cite{bikas16}.  
+*selective laser melting* (SLM) e *selective laser sintering* (SLS) \cite{bikas16}.
+Na figura \ref{fig:MA_industrias} podemos observar a distruibuição do uso de 
+tecnologias MA por tipo de industria.   
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{teste}
+    \caption{Distribuição de uso de MA nas industrias}
     \includegraphics[scale=0.6]{bikas15industries}
 
     {\footnotesize Fonte: \citeauthor{bikas16}, \citeyear{bikas16}}
-    \label{fig:label}
+    \label{fig:MA_industrias}
     \end{center}
 \end{figure}
-
-\ref{fig:label} figura
 
 \section{Fused Deposition Modeling}
 Fused Deposition Modeling (FDM) ou Fused Filament Fabrication 
@@ -71,32 +70,29 @@ características sobre o desenvolvimento científico sobre
 FDM ao longo dos anos, tendo como base 211 artigos diferentes 
 de 1994 a 2020. É apresentado um grande salto no número de 
 artigos publicados no tema em anos recentes (2015 a 2018) 
-(Figura 1), com 56\% dos temas trabalhados em torno da 
+(figura \ref{fig:numero_artigos}), com 56\% dos temas trabalhados em torno da 
 otimização de parâmetros de impressão, acompanhado de 17\% de 
-trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas x\%
-são relacionados a outros temas, incluindo avanços tecnologicos relacionados
-a melhorias de hardware e software desses dispositivos.
-(Figura 2).
+trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas 12\%
+são relacionados a avanços tecnologicos relacionados como observado na figura \ref{fig:distr_artigos}.
+
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Número de aritos publicados sobre FDM ao longo do tempo}
     \includegraphics[scale=0.5]{vyan20npub}
     
     {\footnotesize Fonte: \citeauthor{vyavahare20}, \citeyear{vyavahare20}}
-    \label{fig:label2}
+    \label{fig:numero_artigos}
 \end{figure}
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
-    \includegraphics[scale=0.5]{vyan20oizzama}
+    \caption{Distribuição das pesquisas sobre FDM}
+    \includegraphics[scale=0.6]{vyan20oizzama}
 
     {\footnotesize Fonte: \citeauthor{vyavahare20}, \citeyear{vyavahare20}}
-    \label{fig:label3}
+    \label{fig:distr_artigos}
 \end{figure}
-
-\ref{fig:label} figura
 
 Podemos separar, de maneira simplificada, a porção de software de impressoras 3D
 FDM em três principais etapas: fatiamento (slicing), geração de comando e controle.
@@ -108,17 +104,17 @@ Esses comandos são utilizados para movimentar os motores e outros equipamentos 
 Na etapa de controle, uma etapa relativamente nova nas impressoras 3D mais acessíveis, 
 tecnicas de controle são utilizadas para se diminuir vibrações e variações indesejadas em quaisquer
 parâmetros controlados, como a temperatura do bico. Um dos grandes avanços nessa etapa
-foi a implementação da técnica de Input Shaping por um firmware Open Source de impressora 3D chamado Klipper.
+foi a implementação da técnica de Input Shaping por um firmware Open Source de impressora 3D chamado Klipper (figura \ref{fig:klipper_logo}).
 Após a inclusão dessa etapa, principalmente no controle dinâmico da impressora, as capacidades
 de velocidades e qualidade chegaram a outro patamar se comparados a impressoras que não implementam essa etapa \cite{klipperdoc}.
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Logo Klipper}
     \includegraphics[scale=0.3]{klipper-logo}
 
     {\footnotesize Fonte: \citeauthor{klipperdoc}, \citeyear{klipperdoc}}
-    \label{fig:label9}
+    \label{fig:klipper_logo}
 \end{figure}
 % \subsection{Five-phase S-curve Velocity Model}
 
@@ -151,17 +147,20 @@ computar todo o comando de referência, é possível obter um
 comando modificado em tempo real através de um filtro. 
 Uma das abordagens desse tipo de filtro de comando é o 
 Input Shaper, onde variados Shapers são construídos levando 
-em consideração diferentes objetivos e restrições 
+em consideração diferentes objetivos e restrições
 \cite{singhose97}.
+Podemos
+ver na figura \ref{fig:degr_vs_esc} um exemplo comparativo
+das respostas ao degrau e da função escada aplicada pelo shaper.
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Comparação da resposta ao degrau e da resposta a escada}
     \includegraphics[scale=0.5]{inputshaperstepresponse1order}
     \includegraphics[scale=0.5]{inputshaperstarcasepresponse}
 
     {\footnotesize Fonte: \citeauthor{singhose97}, \citeyear{singhose97}}
-    \label{fig:label4}
+    \label{fig:degr_vs_esc}
 \end{figure}
 
 Essa abordagem vem sendo explorada na comunidade Maker a partir de 2017 
@@ -169,32 +168,22 @@ quando a última patente desse método expirou, e tem aprimorado a área como
 um todo, empurrando os limites anteriores de velocidade e precisão,
 sendo popularizada pelo Klipper \cite{klipperkinematic}.
 
-
-\begin{figure}[!htb]
-    \centering
-    \caption{teste}
-    \includegraphics[scale=0.6]{ringing-test}
-
-    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:label4}
-\end{figure}
-
 \subsubsection{filtered basis function (FBF)}
 O método FBF necessita que a trajetória a ser rastreada seja totalmente
 conhecida e que a trajetória controlada possa ser expressa como
 uma combinação linear de funções base possuindo coeficientes desconhecidos.
 As funções base são utilizadas em um controle feedforward utilizando
 o modelo dinâmico do sistema e selecionando os coeficientes de maneira a
-minimizar os erros dada uma trajetória desejada.
+minimizar os erros dada uma trajetória desejada (figura \ref{fig:flowchart_fbf}).
 \cite{ramani17}
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Fluxograma FBF}
     \includegraphics[scale=0.5]{ramani17blockfbf}
 
     {\footnotesize Fonte: \citeauthor{ramani17}, \citeyear{ramani17}}
-    \label{fig:label7}
+    \label{fig:flowchart_fbf}
 \end{figure}
 
 \subsubsection{limited-preview filtered B-splines}
@@ -204,7 +193,7 @@ completamente a trajetória desejada, o que implica em um grande custo
 computacional, principalmente em situações onde são necessárias uma
 grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução
 e casos de longa duração.
-O limited-preview filtered B-splines divide a trajetória desejada em subgrupos
+O limited-preview filtered B-splines (LPFBF) divide a trajetória desejada em subgrupos
 com um número menor de amostras e utiliza um algorítmo de *receiding horizon* para
 calcular recursivamente os coeficientes da função B-spline que minimizam os erros
 de trajetória \cite{duan18}.
@@ -215,14 +204,14 @@ Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Resultados práticos da LPFBF}
     \includegraphics[scale=0.5]{duancubo}
 
     {\footnotesize Fonte: \citeauthor{duan18}, \citeyear{duan18}}
     \label{fig:duancubo}
 \end{figure}
 
-\subsubsection{Robust Filtered Basis Functions}
+\subsubsection{Robust Filtered Basis Functions (RFBF)}
 Uma vulnerabilidade de algorítimos feedforward,
 especialmente a abordagem FBF e LPFBF é degradação
 da precisão a partir de inprecisões no modelo e
@@ -230,17 +219,17 @@ pertubações na dinâmica da impressora.
 Levando isso em consideração \citeauthor{ramani20} (\citeyear{ramani20})
 propos um algoritimo construido com base no LPFBF.
 Nesse metodo é utilizado uma função de custo a ser minimizads
-de maneira a construir a dinâmica do modelo para ser consumida
-pelo algorítimo da LPFBF de maneira a ser mais robusta e resiliente
-a imprecisões e pertubações.
+de maneira a alterar o modelo dinâmico dentro do fluxograma (figura \ref{fig:flowchart_rfbf}), ao invés
+do modelo dinâmico original como era feito na LPFBF, assim se tornando
+mais robusta e resiliente a imprecisões e pertubações.
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Fluxograma RFBF}
     \includegraphics[scale=0.5]{ramani20blockfbf}
 
     {\footnotesize Fonte: \citeauthor{ramani20}, \citeyear{ramani20}}
-    \label{fig:label9}
+    \label{fig:flowchart_rfbf}
 \end{figure}
 
 \section{Geração de comando}
@@ -261,7 +250,9 @@ desaceleração desnecessária impactando negativamente no tempo
 de impressão e na qualidade da peça impressa.
 O algoritmo Look Ahead procura manter o máximo de velocidade 
 possível entre movimentos distintos, evitando acelerações e 
-desacelerações desnecessárias, apesar de ser necessário um 
+desacelerações desnecessárias, como podemos observar nas figuras 
+\ref{fig:lookahead_small} e \ref{fig:lookahead_big}, 
+apesar de ser necessário um 
 pré-processamento desses pontos que introduzem um custo 
 computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 
@@ -271,7 +262,7 @@ de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades des
 de cada movimento, enquanto o algorítmo de lookahead calcula as velocidades
 de junção entre os movimentos, portanto ainda se faz necessário planejar
 o comportamento da velocidade ao longo do tempo do trajeto entre a velocidade incial
-e final do movimento.
+e final do movimento (figura \ref{fig:trapezoidal}).
 Uma das maneiras mais simples para a criação dessa curva de velocidade é
 a criação de uma curva trapezoidal, onde podemos separar o setor em 3 segmentos
 de aceleração constante. Em um primeiro momento uma crescente de velocidade até
@@ -283,31 +274,31 @@ fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Look ahead em uma grande mudança de direção}
     \includegraphics[scale=0.3]{lookaheadboth2}
 
     {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:label9}
+    \label{fig:lookahead_big}
 \end{figure}
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Look ahead em uma pequena mudança de direção}
     \includegraphics[scale=0.3]{lookaheaddir1}
     \includegraphics[scale=0.3]{lookaheadtrap1}
 
     {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:label9}
+    \label{fig:lookahead_small}
 \end{figure}
 
 
 \begin{figure}[!htb]
     \centering
-    \caption{teste}
+    \caption{Curva de velocidades trapezoidal em uma sequência de movimentos}
     \includegraphics[scale=0.4]{trapezoidex}
 
     {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:label9}
+    \label{fig:trapezoidal}
 \end{figure}
 
 
