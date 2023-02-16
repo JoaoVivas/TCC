@@ -50,28 +50,30 @@
 *ramani20*
 5
 
-(Bloco 4)
 ## Metodologia
 ### Introdução dos Materiais e da Metodologia
 *Citar fontes de valores de referencia*
 *higham16* (Matlab)
-### Modelo Dinâmico
-#### Espaço de estados
-4
-
 (Bloco 5)
 ### Geração de Comando
 #### Leitura de Gcode
 #### Interpolação
-### Runge Kutta
+
+### Modelo Dinâmico
+#### Espaço de estados
+4
+
+<!-- ### Runge Kutta -->
 5
 
 (Bloco 6)
 ### Fmincon
 #### Restrições (lineares)
+#### Bounds
 #### Restrição não linear
 #### Configuração da Fmincon
 4
+### Parâmetros utilizados
 
 (Bloco 7)
 ## Resultados e Discussão
