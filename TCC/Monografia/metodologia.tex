@@ -203,14 +203,15 @@ Obtemos uma matriz de posições, velocidades e tempo.
 % e por fim o calculo do vetor x.
 
 
-\section{Modelagem dinâmica de uma impressora 3D}
 
-O sistema preliminar é constituído pelo motor do eixo acoplado à uma polia que por sua vez transmitirá o movimento através de uma correia dentada que está acoplada ao corpo do bico injetor (Figura 4). A entrada do sistema é a tensão no motor, enquanto a saída do sistema é o deslocamento relativo do bico injetor no eixo X.
+\section{Modelagem dinâmica de uma impressora 3D}
 Para a modelagem do sistema mecânico são consideradas as seguintes simplificações:
-Não existe escorregamento nem perda de potência na interação entre a polia e a correia
-A correia apresenta um comportamento equivalente à uma mola e um amortecedor em paralelo
-O bico injetor é um corpo rígido uniforme de geometria simples
-A correia está acoplada nos dois lados da peça que se movimenta nos trilhos, entretanto como a correia só permite o tensionamento ela será considerada como um conjunto mola amortecedor simples (cada pedaço da correia sendo responsável pela tensão ou compressão)
+\begin{itemize}
+    \item Não existe escorregamento nem perda de potência na interação entre a polia e a correia
+    \item A correia apresenta um comportamento equivalente à uma mola e um amortecedor em paralelo
+    \item O bico injetor é um corpo rígido uniforme de geometria simples
+    \item A correia está acoplada nos dois lados da peça que se movimenta nos trilhos, entretanto como a correia só permite o tensionamento ela será considerada como um conjunto mola amortecedor simples
+\end{itemize}
 
 Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
 é considerado que os eixos são completamente independentes, 
@@ -218,10 +219,20 @@ a flexibilidade da correia é aproximada utilizando um conjunto
 mola amortecedor e a transmissão de movimento e torque dos 
 motores é considerada como ideal e não será abordada.
 Assim duas posições de estudo surgem para cada eixo, uma delas 
-representa a posição ideal e desejada pelo usuário (X1) e a 
-segunda é a posição real considerando as forças inerciais e a 
-flexibilidade introduzida pela correia (X2) como na Figura 4.
+representa a posição ideal, caso o sistema não possuiesse nenhuma flexibilidade
+ou perda, que também é a posição desejada pelo usuário ($px_b$). 
+A segunda posição considera as forças inerciais e a 
+flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
+e no caso empírico a posição real ($px$) como na figura \ref{fig:din_model}.
 
+
+\begin{figure}[!htb]
+    \centering
+    \caption{Visualização das posições do sistema}
+    \includegraphics[scale=0.4]{trapezoidex}
+
+    \label{fig:din_model}
+\end{figure}
 
 \begin{multline}
     \label{eq:mov_impressora}
@@ -232,8 +243,14 @@ flexibilidade introduzida pela correia (X2) como na Figura 4.
     \ddot{px}  = - \frac{c}{m} \dot{px} - \frac{k}{m} px + \frac{c}{m} \dot{px_b} + \frac{k}{m} px_b
 \end{multline}
 
-
 \subsection{Espaço de estados}
+A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e
+a a solução do sistema, dado sua característica de dividir uma equação diferencial
+de ordem superior em um sistema de equações diferenciais de ordem 1.
+O modelo dinâmico do sistema é apresentado na formulação de espaço de estados 
+na equação \ref{eq:espaco_de_estados_din_model}, baseado na equação \ref{eq:mov_impressora},
+utilizando a mesma equação para a base do eixo y.
+
 \begin{equation}
     \label{eq:espaco_de_estados_din_model}
     \begin{bmatrix}
@@ -270,16 +287,25 @@ flexibilidade introduzida pela correia (X2) como na Figura 4.
     \end{bmatrix}
 \end{equation}
 
-
+Em uma notação simplificada temos a equação \ref{eq:simp_state_space_din_model}
 \begin{equation}
     \label{eq:simp_state_space_din_model}
     \dot x = A*x+B*u
 \end{equation}
 
+\section{Otimização FMINCON}
+\subsection{Restrições lineares e limites de borda}
+Não foi utilizado nenhuma restrição linear nessa otimização.
+Os limites superiores (upperbound) e inferiores (lowerbound) foram definidos
+baseados nos limites físicos da impressora para as posições x, xb e y,yb, 
+enquanto os limites para o vetor de variação de tempo foi estipulado uma margem
+configuravel baseada no próprio vetor de variação do tempo.
+Estas definições estão representadas pelo conjunto de equações \ref{eq:ublb_eqs}.
 
-\subsection{Restrições lineares}
-As matrizes de upper bound e lowerbound foram construidas com as seguites considerações:
-
+\begin{equation}
+    \label{eq:ublb_eqs}
+    \dot x = A*x+B*u
+\end{equation}
 
 % N = length(x(5,:));
 % base = ones(1,N);
@@ -296,11 +322,11 @@ As matrizes de upper bound e lowerbound foram construidas com as seguites consid
 % ub(4,:) = base*max_y; 
 % ub(5,:) = (x(5,:)+0.0002)*1.2;
 
-**considerações**
-
 \subsection{Restrições não lineares}
-Como restrições não lineares foi implementada uma função que compara
-o resultado do Runge Kutta com o vetor posição da fmincon.
+
+************************************
+Blocked
+************************************
 
 
 % t = x(5,:);
@@ -370,47 +396,40 @@ o resultado do Runge Kutta com o vetor posição da fmincon.
 %     delta = f_c-x_ca;
 %     ceq=[ceq delta'];
 % end
+\subsection{Função objetivo (Objective Function)}
+A função objetivo (FO) foi escolhida visando minimizar a diferença entre
+as posições reais simuladas e a posição desejada pelo usuário.
+Para isso, foi utilizada a equação \ref{eq:fo_eq}, onde seu resultado é
+um escalar que quantifica o resultado do vetor a ser otimizado, permitindo
+que o algoritimo procure alterar os valores do vetor, sem quebrar suas restrições e limites,
+de maneira a minizar o resultado da FO.
 
+\begin{equation}
+    \label{eq:fo_eq}
+    Ob = (x - x_{desejado})*(x - x_{desejado})'+(y - y_{desejado})*(y - y_{desejado})'
+\end{equation}
 
 \subsection{Cofiguração da Fmincon}
 Foi utilizado as seguintes configurações da função fmincon:
 
 **configurações**
 
-optimoptions(@fmincon, 'TolFun', 0.000000001, 'MaxIter', 100000, ...
-                       'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.0001, 'Algorithm', 'interior-point', 'StepTolerance', 1e-12);
-
-adas
-
-
-Equações
-
-In line equations $x = 3$
-
-Full line equations
-
-$$y = x+3$$
-
-Referenceble equation
-
-\begin{equation}
-\label{eq:teste}
-x+1 = 6+7
-\end{equation}
-
 \begin{table}
     \begin{center}
-    \caption{tabela de teste}
-    \label{tab:teste}
-    \begin{tabular}{c c c}
-        teste & teste2 & teste3 \\ \hline
-        1 & 2 & 3 \\
-        4 & 5 & x+1 \\ \hline
+    \caption{Tabela de parâmetros opcionais da FMINCON}
+    \label{tab:fmincon_options}
+    \begin{tabular}{c c}
+        Opção & Valor \\ \hline
+        TolFun & 0.000000001 \\
+        MaxIter & 100000 \\
+        Display & iter \\
+        DiffMinChange & 0.0001 \\
+        Algorithm & interior-point \\
+        StepTolerance & 1e-12 \\
+        MaxFunEvals & 700000  \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
-                       
 
 \section{Dados base e cofigurações}
 
