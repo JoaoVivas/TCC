@@ -22,6 +22,7 @@ acc_y(1) = 0;
 
 des_xb = x(3,:);
 des_yb = x(4,:);
+
 vel_xb(1) = 0;
 vel_yb(1) = 0;
 acc_xb(1) = 0;
@@ -33,8 +34,17 @@ acc_yb(1) = 0;
 
 ceq=[des_x(1),des_y(1),t(1), des_xb(1), des_yb(1)];    
 c=[];
+t=[t t(length(t))];
+des_x=[des_x des_x(length(des_x))];
 
-for i = 1 : (length(t)-1)
+des_y=[des_y des_y(length(des_y))];
+
+
+des_xb=[des_xb des_xb(length(des_xb))];
+
+des_yb=[des_yb des_yb(length(des_yb))];
+
+for i = 1 : (length(t)-2)
     dt = t(i+1)-t(i);
     
     delta_x = (des_x(i+1)-des_x(i));
@@ -55,8 +65,22 @@ for i = 1 : (length(t)-1)
 
     AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
     AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
+     
     
-    c = [c max_acc-AccelXb max_acc-AccelYb];
+    vel_x(i)=(des_x(i+1)-des_x(i))/dt;
+    vel_y(i)=(des_y(i+1)-des_y(i))/dt;
+    
+    vel_x(i+1)=(des_x(i+2)-des_x(i+1))/dt;
+    vel_y(i+1)=(des_y(i+2)-des_y(i+1))/dt;
+    
+    
+        vel_xb(i)=(des_xb(i+1)-des_xb(i))/dt;
+    vel_yb(i)=(des_yb(i+1)-des_yb(i))/dt;
+    
+    vel_xb(i+1)=(des_xb(i+2)-des_xb(i+1))/dt;
+    vel_yb(i+1)=(des_yb(i+2)-des_yb(i+1))/dt;
+   
+%     c = [c max_acc-AccelXb max_acc-AccelYb];
     
     x_i = [des_x(i);vel_x(i);des_y(i);vel_y(i)];
     u_i = [des_xb(i);vel_xb(i);des_yb(i);vel_yb(i)];
@@ -78,4 +102,5 @@ for i = 1 : (length(t)-1)
     delta = f_c-x_ca;
     ceq=[ceq delta'];
 end
+c=[];
 end

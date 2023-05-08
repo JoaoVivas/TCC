@@ -8,9 +8,9 @@
 % end
 % Input Gcode from Gcode file
 % a_config
-% [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
-filename = 'Gcode_teste.gcode';
-PathName = '.\';
+ [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
+% filename = 'Gcode_teste.gcode';
+% PathName = '.\';
 CommandArray = InputGcode(filename,PathName);
 
 %Command Generation
@@ -74,6 +74,7 @@ u_base(4,:) = vel_y;
 
 [s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
 
+figure(1000)
 plot(u_base(1,:),u_base(3,:))
 hold on
 plot(s_base(1,:),s_base(3,:))
@@ -83,7 +84,7 @@ x_entr = x;
 
 optimal = [];
 [lb,ub] = def_bounds(x);
-[A_eq,b_eq,A_ineq,b_ineq] = lcon(optimal);
+[A_eq,b_eq,A_ineq,b_ineq] = lcon(x);
 
 if isempty(optimal)
          optimal=x;
@@ -94,12 +95,16 @@ optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
 
 
 % optimal = optimal/1.05;
-figure
+figure(3)
 plot(optimal(1,:),optimal(2,:),optimal(3,:),optimal(4,:))
-figure
-plot(optimal(5,:),optimal(1,:),optimal(5,:),optimal(2,:))
-figure
-plot(optimal(5,:),optimal(3,:),optimal(5,:),optimal(4,:))
+title ('x_y da ponta otimiada e base otimizada')
+legend('ponta','base')
+
+figure(4)
+plot(optimal(5,:),optimal(1,:),optimal(5,:),optimal(2,:),optimal(5,:),optimal(3,:),optimal(5,:),optimal(4,:))
+
+legend('x da ponta',' y da ponta ','x da base ', 'y da base')
+
 % plot(optimal(1,:), optimal(5,:), optimal(3,:), optimal(7,:))
 
 %% Input Shaper
