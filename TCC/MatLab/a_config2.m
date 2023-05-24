@@ -45,7 +45,8 @@ options = optimoptions(@fmincon, 'TolFun', 0.01, 'MaxIter', 100000, ...
 
 % objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
 % objective_fun = @desv_min_9;
-objective_fun = @desv_min_5;
+% objective_fun = @desv_min_5;
+objective_fun = @no_obj_fun;
 % objective_fun = @desv_min_runge2;
 % objective_fun = @desv_min_4;
 

@@ -74,7 +74,7 @@ for i = 1 : (length(t)-2)
     vel_y(i+1)=(des_y(i+2)-des_y(i+1))/dt;
     
     
-        vel_xb(i)=(des_xb(i+1)-des_xb(i))/dt;
+    vel_xb(i)=(des_xb(i+1)-des_xb(i))/dt;
     vel_yb(i)=(des_yb(i+1)-des_yb(i))/dt;
     
     vel_xb(i+1)=(des_xb(i+2)-des_xb(i+1))/dt;
@@ -100,7 +100,8 @@ for i = 1 : (length(t)-2)
     f_c = A_model*x_c+B_model*u_c;
     
     delta = f_c-x_ca;
-    ceq=[ceq delta'];
+    ceq=[ceq delta']
 end
 c=[];
+ceq
 end

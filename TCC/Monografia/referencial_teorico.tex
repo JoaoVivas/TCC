@@ -1,11 +1,14 @@
 \chapter{REFERENCIAL TEÓRICO}
 
 \section{Manufatura Aditiva}
-O princípio básico por trás da manufatura aditiva (MA) é a 
-capacidade de fabricar um modelo tridimensional diretamente, 
-sem a necessidade de um planejamento do processo, a partir de 
-um modelo tridimensional digital normalmente criado a partir 
-de Computer Aided Design (CAD). Uma das características 
+O princípio básico da manufatura aditiva (MA) é a 
+capacidade de fabricar um modelo tridimensional "diretamente", não sendo
+necessário o planejamento das operações de maneira individual e sim se preocupando
+com as configurações como um todo.
+O processo é calculado pelo fatiador com base em um modelo tridimensional digital,
+geralmente criado a partir de \textit{Computer Aided Design} (CAD) e nas configurações do mesmo
+e resulta nas intruções necessárias para a máquina de manufatura aditiva construir o modelo físico.
+Uma das características 
 principais da MA é a rapidez na qual é possível criar protótipo
 diretamente de modelos digitais, por conta disso, em um contexto 
 de desenvolvimento de produto, o termo prototipagem rápida era 
@@ -14,15 +17,15 @@ perceptível a capacidade dessas tecnologias não só se aterem à
 produção de protótipos, mas também de peças utilizadas em 
 produtos finais. Além disso, o termo não considerava o princípio 
 básico que unia essas tecnologias e assim o termo manufatura 
-aditiva foi apresentado e adotado pela American Society for 
-Testing and Materials (ASTM) \citeauthor{gibson15} (\citeyear{gibson15}).
+aditiva foi apresentado e adotado pela \textit{American Society for 
+Testing and Materials} (ASTM) \citeauthor{gibson15} (\citeyear{gibson15}).
 
 Apesar da manufatura aditiva ter sido criada a mais de 30 anos, apenas
-a partir de 2009, quando a última patente mais relevante de *Fused Deposition Modeling* (FDM)
+a partir de 2009, quando a última patente mais relevante de \textit{Fused Deposition Modeling} (FDM)
 expirou. Com isso, vários entusiastas começaram a desenvolver essa tecnologia de uma
 maneira "caseira", com o forte movimento RepRap. Por conta dessa característica
 "caseira" e um senso de comunidade, os desenvolvimentos em sua maioria eram
-de caráter *Open Source* e com uma mentalidade de acessibilizar essa tecnologia para as pessoas.
+de caráter \textit{Open Source} e com uma mentalidade de acessibilizar essa tecnologia para as pessoas.
 Com os avanços tecnologicos feitos pela comunidade, empresas, pessoas e a mídia começaram
 a se interessar cada vez mais, aumentando a popularidade das impressoras 3D e por consequência
 trazendo muita atenção para a manufatura aditiva, que a partir dai, mais pesquisas, mais
@@ -32,10 +35,10 @@ Atualmente, existe uma grande variedade de tecnologias e processos de manufatura
 Estes variam na maneira com que depositam o material, nos principios físicos que utilizam e nos materias
 que podem ser utilizados. Como mencionado anteriormente, um dos métodos de manufatura aditiva mais populares
 é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade
-como as tecnologias baseadas na cura seletiva de resinas, *stereolithography* (SLA) e *Masked stereolithography Apparatus* (MSLA),
+como as tecnologias baseadas na cura seletiva de resinas, \textit{stereolithography} (SLA) e \textit{Masked stereolithography Apparatus} (MSLA),
 alem de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo
-*selective laser melting* (SLM) e *selective laser
-sintering* (SLS) \cite{bikas16}.  
+\textit{selective laser melting} (SLM) e \textit{selective laser
+sintering} (SLS) \cite{bikas16}.  
 
 \begin{figure}[!htb]
     \begin{center}
@@ -49,8 +52,8 @@ sintering* (SLS) \cite{bikas16}.
 
 \ref{fig:label} figura
 
-\section{Fused Deposition Modeling}
-Fused Deposition Modeling (FDM) ou Fused Filament Fabrication 
+\section{\textit{Fused Deposition Modeling}}
+\textit{Fused Deposition Modeling} (FDM) ou \textit{Fused Filament Fabrication} 
 (FFF) é uma das tecnologias MA mais populares como mencionado anteriormente.
 Ela se consiste por depositar material através de um processo 
 onde um filamento de material é forçado dentro de uma câmara através,
@@ -75,7 +78,7 @@ artigos publicados no tema em anos recentes (2015 a 2018)
 otimização de parâmetros de impressão, acompanhado de 17\% de 
 trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas x\%
 são relacionados a outros temas, incluindo avanços tecnologicos relacionados
-a melhorias de hardware e software desses dispositivos.
+a melhorias de \textit{hardware} e \textit{software} desses dispositivos.
 (Figura 2).
 
 \begin{figure}[!htb]
@@ -99,38 +102,29 @@ a melhorias de hardware e software desses dispositivos.
 \ref{fig:label} figura
 
 Podemos separar, de maneira simplificada, a porção de software de impressoras 3D
-FDM em três principais etapas: fatiamento (slicing), geração de comando e controle.
+FDM em três principais etapas: fatiamento (\textit{slicing}), geração de comando e controle.
 A etapa de fatiamento involve a topologia e a criação de instruções a partir do modelo,
 é nessa fase onde se decide a sequência de movimentos e outros eventos.
-Já na etapa de geração de comando, as instruções criadas pelo fatiador (slicer) na etapa anterior
+Já na etapa de geração de comando, as instruções criadas pelo fatiador (\textit{slicer}) na etapa anterior
 são interpretadas e os comandos detalhados são gerados, por exemplo as curvas de velocidade.
 Esses comandos são utilizados para movimentar os motores e outros equipamentos da impressora.
 Na etapa de controle, uma etapa relativamente nova nas impressoras 3D mais acessíveis, 
 tecnicas de controle são utilizadas para se diminuir vibrações e variações indesejadas em quaisquer
 parâmetros controlados, como a temperatura do bico. Um dos grandes avanços nessa etapa
-foi a implementação da técnica de Input Shaping por um firmware Open Source de impressora 3D chamado Klipper.
+foi a implementação da técnica de \textit{Input Shaping} por um \textit{firmware Open Source} de impressora 3D chamado Klipper.
 Após a inclusão dessa etapa, principalmente no controle dinâmico da impressora, as capacidades
 de velocidades e qualidade chegaram a outro patamar se comparados a impressoras que não implementam essa etapa \cite{klipperdoc}.
-
-\begin{figure}[!htb]
-    \centering
-    \caption{teste}
-    \includegraphics[scale=0.3]{klipper-logo}
-
-    {\footnotesize Fonte: \citeauthor{klipperdoc}, \citeyear{klipperdoc}}
-    \label{fig:label9}
-\end{figure}
 % \subsection{Five-phase S-curve Velocity Model}
 
 \subsection{Feedforward}
-Dentre os métodos de controle em aplicações FDM o Feedforward 
+Dentre os métodos de controle em aplicações FDM o \textit{Feedforward} 
 é o mais eficiênte dada as limitações de custo em impressoras 
 3D comuns e é capaz de ter um impacto maior em sistemas 
 conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
-antes que ele aconteça. O método de feedback é mais eficiente em
+antes que ele aconteça. O método de \textit{feedback} é mais eficiente em
 diminuir o impacto de excitações externas ou desconhecidas,
 entratanto não consegue prever os efeitos do sistema, se encaixando
-melhor em aplicações de usinagem utilizando CNCs (Computer Numerical Control),
+melhor em aplicações de usinagem utilizando CNCs (\textit{Computer Numerical Control}),
 onde o valor dos equipamentos é maior e as forças envolvidas no corte
 influênciam mais do que as vibrações do próprio sistema.
 Já no caso das impressoras, quase 100\% dos efeitos é causado pelo próprio
@@ -140,7 +134,7 @@ a exigência computacional elevada e por fim a necessidade da simulação
 se extender do incio ao fim, pela dependência de se basear no estado 
 incial da impressão \cite{ramani20,duan18}.
 
-\subsubsection{Input Shaper}
+\subsubsection{\textit{Input Shaper}}
 Conhecendo a trajetória desejada e conhecendo características 
 do sistema é possível computar os comandos fornecidos para 
 calcular uma série de comandos, levando em consideração as 
@@ -150,7 +144,7 @@ possível do comando de referência. Entretanto, ao invés de
 computar todo o comando de referência, é possível obter um 
 comando modificado em tempo real através de um filtro. 
 Uma das abordagens desse tipo de filtro de comando é o 
-Input Shaper, onde variados Shapers são construídos levando 
+\textit{Input Shaper}, onde variados \textit{Shapers} são construídos levando 
 em consideração diferentes objetivos e restrições 
 \cite{singhose97}.
 
@@ -164,7 +158,7 @@ em consideração diferentes objetivos e restrições
     \label{fig:label4}
 \end{figure}
 
-Essa abordagem vem sendo explorada na comunidade Maker a partir de 2017 
+Essa abordagem vem sendo explorada na comunidade "faça você mesmo" a partir de 2017 
 quando a última patente desse método expirou, e tem aprimorado a área como
 um todo, empurrando os limites anteriores de velocidade e precisão,
 sendo popularizada pelo Klipper \cite{klipperkinematic}.
@@ -197,15 +191,15 @@ minimizar os erros dada uma trajetória desejada.
     \label{fig:label7}
 \end{figure}
 
-\subsubsection{limited-preview filtered B-splines}
+\subsubsection{\textit{Limited-preview filtered B-splines}}
 Uma das maiores dificuldades que os métodos avançados para o
-controle feedforward de trajetórias é a necesidade de se conhecer
+controle \textit{feedforward} de trajetórias é a necesidade de se conhecer
 completamente a trajetória desejada, o que implica em um grande custo
 computacional, principalmente em situações onde são necessárias uma
 grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução
 e casos de longa duração.
-O limited-preview filtered B-splines divide a trajetória desejada em subgrupos
-com um número menor de amostras e utiliza um algorítmo de *receiding horizon* para
+O \textit{limited-preview filtered B-splines} divide a trajetória desejada em subgrupos
+com um número menor de amostras e utiliza um algorítmo de \textit{receiding horizon} para
 calcular recursivamente os coeficientes da função B-spline que minimizam os erros
 de trajetória \cite{duan18}.
 
@@ -222,7 +216,7 @@ Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
     \label{fig:duancubo}
 \end{figure}
 
-\subsubsection{Robust Filtered Basis Functions}
+\subsubsection{\textit{Robust Filtered Basis Functions}}
 
 However, the FBF approach faces at least two practical chal-
 lenges. The first is that its computational cost becomes very
@@ -273,7 +267,7 @@ interpretados e interpolados. Esse processo é responsável pelo
 controle de velocidade, aceleração dentre outras atividades que 
 variam no tempo \cite{yu20}. 
 
-\subsection{Look ahead}
+\subsection{\textit{Look ahead}}
 No processo de impressão 3D são fornecidos para a impressora 
 uma sequência de pontos no espaço e limitações de velocidade 
 entre os mesmos. A velocidade nos pontos é compartilhada entre 
@@ -281,7 +275,7 @@ trajetos em sequência, o que torna considerá-los
 independentemente ineficiente, introduzindo aceleração e 
 desaceleração desnecessária impactando negativamente no tempo 
 de impressão e na qualidade da peça impressa.
-O algoritmo Look Ahead procura manter o máximo de velocidade 
+O algoritmo \textit{Look Ahead} procura manter o máximo de velocidade 
 possível entre movimentos distintos, evitando acelerações e 
 desacelerações desnecessárias, apesar de ser necessário um 
 pré-processamento desses pontos que introduzem um custo 
@@ -378,7 +372,7 @@ Runge Kutta é um algoritimo de integração numérica baseada na série de Tail
 nas formulações explicitas são calculados 4 coeficientes que são utilizados para estimar
 o próximo ponto, assim caracterizando um algoritmo iterativo de valor inicial \cite{bettis79,dormand80}.
 
-\subsection{Objective Function Optimization}
+\subsection{\textit{Objective Function Optimization}}
 Funções objetivo de otimização são elementos importantes na execução de algoritimos
 de otimização. Alguns estudos apontam que a qualidade e o número de variáveis de
 projeto cruciais para o resultado da otimização, além disso outros sub-parâmetros

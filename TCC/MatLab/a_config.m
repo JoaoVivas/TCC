@@ -23,12 +23,12 @@ B_model = [0 0 0 0;kx/mx bx/mx 0 0;0 0 0 0;0 0 ky/my by/my];
 
 % Gerador de Comandos
 global junction_speed max_acc max_vel jun_disv des_step_size min_x max_x min_y max_y dt_step_size
-min_x = -0.0001;
+min_x = -100.0001;
 max_x = 200.0001;
-min_y = -0.0001;
+min_y = -100.0001;
 max_y = 200.0001;
 
-max_acc = 5000;
+max_acc = 2000;
 max_vel = 1000;
 
 junction_speed = 0.1;
@@ -39,10 +39,9 @@ dt_step_size = 0.001;
 
 % Otimização
 global options nonlcon lcon objective_fun def_bounds
-options = optimoptions(@fmincon, 'TolFun', 0.000000001, 'MaxIter', 100000, ...
-                       'MaxFunEvals', 700000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.0001, 'Algorithm',...
-                       'interior-point', 'StepTolerance', 1e-12); %'interior-point' 'sqp'
+options = optimoptions(@fmincon, 'TolFun', 0.01, 'MaxIter', 100000, ...
+                       'MaxFunEvals', 90000, 'Display', 'iter', ...
+                       'DiffMinChange', 0.000001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
 
 % objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
 % objective_fun = @desv_min_9;
