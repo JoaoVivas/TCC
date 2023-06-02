@@ -15,6 +15,7 @@ t = x(5,:);
 
 des_x = x(1,:);
 des_y = x(2,:);
+
 vel_x(1) = 0;
 vel_y(1) = 0;
 acc_x(1) = 0;
@@ -65,14 +66,12 @@ for i = 1 : (length(t)-2)
 
     AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
     AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
-     
-    
+         
     vel_x(i)=(des_x(i+1)-des_x(i))/dt;
     vel_y(i)=(des_y(i+1)-des_y(i))/dt;
     
     vel_x(i+1)=(des_x(i+2)-des_x(i+1))/dt;
     vel_y(i+1)=(des_y(i+2)-des_y(i+1))/dt;
-    
     
     vel_xb(i)=(des_xb(i+1)-des_xb(i))/dt;
     vel_yb(i)=(des_yb(i+1)-des_yb(i))/dt;
@@ -82,13 +81,13 @@ for i = 1 : (length(t)-2)
    
 %     c = [c max_acc-AccelXb max_acc-AccelYb];
     
-    x_i = [des_x(i);vel_x(i);des_y(i);vel_y(i)];
-    u_i = [des_xb(i);vel_xb(i);des_yb(i);vel_yb(i)];
+    x_i = [des_x(i);des_y(i);vel_x(i);vel_y(i)];
+    u_i = [des_xb(i);des_yb(i);vel_xb(i);vel_yb(i)];
     
     f_i = A_model*x_i+B_model*u_i;
     
-    x_n = [des_x(i+1);vel_x(i+1);des_y(i+1);vel_y(i+1)];
-    u_n = [des_xb(i+1);vel_xb(i+1);des_yb(i+1);vel_yb(i+1)];
+    x_n = [des_x(i+1);des_y(i+1);vel_x(i+1);vel_y(i+1)];
+    u_n = [des_xb(i+1);des_yb(i+1);vel_xb(i+1);vel_yb(i+1)];
     
     f_n = A_model*x_n+B_model*u_n;
     

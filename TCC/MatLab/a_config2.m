@@ -14,12 +14,20 @@ bx =0.01* 10000;
 by =0.01* 10000;
 
 global A_model B_model
-% A_model = [0 0 1 0;0 0 0 1;-kx/mx 0 -bx/mx 0;0 -ky/my 0 -by/my];
-% B_model = [0 0 0 0;0 0 0 0;kx/mx 0 bx/mx 0;0 ky/my 0 by/my];
 
+A_model = [
+    0       0       1       0;
+    0       0       0       1;
+    -kx/mx  0       -bx/mx  0;
+    0       -ky/my  0       -by/my
+    ];
 
-A_model = [0 1 0 0;-kx/mx -bx/mx 0 0;0 0 0 1;0 0 -ky/my -by/my];
-B_model = [0 0 0 0;kx/mx bx/mx 0 0;0 0 0 0;0 0 ky/my by/my];
+B_model = [
+    0       0       0       0;
+    0       0       0       0;
+    kx/mx   0       bx/mx   0;
+    0       ky/my   0       by/my
+    ];
 
 % Gerador de Comandos
 global junction_speed max_acc max_vel jun_disv des_step_size min_x max_x min_y max_y dt_step_size
