@@ -66,6 +66,8 @@ x(4,:) = des_y;
 % t = t_base;
 x(5,:) = t_base;
 
+
+
 s0_base = [des_x(1);vel_x(1);des_y(1);vel_y(1)];
 u_base(1,:) = des_x;
 u_base(2,:) = vel_x;
