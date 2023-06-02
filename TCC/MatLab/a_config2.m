@@ -60,35 +60,3 @@ lcon=@empty_lcons;
 nonlcon=@double_integrator_points_x_t;
 % nonlcon = [];
 % nonlcon=@double_integrator_points;
-% %%
-% x_ub = ;
-% vx_ub = ;
-% x_lb = ;
-% vx_lb = ;
-% 
-% y_ub = ;
-% vy_ub = ;
-% y_lb = ;
-% vy_lb = ;
-% 
-% % Input Shaper
-% 
-% SEG_TIME = .000100
-% INV_SEG_TIME = 1. / SEG_TIME
-% 
-% SPRING_FREQ=35.0
-% DAMPING_RATIO=0.05
-% 
-% CONFIG_FREQ=40.0
-% CONFIG_DAMPING_RATIO=0.1
-% % Dynamic Simulation
-% 
-% dyn_model = @dynamic_model;
-% 
-% 
-% % Simulation
-% 
-% % Grafics
-% 
-% %% config status
-% run = true;
