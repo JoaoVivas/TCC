@@ -100,8 +100,8 @@ for i = 1 : (length(t)-2)
     f_c = A_model*x_c+B_model*u_c;
     
     delta = f_c-x_ca;
-    ceq=[ceq delta']
+    ceq=[ceq delta'];
 end
 c=[];
-ceq
+ceq;
 end

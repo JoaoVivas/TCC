@@ -16,7 +16,6 @@ acc = [];
 dir = [];
 
 for i=1:(size(gcode_v,2)-1)
-    i
     vector_v(i+1) = junction_speed_calc(gcode_dir(:,i),gcode_dir(:,i+1),gcode_v(i+1),jun_disv,max_acc);
     [vec_t,vec_des,vec_v,vec_a,vec_dir] = refined_trapzoid_generator(vector_v(i),vector_v(i+1),gcode_v(i),max_acc,gcode_des(i),gcode_dir(:,i));
     input_dt = [input_dt,vec_t];
