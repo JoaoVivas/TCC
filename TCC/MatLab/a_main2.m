@@ -48,36 +48,46 @@ ay = [0,(dir(2,:).*acc)];
 % Fmincon Otimizer
 % 
 % x(1,:) = des_x;
-% x(2,:) = vel_x;
-% x(3,:) = des_x; % des_ux
-% x(4,:) = vel_x; % vel_ux
-% x(5,:) = des_y;
-% x(6,:) = vel_y;
-% x(7,:) = des_y; % des_ux
+% x(2,:) = des_y;
+% x(3,:) = vel_x;
+% x(4,:) = vel_y;
+
+% x(5,:) = des_x; % des_ux
+% x(6,:) = des_y; % des_ux
+% x(7,:) = vel_x; % vel_ux
 % x(8,:) = vel_y; % vel_uy
+
 % x(9,:) = [0,dt];
 global t_base
 t_base = [0,acumulator(dt,0)];
 
 x(1,:) = des_x;
 x(2,:) = des_y;
+
 x(3,:) = des_x; 
 x(4,:) = des_y; 
 % t = t_base;
 x(5,:) = t_base;
 
-s0_base = [des_x(1);vel_x(1);des_y(1);vel_y(1)];
+s0_base = [des_x(1);des_y(1);vel_x(1);vel_y(1)];
 u_base(1,:) = des_x;
-u_base(2,:) = vel_x;
-u_base(3,:) = des_y;
+u_base(2,:) = des_y;
+u_base(3,:) = vel_x;
 u_base(4,:) = vel_y;
 
 [s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
 
 figure(1000)
-plot(u_base(1,:),u_base(3,:))
+plot(u_base(1,:),u_base(2,:))
 hold on
-plot(s_base(1,:),s_base(3,:))
+plot(s_base(1,:),s_base(2,:))
+
+%x(1,:) = s_base(1,:);
+%x(2,:) = s_base(2,:);
+
+%x(3,:) = u_base(1,:); 
+%x(4,:) = u_base(2,:); 
+
 %%
 global x_entr
 x_entr = x;
@@ -106,41 +116,3 @@ plot(optimal(5,:),optimal(1,:),optimal(5,:),optimal(2,:),optimal(5,:),optimal(3,
 legend('x da ponta',' y da ponta ','x da base ', 'y da base')
 
 % plot(optimal(1,:), optimal(5,:), optimal(3,:), optimal(7,:))
-
-%% Input Shaper
-% 
-% % %% Dynamic Simulation
-% [s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
-% 
-% 
-% plot(u_base(1,:),u_base(2,:))
-% hold on
-% plot(s_base(1,:),s_base(2,:))
-% 
-% 
-% s0 = [x(1);y(1);vx(1);vy(1)];
-% s(:,1) = s0;
-% u(1,:) = x;
-% u(2,:) = y;
-% u(3,:) = vx;
-% u(4,:) = vy;
-% 
-% N = length(t)-1;
-% for i=1:N
-%     dt(i) = t(i+1)-t(i);
-%     uhalf = u_t_interpolator(u(:,i),u(:,i+1),dt(i),dt(i)/2);
-%     
-%     k1(:,i) = dynamic_model(s(:,i),u(:,i));
-%     k2(:,i) = dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf);
-%     k3(:,i) = dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf);
-%     k4(:,i) = dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1));
-% 
-%     avg_dot = (k1(:,i) + 2*k2(:,i) + 2*k3(:,i) + k4(:,i))/6;
-%     s(:,i+1) = s(:,i) + dt(i)*avg_dot;
-% end
-% %% Graphical Results
-% 
-% 
-% plot(u(1,:),u(2,:))
-% hold on
-% plot(s(1,:),s(2,:))
