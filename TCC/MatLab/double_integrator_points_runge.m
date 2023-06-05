@@ -3,7 +3,7 @@ function [c,ceq] = double_integrator_points_runge(x)
 % clc
 % clear all
 % %%
-global max_acc
+global max_acc t_base
 
 % x(1,:) = [0,1,2,3,4,5];
 % x(2,:) = [0,1,2,3,4,5];
@@ -11,7 +11,8 @@ global max_acc
 % x(4,:) = [0,1,2,3,4,5]; 
 % x(5,:) = [0,2,3,4,5,6];
 
-t = x(5,:);
+% t = x(5,:);
+t = t_base;
 
 des_x = x(1,:);
 des_y = x(2,:);
@@ -31,7 +32,7 @@ acc_yb(1) = 0;
 %des = vi*t+at^2/2; a = 2*(des/t-vi)/t
 % Vf^2-Vi^2 = 2ades
 
-ceq=[des_x(1),des_y(1),t(1), des_xb(1), des_yb(1)];    
+ceq=[x(1,1) x(2,1) t(1) x(3,1) x(4,1)];    
 c=[];
 
 for i = 1 : (length(t)-1)
@@ -53,22 +54,22 @@ for i = 1 : (length(t)-1)
     vel_xb(i+1) = vel_xb(i)+acc_xb(i+1)*dt;
     vel_yb(i+1) = vel_yb(i)+acc_yb(i+1)*dt;
 
-    AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
-    AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
+    %AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
+    %AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
     
-    c = [c max_acc-AccelXb max_acc-AccelYb];
+    %c = [c max_acc-AccelXb max_acc-AccelYb];
 end
 
 % t = t_base;
 % x(5,:) = t_base;
 
-s0_base = [des_x(1);vel_x(1);des_y(1);vel_y(1)];
+s0_base = [des_x(1);des_y(1);vel_x(1);vel_y(1)];
 u_base(1,:) = des_xb;
-u_base(2,:) = vel_xb;
-u_base(3,:) = des_yb;
+u_base(2,:) = des_yb;
+u_base(3,:) = vel_xb;
 u_base(4,:) = vel_yb;
 
-[s_base,~] = runge_kutta(s0_base,u_base,t,@dynamic_model);
+[s_base] = runge_kutta(s0_base,u_base,t,@dynamic_model);
 
-ceq = [s_base(1,:) - x(1,:) s_base(3,:) - x(2,:)];
+ceq = [ceq (s_base(1,:) - x(1,:)) (s_base(2,:) - x(2,:))];
 end

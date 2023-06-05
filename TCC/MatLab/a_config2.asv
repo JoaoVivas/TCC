@@ -8,8 +8,8 @@ close all;
 % x,u mm mm/s
 mx =.200; % g
 my =.200; % g
-kx = 200; 
-ky = 200;
+kx = 2000; 
+ky = 2000;
 bx =0.01* 10000;
 by =0.01* 10000;
 
@@ -43,15 +43,13 @@ junction_speed = 0.1;
 jun_disv = 0.1;
 
 des_step_size = 0.1;
-dt_step_size = 0.002;
+dt_step_size = 0.0001;
 
-initial_guess_flag = false;
+initial_guess_flag = true;
 
-% Otimiza��o% nonlcon=@double_integrator_points_s_runge;
-
-
+% Otimiza��o
 global options nonlcon lcon objective_fun def_bounds
-options = optimoptions(@fmincon, 'TolFun', 0.01,'MaxIter', 100000, ...
+options = optimoptions(@fmincon, 'TolFun', 0.01, 'MaxIter', 100000, ...
                        'MaxFunEvals', 90000, 'Display', 'iter', ...
                        'DiffMinChange', 0.000001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
 
@@ -63,15 +61,13 @@ objective_fun = @no_obj_fun;
 % objective_fun = @desv_min_4;
 
 % def_bounds=@fixed_bounds_9;
-% def_bounds=@fixed_bounds_5;
-% def_bounds=@fixed_bounds_4;
-def_bounds=@fixed_bounds_2;
+def_bounds=@fixed_bounds_5;
+% def_bounds=@fixed_bounds_2;
 
 lcon=@empty_lcons;
 
-nonlcon=@double_integrator_points_s;
-% nonlcon=@double_integrator_points_s_runge;
+% nonlcon=@double_integrator_points_x;
 % nonlcon=@double_integrator_points_x_t;
-% nonlcon=@double_integrator_points_runge;
+nonlcon=@double_integrator_points_runge;
 % nonlcon = [];
 % nonlcon=@double_integrator_points;
