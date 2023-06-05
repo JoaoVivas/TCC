@@ -45,6 +45,8 @@ jun_disv = 0.1;
 des_step_size = 0.1;
 dt_step_size = 0.001;
 
+initial_guess_flag = true;
+
 % Otimiza��o
 global options nonlcon lcon objective_fun def_bounds
 options = optimoptions(@fmincon, 'TolFun', 0.01, 'MaxIter', 100000, ...

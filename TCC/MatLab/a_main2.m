@@ -82,11 +82,13 @@ plot(u_base(1,:),u_base(2,:))
 hold on
 plot(s_base(1,:),s_base(2,:))
 
-%x(1,:) = s_base(1,:);
-%x(2,:) = s_base(2,:);
-
-%x(3,:) = u_base(1,:); 
-%x(4,:) = u_base(2,:); 
+if initial_guess_flag == true
+    x(1,:) = s_base(1,:);
+    x(2,:) = s_base(2,:);
+    
+    x(3,:) = u_base(1,:); 
+    x(4,:) = u_base(2,:); 
+end
 
 %%
 global x_entr
