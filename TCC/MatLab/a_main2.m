@@ -1,18 +1,15 @@
-% %% 
-% clc;
-% clear all;
-% close all;
-% a_config
-% if exist('run','var') == 1
-%     a_config
-% end
+%% 
+clc;
+clear all;
+close all;
+a_config2
+
 % Input Gcode from Gcode file
-% a_config
- [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
+[filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
 % filename = 'Gcode_teste.gcode';
 % PathName = '.\';
-CommandArray = InputGcode(filename,PathName);
 
+CommandArray = InputGcode(filename,PathName);
 %Command Generation
 
 gcode_x = [0,CommandArray(1,:)];
@@ -20,7 +17,6 @@ gcode_y = [0,CommandArray(2,:)];
 gcode_v = [CommandArray(5,:)./60,0];
 
 [des,vel,acc,dir,dt] = CommandGenerator(gcode_x,gcode_y,gcode_v);
-
 
 % t = [0,acumulator(dt,0)];
 % des_ac = acumulator(des);
@@ -38,7 +34,6 @@ vel_y = [0,acumulator(vy_del,0)];
 
 ax = [0,(dir(1,:).*acc)];
 ay = [0,(dir(2,:).*acc)];
-
 
 % acc_ac = [0, acc];
 % plot(des_x,des_y)
@@ -102,7 +97,6 @@ end
 
 optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
                       A_eq, b_eq, lb, ub, nonlcon, options);
-
 
 % optimal = optimal/1.05;
 figure(3)
