@@ -10,6 +10,8 @@ base_command
 
 initial_guess = false;
 
+% runge_kutta_preview
+
 runge_kutta_x2
 runge_kutta_x4
 hargraves_x2
