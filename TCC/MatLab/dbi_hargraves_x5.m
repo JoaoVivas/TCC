@@ -1,4 +1,4 @@
-function [c,ceq] = double_integrator_points_x_t(x)
+function [c,ceq] = dbi_hargraves_x5(x)
 %%
 % clc
 % clear all
