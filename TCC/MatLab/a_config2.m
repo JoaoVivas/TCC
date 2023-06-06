@@ -64,7 +64,9 @@ def_bounds=@fixed_bounds_5;
 
 lcon=@empty_lcons;
 
-% nonlcon=@double_integrator_points_x;
-nonlcon=@double_integrator_points_x_t;
+% nonlcon = @dbi_hargraves_x2
+% nonlcon = @dbi_hargraves_x5
+% nonlcon = @dbi_runge_kutta_x2
+nonlcon = @dbi_runge_kutta_x5
+
 % nonlcon = [];
-% nonlcon=@double_integrator_points;

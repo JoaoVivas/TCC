@@ -1,4 +1,4 @@
-function [s,u] = runge_kutta(s0,u,t,dynamic_model)
+function [s] = runge_kutta(s0,u,t,dynamic_model)
     global A_model B_model
     s(:,1) = s0;
 %     u(1,:) = x;
