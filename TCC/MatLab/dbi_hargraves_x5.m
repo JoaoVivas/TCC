@@ -83,22 +83,12 @@ for i = 1 : (length(t)-2)
     
     x_i = [des_x(i);des_y(i);vel_x(i);vel_y(i)];
     u_i = [des_xb(i);des_yb(i);vel_xb(i);vel_yb(i)];
-    
-    f_i = A_model*x_i+B_model*u_i;
-    
+
     x_n = [des_x(i+1);des_y(i+1);vel_x(i+1);vel_y(i+1)];
     u_n = [des_xb(i+1);des_yb(i+1);vel_xb(i+1);vel_yb(i+1)];
-    
-    f_n = A_model*x_n+B_model*u_n;
-    
-    x_c =(x_i+x_n)/2+dt*(f_i-f_n)/8;
-    u_c = (u_i+u_n)/2;
-    
-    x_ca=-3*(x_i-x_n)/(2*dt)-(f_i+f_n)/4;
-    
-    f_c = A_model*x_c+B_model*u_c;
-    
-    delta = f_c-x_ca;
+
+    delta = hargraves(x_i,u_i,x_n,u_n,dt,@dynamic_model)
+
     ceq=[ceq delta'];
 end
 c=[];
