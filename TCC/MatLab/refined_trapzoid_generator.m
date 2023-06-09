@@ -53,8 +53,8 @@ else
     des_i = (v_p^2-v_i^2)/(2*acc);
     des_f = (v_p^2-v_f^2)/(2*acc);
     
-    dt_i = (v_d-v_i)/acc;
-    dt_f = (v_d-v_f)/acc;
+    dt_i = (v_p-v_i)/acc;
+    dt_f = (v_p-v_f)/acc;
     
     vel_i = v_p-v_i;
     vel_f = v_f-v_p;
