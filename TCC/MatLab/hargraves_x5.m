@@ -1,31 +1,14 @@
-% 
-% x(1,:) = des_x;
-% x(2,:) = des_y;
-% x(3,:) = vel_x;
-% x(4,:) = vel_y;
-
-% x(5,:) = des_x; % des_ux
-% x(6,:) = des_y; % des_ux
-% x(7,:) = vel_x; % vel_ux
-% x(8,:) = vel_y; % vel_uy
-
-% x(9,:) = [0,dt];
 %% --------------------------------- x Setup ----------------------------------
+nonlcon = @dbi_hargraves_x5
+
 x(1,:) = des_x;
 x(2,:) = des_y;
 
 x(3,:) = des_x; 
 x(4,:) = des_y; 
-% t = t_base;
+
 x(5,:) = t_base;
 
-%x(1,:) = s_base(1,:);
-%x(2,:) = s_base(2,:);
-
-%x(3,:) = u_base(1,:); 
-%x(4,:) = u_base(2,:); 
-
-%%
 global x_entr
 x_entr = x;
 %% ------------------------------------------ Bounds --------------------------------------
@@ -59,15 +42,28 @@ optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
                       A_eq, b_eq, lb, ub, nonlcon, options);
 
 % optimal = optimal/1.05;
+r_t = optimal(5,:);
 
-r_t
+r_des_x = optimal(1,:);
+r_des_y = optimal(2,:);
+vel_x(1) = 0;
+vel_y(1) = 0;
+acc_x(1) = 0;
+acc_y(1) = 0;
 
-r_des_x
-r_des_y
-r_vel_x
-r_vel_y
+r_des_xb = optimal(3,:);
+r_des_yb = optimal(4,:);
+vel_xb(1) = 0;
+vel_yb(1) = 0;
+acc_xb(1) = 0;
+acc_yb(1) = 0;
 
-r_des_xb
-r_des_yb
-r_vel_xb
-r_vel_yb
+for i = 1 : (length(r_t)-1)
+    dt = r_t(i+1)-r_t(i);
+    
+    [vel_x(i+1),vel_y(i+1),acc_x(i+1),acc_y(i+1)] = dot_const_acc(...
+        r_des_x(i), r_des_y(i), r_des_x(i+1), r_des_y(i+1), r_vel_x(i), r_vel_y(i), dt);
+
+    [vel_xb(i+1),vel_yb(i+1),acc_xb(i+1),acc_yb(i+1)] = dot_const_acc(...
+        r_des_xb(i), r_des_yb(i), r_des_xb(i+1), r_des_yb(i+1), r_vel_xb(i), r_vel_yb(i), dt);
+end

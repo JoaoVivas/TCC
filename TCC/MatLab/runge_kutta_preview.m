@@ -4,7 +4,7 @@ u_base(2,:) = des_y;
 u_base(3,:) = vel_x;
 u_base(4,:) = vel_y;
 
-[s_base,u_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
+[s_base] = runge_kutta(s0_base,u_base,t_base,@dynamic_model);
 
 figure(1000)
 plot(u_base(1,:),u_base(2,:))

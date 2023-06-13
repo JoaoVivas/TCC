@@ -1,35 +1,11 @@
-% 
-% x(1,:) = des_x;
-% x(2,:) = des_y;
-% x(3,:) = vel_x;
-% x(4,:) = vel_y;
+%% --------------------------------- x Setup ---------------------------------------------
+nonlcon = @dbi_runge_kutta_x2
 
-% x(5,:) = des_x; % des_ux
-% x(6,:) = des_y; % des_ux
-% x(7,:) = vel_x; % vel_ux
-% x(8,:) = vel_y; % vel_uy
-
-% x(9,:) = [0,dt];
-%% --------------------------------- x Setup ----------------------------------
 x(1,:) = des_x;
 x(2,:) = des_y;
 
-x(3,:) = des_x; 
-x(4,:) = des_y; 
-% t = t_base;
-x(5,:) = t_base;
-
-%x(1,:) = s_base(1,:);
-%x(2,:) = s_base(2,:);
-
-%x(3,:) = u_base(1,:); 
-%x(4,:) = u_base(2,:); 
-
-%%
-global x_entr
-x_entr = x;
-
 %% ------------------------------------------ Bounds --------------------------------------
+
 global min_x min_y 
 global max_x max_y
 
@@ -53,15 +29,25 @@ optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
                       A_eq, b_eq, lb, ub, nonlcon, options);
 
 % optimal = optimal/1.05;
+r_vel_x(1) = 0;
+r_vel_y(1) = 0;
+r_acc_x(1) = 0;
+r_acc_y(1) = 0;
 
-r_t
+t = t_base;
+for i = 1 : (length(t)-1)
+    dt = t(i+1)-t(i);
+    
+    [r_vel_x(i+1),r_vel_y(i+1),r_acc_x(i+1),r_acc_y(i+1)] = dot_const_acc(...
+        des_x(i), des_y(i), des_x(i+1), des_y(i+1), vel_x(i), vel_y(i), dt);
+end
 
-r_des_x
-r_des_y
-r_vel_x
-r_vel_y
+r_t = t_base;
 
-r_des_xb
-r_des_yb
-r_vel_xb
-r_vel_yb
+r_des_x = optimal(1,:); 
+r_des_y = optimal(2,:);
+
+r_des_xb = u_base(1,:);
+r_des_yb = u_base(2,:);
+r_vel_xb = u_base(3,:);
+r_vel_yb = u_base(4,:);

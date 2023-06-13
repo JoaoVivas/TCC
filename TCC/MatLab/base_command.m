@@ -4,6 +4,7 @@
 CommandArray = InputGcode(filename,PathName);
 
 % ------------------------------------ Command Generation -------------------------------------
+global t_base s_base u_base
 gcode_x = [0,CommandArray(1,:)];
 gcode_y = [0,CommandArray(2,:)];
 gcode_v = [CommandArray(5,:)./60,0];
@@ -24,3 +25,8 @@ vel_y = [0,acumulator(vy_del,0)];
 
 ax = [0,(dir(1,:).*acc)];
 ay = [0,(dir(2,:).*acc)];
+
+u_base(1,:) = des_x;
+u_base(2,:) = des_y;
+u_base(3,:) = vel_x;
+u_base(4,:) = vel_y;

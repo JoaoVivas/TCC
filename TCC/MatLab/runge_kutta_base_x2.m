@@ -1,5 +1,5 @@
 %% --------------------------------- x Setup ---------------------------------------------
-nonlcon = @dbi_hargraves_x2
+nonlcon = @dbi_runge_kutta_x2_base
 
 x(1,:) = des_x;
 x(2,:) = des_y;
@@ -29,22 +29,23 @@ optimal = fmincon(objective_fun, optimal, A_ineq, b_ineq,...
                       A_eq, b_eq, lb, ub, nonlcon, options);
 
 % optimal = optimal/1.05;
-
-r_t = t_base;
-
-r_des_x = optimal(1,:); 
-r_des_y = optimal(2,:);
 r_vel_x(1) = 0;
 r_vel_y(1) = 0;
 r_acc_x(1) = 0;
 r_acc_y(1) = 0;
 
-for i = 1 : (length(r_t)-1)
-    dt = r_t(i+1)-r_t(i);
+t = t_base;
+for i = 1 : (length(t)-1)
+    dt = t(i+1)-t(i);
     
     [r_vel_x(i+1),r_vel_y(i+1),r_acc_x(i+1),r_acc_y(i+1)] = dot_const_acc(...
-        r_des_x(i), r_des_y(i), r_des_x(i+1), r_des_y(i+1), r_vel_x(i), r_vel_y(i), dt);
+        des_x(i), des_y(i), des_x(i+1), des_y(i+1), vel_x(i), vel_y(i), dt);
 end
+
+r_t = t_base;
+
+r_des_x = optimal(1,:); 
+r_des_y = optimal(2,:);
 
 r_des_xb = u_base(1,:);
 r_des_yb = u_base(2,:);
