@@ -14,9 +14,11 @@ des = [];
 dt = [];
 acc = [];
 dir = [];
-
+% gcode_v
 for i=1:(size(gcode_v,2)-1)
     vector_v(i+1) = junction_speed_calc(gcode_dir(:,i),gcode_dir(:,i+1),gcode_v(i+1),jun_disv,max_acc);
+    % gcode_v(i)
+    % gcode_des(i)
     [vec_t,vec_des,vec_v,vec_a,vec_dir] = refined_trapzoid_generator(vector_v(i),vector_v(i+1),gcode_v(i),max_acc,gcode_des(i),gcode_dir(:,i));
     input_dt = [input_dt,vec_t];
     input_des = [input_des,vec_des];
@@ -25,6 +27,9 @@ for i=1:(size(gcode_v,2)-1)
     input_dir = [input_dir,vec_dir];
 end
 input_vi = [0,acumulator(input_vel,0)];
+% input_des
+% input_dt
+% input_acc
 for i = 1:length(input_dt)
     Nsteps = ceil(input_dt(i)/dt_step_size)-1;
     if Nsteps > 0 

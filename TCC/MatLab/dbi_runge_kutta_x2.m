@@ -11,7 +11,7 @@ function [c,ceq] = dbi_runge_kutta_x2(x)
     vel_y(1) = 0;
     acc_x(1) = 0;
     acc_y(1) = 0;
-    
+
     des_xb = u_base(1,:);
     des_yb = u_base(2,:);
     
@@ -27,10 +27,10 @@ function [c,ceq] = dbi_runge_kutta_x2(x)
         dt = t(i+1)-t(i);
 
         [vel_x(i+1),vel_y(i+1),acc_x(i+1),acc_y(i+1)] = dot_const_acc(...
-            des_x(i), des_y(i), des_x(i+1), des_y(i+1), vel_x(i), vel_y(i), dt)
+            des_x(i), des_y(i), des_x(i+1), des_y(i+1), vel_x(i), vel_y(i), dt);
 
         [vel_xb(i+1),vel_yb(i+1),acc_xb(i+1),acc_yb(i+1)] = dot_const_acc(...
-            des_xb(i), des_yb(i), des_xb(i+1), des_yb(i+1), vel_xb(i), vel_yb(i), dt)
+            des_xb(i), des_yb(i), des_xb(i+1), des_yb(i+1), vel_xb(i), vel_yb(i), dt);
         
         % c = [c max_acc-acc_xb(i) max_acc-acc_yb(i)];
     end

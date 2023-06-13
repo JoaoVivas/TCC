@@ -1,17 +1,28 @@
-
 % config
-clc;
-clear all;
-close all;
 % Sistema Din�mico
-
 % x,u mm mm/s
 mx =.200; % g
 my =.200; % g
-kx = 200; 
-ky = 200;
+kx = 2000; 
+ky = 2000;
 bx =0.01* 10000;
 by =0.01* 10000;
+
+% Gerador de Comandos
+global junction_speed max_acc max_vel jun_disv des_step_size min_x max_x min_y max_y dt_step_size
+min_x = -100.0001;
+max_x = 200.0001;
+min_y = -100.0001;
+max_y = 200.0001;
+
+max_acc = 5000;
+max_vel = 1000;
+
+junction_speed = 0;
+jun_disv = 0;
+
+des_step_size = 0.1;
+dt_step_size = 0.0002;
 
 global A_model B_model
 
@@ -29,44 +40,18 @@ B_model = [
     0       ky/my   0       by/my
     ];
 
-% Gerador de Comandos
-global junction_speed max_acc max_vel jun_disv des_step_size min_x max_x min_y max_y dt_step_size
-min_x = -100.0001;
-max_x = 200.0001;
-min_y = -100.0001;
-max_y = 200.0001;
-
-max_acc = 5000;
-max_vel = 1000;
-
-junction_speed = 0.1;
-jun_disv = 0.1;
-
-des_step_size = 0.1;
-dt_step_size = 0.001;
-
 % Otimiza��o
-global options nonlcon lcon objective_fun def_bounds
+global options lcon objective_fun
 options = optimoptions(@fmincon, 'TolFun', 0.01, 'MaxIter', 100000, ...
                        'MaxFunEvals', 90000, 'Display', 'iter', ...
-                       'DiffMinChange', 0.000001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
+                       'DiffMinChange', 0.0000001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
 
-% objective_fun = @(x) (x(1,:) - des_x)*(x(1,:) - des_x)'+(x(5,:) - des_y)*(x(5,:) - des_y)';
 % objective_fun = @desv_min_9;
 % objective_fun = @desv_min_5;
-objective_fun = @no_obj_fun;
+ objective_fun = @no_obj_fun;
 % objective_fun = @desv_min_runge2;
 % objective_fun = @desv_min_4;
-
-% def_bounds=@fixed_bounds_9;
-def_bounds=@fixed_bounds_5;
-% def_bounds=@fixed_bounds_2;
+% objective_fun = @desv_min_2;
 
 lcon=@empty_lcons;
 
-% nonlcon = @dbi_hargraves_x2
-% nonlcon = @dbi_hargraves_x5
-% nonlcon = @dbi_runge_kutta_x2
-nonlcon = @dbi_runge_kutta_x5
-
-% nonlcon = [];
