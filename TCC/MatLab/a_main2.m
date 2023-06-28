@@ -8,15 +8,15 @@ base_command
 
 initial_guess = false;
 %%
-runge_kutta_preview
+% runge_kutta_preview
 %%
-% hargraves_base_x2
+ hargraves_base_x2
 % runge_kutta_base_x2
 % runge_kutta_x2
 % runge_kutta_x4
- hargraves_x2
+% hargraves_x2
 % hargraves_x4 % roda mais ou menos mas foge da curva mesmo com a função de otimização
-% hargraves_x3 % horrivel
+% hargraves_dt_x3 % horrivel
 % hargraves_x5 % horrrivel
 
 %% --------------------------------------- Result Plots -----------------------------------------
@@ -34,6 +34,12 @@ figure(3)
 plot(r_t,r_vel_x,r_t,r_vel_y,r_t,r_vel_xb,r_t,r_vel_yb)
 title ('vx_vy(t) ponta e base otimizada')
 legend('vx da ponta',' vy da ponta ','vx da base ', 'vy da base')
+
+figure(4)
+plot(r_t, r_acc_x, r_t, r_acc_y, r_t, r_acc_xb, r_t, r_acc_yb)
+title ('accx_accy(t) ponta e base otimizada')
+legend('accx da ponta',' accy da ponta ','accx da base ', 'accy da base')
+
 %% --------------------------------------- Runge Kutta Result --------------------------------
 r_s0 = [0 0 0 0];
 r_base(1,:) = r_des_xb;

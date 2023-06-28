@@ -50,3 +50,5 @@ r_des_xb = u_base(1,:);
 r_des_yb = u_base(2,:);
 r_vel_xb = u_base(3,:);
 r_vel_yb = u_base(4,:);
+r_acc_xb = ax;
+r_acc_yb = ay;

@@ -22,20 +22,20 @@ function [c,ceq] = dbi_hargraves_x2_base(x)
     vel_yb(1) = 0;
     acc_xb(1) = 0;
     acc_yb(1) = 0;
-    
-    ceq=[des_x(1) des_y(1) t(1) des_xb(1) des_yb(1)];    
+    ceq = [];
     c=[];
     
     for i = 1 : (length(t)-1)
         dt = t(i+1)-t(i);
-        
+        ceq=[ceq des_xb(1) des_yb(1)];    
+    
         % [vel_x(i+1),vel_y(i+1),acc_x(i+1),acc_y(i+1)] = dot_const_acc(...
         %     des_x(i), des_y(i), des_x(i+1), des_y(i+1), vel_x(i), vel_y(i), dt);
     
         [vel_xb(i+1),vel_yb(i+1),acc_xb(i+1),acc_yb(i+1)] = dot_const_acc(...
             des_xb(i), des_yb(i), des_xb(i+1), des_yb(i+1), vel_xb(i), vel_yb(i), dt);
         
-        % c = [c max_acc-acc_xb(i) max_acc-acc_yb(i)];
+        %c = [c ((acc_xb(i+1))^2 +(acc_yb(i+1))^2)^0.5-(max_acc*2000)];
 
         x_i = [des_x(i);des_y(i);vel_x(i);vel_y(i)];
         u_i = [des_xb(i);des_yb(i);vel_xb(i);vel_yb(i)];
@@ -47,5 +47,6 @@ function [c,ceq] = dbi_hargraves_x2_base(x)
 
         ceq=[ceq delta'];
     end
+    %c = [c (max(abs(acc_xb)))-max_acc*10];
     ceq;
 end
