@@ -212,37 +212,22 @@ Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
 
 \subsubsection{\textit{Robust Filtered Basis Functions}}
 
-However, the FBF approach faces at least two practical chal-
-lenges. The first is that its computational cost becomes very
-high as the length (number of samples) in the motion trajectory
-increases. To overcome this challenge, a limited preview version
-of FBF, viz., limited preview filtered B-splines (LPFBS), was
-proposed by Duan et al. [11]. LPFBS was shown to significantly
-reduce the computational cost of the FBF approach without
-significantly sacrificing its tracking performance, allowing it to
-be implemented successfully on a desktop 3-D printer [11]. A
-second challenge is that, being a purely feedforward technique,
-the tracking accuracy of the FBF approach degrades in the
-presence of inaccuracies in the plant model or uncertainty in
-the plant dynamics [11].
-In the presence of uncertainty in the plant dynamics, the
-tracking accuracy of feedforward controllers such as FBF can be
+Com base nos desenvolvimentos nos trabalhos de \cite{ramani17} e \cite{duan18}, comentados anteriormente, 
+\cite{ramani20} busca atacar um segundo desafio pratico na implementação da FBF, sendo o primeiro desafio prático
+o custo computacional que foi endereçado pelo trabalho de \cite{duan18} através da LBFBF, permitindo a aplicação
+do algoritmo no mundo real.
 
-solution, which facilitates LPFBS, is needed.
-Hence, this article (and its preliminary version [28]) makes
-the following contributions to the literature.
-1) It proposes a robust FBF approach that retains the ele-
-gance of the least-squares solution of the standard FBF
-approach by using a robust filter instead of nominal plant
-dynamics to filter basis functions.
-2) It proposes the inverse of an optimal feedforward con-
-troller that minimizes an error cost function for known
-plant uncertainty as a robust filter for use in robust FBF.
-3) It demonstrates the effectiveness of the proposed robust
-FBF approach using simulation examples and experi-
-ments on a desktop 3-D printer with dynamic uncertainty.
-\cite{ramani20}
+Este segundo desafio se trata da degradação de precisão de rastreamento da abordagem FBF, causada por
+imprecisões no modelo ou incertezas na dinâmica da planta atrelado a característica do método de se
+utilizar puramente uma abordagem de \textit{feedforward}. A não participação de \textit{feedbacks} sensoriais
+do mundo real abre espaço para uma crescente divergência entre o modelo e a realidade.
 
+Considerando o requisito de manter a performance computacional alcançada com o método LPFBF, \cite{ramani20} 
+propõe, também, a utilização de um filtro robusto em substituição à dinâmica nominal da planta para 
+filtrar as funções de base. Esse filtro robusto é construído com base no inverso de um controlador 
+feedforward ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta 
+como um filtro robusto.
+O esquema do método é apresentado na figura \ref*{fig:flowchart_rfbf}.
 
 \begin{figure}[!htb]
     \centering
@@ -363,10 +348,56 @@ de espaço de estados \cite{hamilton94}.
     f(t)
 \end{equation}
 
-\subsubsection{Runge-Kutta}
-Runge Kutta é um algoritimo de integração numérica baseada na série de Tailor onde,
-nas formulações explicitas são calculados 4 coeficientes que são utilizados para estimar
-o próximo ponto, assim caracterizando um algoritmo iterativo de valor inicial \cite{bettis79,dormand80}.
+\subsection{Integração implicita utilizando programação não linear e colocação}
+
+\citeauthor{hargraves87} (\citeyear{hargraves87}) descreve um algoritmo para a solução numérica direta de problemas de controle ótimo \cite{hargraves87}. 
+O método utiliza polinômios cúbicos para representar as variáveis de estado, interpolação linear para as 
+variáveis de controle e colocação para satisfazer as equações diferenciais. 
+Essa representação transforma o problema de controle ótimo em um problema de programação matemática, 
+que é resolvido por meio de programação quadrática sequencial. 
+Esse método tem a vantagem de ser fácil de programar e pode lidar com problemas gerais de otimização 
+de trajetória, incluindo restrições de caminho, estados descontínuos e desigualdades de controle.
+
+O método aproxima a solução das equações diferenciais subdividindo cada estado da matriz de espaço de estados
+em segmentos, estes sendo representados por polinômios de 3°, onde o são utilizados os valores do estado no
+contorno e a derivada no tempo do estado, como definido pelas equações, no contorno.
+Os valores de estado são então selecionados de forma que as derivativas no centro do segmento concordem com
+as equações diferenciais.
+
+O procedimento base pode ser aplicado pelos seguintes passos.
+
+A equação \ref{eq:state_center_segment} avalia o estado no centro do segmento, onde $x$ representa o estado, 
+T representa o comprimento do segmento e $f_i$ representa o valor da função avaliado em $x_i$.
+O subscrito c representa o centro do segmento.
+
+\begin{equation}
+    \label{eq:state_center_segment}
+    x_c = \frac{x_{1} + x_{2}}{2} + T\frac{f_{1} - f_{2}}{8}
+\end{equation}
+
+Da mesma maneira sua derivada é apresentada na equalção \ref{eq:state_dot_center_segment}.
+
+\begin{equation}
+    \label{eq:state_dot_center_segment}
+    \dot{x_{c}} = -3\frac{x_{1} + x_{2}}{2T} + \frac{f_{1} + f_{2}}{4}
+\end{equation}
+
+A equação \ref{eq:defect_calc} define então o valor do defeito no centro do segmento.
+
+\begin{equation}
+    \label{eq:defect_calc}
+    \Delta = f_c - \dot{x_c}
+\end{equation}
+
+Considerando também que a entrada do sistema pode ser avaliada de forma aproximada no centro do segmento 
+através da equação \ref{eq:input_value_center_segment}.
+
+\begin{equation}
+    \label{eq:input_value_center_segment}
+    u_c = \frac{u_1 + u_2}{2}
+\end{equation}
+
+Os valores de estado agora podem ser alterados de maneira que o defeito tenda a zero.
 
 \subsection{\textit{Objective Function Optimization}}
 Funções objetivo de otimização são elementos importantes na execução de algoritimos
