@@ -348,6 +348,57 @@ de espaço de estados \cite{hamilton94}.
     f(t)
 \end{equation}
 
+\subsection{Integração utilizando programação não linear}
+
+Descreve um algoritmo para a solução numérica direta de problemas de controle ótimo \cite{hargraves87}. 
+O método utiliza polinômios cúbicos para representar as variáveis de estado, interpolação linear para as 
+variáveis de controle e colocação para satisfazer as equações diferenciais. 
+Essa representação transforma o problema de controle ótimo em um problema de programação matemática, 
+que é resolvido por meio de programação quadrática sequencial. 
+Esse método tem a vantagem de ser fácil de programar e pode lidar com problemas gerais de otimização 
+de trajetória, incluindo restrições de caminho, estados descontínuos e desigualdades de controle.
+
+O método aproxima a solução das equações diferenciais subdividindo cada estado da matriz de espaço de estados
+em segmentos, estes sendo representados por polinômios de 3°, onde o são utilizados os valores do estado no
+contorno e a derivada no tempo do estado, como definido pelas equações, no contorno.
+Os valores de estado são então selecionados de forma que as derivativas no centro do segmento concordem com
+as equações diferenciais.
+
+O procedimento base pode ser aplicado pelos seguintes passos.
+
+A equação \ref{eq:state_center_segment} avalia o estado no centro do segmento, onde $x$ representa o estado, 
+T representa o comprimento do segmento e $f_i$ representa o valor da função avaliado em $x_i$.
+O subscrito c representa o centro do segmento.
+
+\begin{equation}
+    \label{eq:state_center_segment}
+    x_c = \frac{x_{1} + x_{2}}{2} + T\frac{f_{1} - f_{2}}{8}
+\end{equation}
+
+Da mesma maneira sua derivada é apresentada na equalção \ref{eq:state_dot_center_segment}.
+
+\begin{equation}
+    \label{eq:state_dot_center_segment}
+    \dot{x_{c}} = -3\frac{x_{1} + x_{2}}{2T} + \frac{f_{1} + f_{2}}{4}
+\end{equation}
+
+A equação \ref{eq:defect_calc} define então o valor do defeito no centro do segmento.
+
+\begin{equation}
+    \label{eq:defect_calc}
+    \Delta = f_c - \dot{x_c}
+\end{equation}
+
+Considerando também que a entrada do sistema pode ser avaliada de forma aproximada no centro do segmento 
+através da equação \ref{eq:input_value_center_segment}.
+
+\begin{equation}
+    \label{eq:input_value_center_segment}
+    u_c = \frac{u_1 + u_2}{2}
+\end{equation}
+
+Os valores de estado agora podem ser alterados de maneira que o defeito tenda a zero.
+
 \subsection{\textit{Objective Function Optimization}}
 Funções objetivo de otimização são elementos importantes na execução de algoritimos
 de otimização. Alguns estudos apontam que a qualidade e o número de variáveis de
