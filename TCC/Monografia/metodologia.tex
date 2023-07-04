@@ -34,49 +34,22 @@ outros parâmetros sobre a função.
 \subsection{Leitura Gcode}
 
 Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo
-as informações dos eixos X, Y e do *feedrate* (F). Com base nesses valores
+as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores
 uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode.
+Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto,
+mas é convertida para milímetros por segundo na construção da matriz de entrada.
 
-\section{lookahead}
-Para a construção da curva de velocidade trapezoidal a partir da matriz de posições
-e *feedrate* é necessário o cálculo das direções dos movimentos a serem realizados.
-As direções são representadas por vetores unitários calculados a partir
-do vetor deslocamento dividido pelo mesmo vetor normalizado (\ref{eq:dir_eq}). Sendo o vetor deslocamento
-obtido pela diferença entre dois vetores de posição sequenciais.
+\subsection{Velocidade de curva}
 
-\begin{equation}
-    \label{eq:dir_eq}
-    dir_{vector} = \frac{v}{norm(v)}
-\end{equation}
-
-Essas direções são utilizadas para o cálculo das velocidades pelo *look ahead*,
-considerando os parâmetros de desvio máximo de junção ($\delta _{junc}$), que corresponde a distância máxima
-entre o vertice da curva e a extremidade do raio e a aceleração maxima ($acc_{max}$) (figura \ref{fig:cornering}).
-Importante ressaltar que se trata de um desvio virtual do caminho, utilizado para calcular a 
-velocidade na curva ($v_{junc}$), que é calculada a partir da equação \ref{eq:v_jun}, enquanto o raio ($R$) é
-calulado a partir da equação \ref{eq:R_jun}, considerando $\alpha$ como o ângulo entre os vetores
-de velocidade, neste caso calculados a partir dos vetores de direção unitária ($dir_k$) (equação \ref{eq:alpha}) calculado na etapa anterior. 
-
-\begin{equation}
-    \label{eq:v_jun}
-    v_{junc} = \sqrt{acc_{max}*R}
-\end{equation}
-
-\begin{equation}
-    \label{eq:R_jun}
-    R = \delta _{junc} \frac{sin\left(\frac{\alpha}{2}\right)}{1-sin\left(\frac{\alpha}{2}\right)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:alpha}
-    sin\left(\frac{\alpha}{2}\right) = \left(\frac{norm(dir_1+dir_2)}{2}\right)
-\end{equation}
-
-Por fim, é necessário empregar uma lógica onde a velocidade de junta nunca seja maior
-que a velocidade de entrada ou velocidade de saida. 
+Por conta de alguns problemas de implementação de algoritmos de \textit{lookahead}, a velocidade
+de junção, ou seja, a velocidade de transição desejada entre um movimento e outro, foi fixada como 0.
+Essa condição representa bem trajetórias que possuem angulos entre os vetores de velocidade dos movimentos
+maiores ou iguais a 90°. Portanto, limitando os trajetos testados a esse tipo de trajetória o comando gerado
+se manteria próximo da realidade das impressoras 3D.
 
 \subsection{Curva rapezoidal de velocidade}
-A partir dessa matriz de posições e, agora também velocidades,
+A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecida pelo \textit{lookahead},
+nos casos apresentados neste trabalho fixadas amabas em zero,
 utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
 
 Essa função separa o deslocamento total do movimento em 3 fases de aceleração constante.
