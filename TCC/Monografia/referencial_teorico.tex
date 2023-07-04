@@ -212,17 +212,22 @@ Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
 
 \subsubsection{\textit{Robust Filtered Basis Functions}}
 
-"No entanto, a abordagem FBF enfrenta pelo menos dois desafios práticos. O primeiro é que seu custo computacional se torna muito alto à medida que o comprimento (número de amostras) na trajetória de movimento aumenta. Para superar esse desafio, uma versão de visualização limitada do FBF, ou seja, B-splines filtrados com visualização limitada (LPFBS), foi proposta por Duan et al. [11]. O LPFBS mostrou reduzir significativamente o custo computacional da abordagem FBF sem sacrificar significativamente seu desempenho de rastreamento, permitindo sua implementação bem-sucedida em uma impressora 3D de mesa [11]. Um segundo desafio é que, sendo uma técnica puramente de feedforward, a precisão de rastreamento da abordagem FBF se degrada na presença de imprecisões no modelo da planta ou incerteza na dinâmica da planta [11].
+Com base nos desenvolvimentos nos trabalhos de \cite{ramani17} e \cite{duan18}, comentados anteriormente, 
+\cite{ramani20} busca atacar um segundo desafio pratico na implementação da FBF, sendo o primeiro desafio prático
+o custo computacional que foi endereçado pelo trabalho de \cite{duan18} através da LBFBF, permitindo a aplicação
+do algoritmo no mundo real.
 
-Na presença de incerteza na dinâmica da planta, a precisão de rastreamento de controladores de feedforward, como o FBF, pode ser comprometida. Portanto, é necessária uma solução que facilite o LPFBS. Assim, este artigo (e sua versão preliminar [28]) faz as seguintes contribuições para a literatura.
+Este segundo desafio se trata da degradação de precisão de rastreamento da abordagem FBF, causada por
+imprecisões no modelo ou incertezas na dinâmica da planta atrelado a característica do método de se
+utilizar puramente uma abordagem de \textit{feedforward}. A não participação de \textit{feedbacks} sensoriais
+do mundo real abre espaço para uma crescente divergência entre o modelo e a realidade.
 
-    Propõe uma abordagem robusta de FBF que mantém a elegância da solução de mínimos quadrados da abordagem padrão do FBF, usando um filtro robusto em vez da dinâmica nominal da planta para filtrar as funções de base.
-
-    Propõe o inverso de um controlador feedforward ótimo que minimiza uma função de custo de erro para incerteza conhecida da planta como um filtro robusto para uso no FBF robusto.
-
-    Demonstra a eficácia da abordagem robusta de FBF proposta usando exemplos de simulação e experimentos em uma impressora 3D de mesa com incerteza dinâmica.
-\cite{ramani20}
-
+Considerando o requisito de manter a performance computacional alcançada com o método LPFBF, \cite{ramani20} 
+propõe, também, a utilização de um filtro robusto em substituição à dinâmica nominal da planta para 
+filtrar as funções de base. Esse filtro robusto é construído com base no inverso de um controlador 
+feedforward ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta 
+como um filtro robusto.
+O esquema do método é apresentado na figura \ref*{fig:flowchart_rfbf}.
 
 \begin{figure}[!htb]
     \centering
