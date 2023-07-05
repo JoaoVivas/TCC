@@ -148,35 +148,6 @@ Obtemos uma matriz de posições, velocidades e tempo.
     \end{split}
 \end{equation}
 
-% \section{Runge Kutta}
-
-
-
-% s(:,1) = s0;
-    
-%     A = A_model;
-%     B = B_model;
-%     N = length(t)-1;
-%     for i=1:N
-%         dt(i) = t(i+1)-t(i);
-%         uhalf = u_t_interpolator(u(:,i),u(:,i+1),dt(i),dt(i)/2);
-
-%         k1(:,i) = dynamic_model(s(:,i),u(:,i),A,B);
-%         k2(:,i) = dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf,A,B);
-%         k3(:,i) = dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf,A,B);
-%         k4(:,i) = dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1),A,B);
-
-%         avg_dot = (k1(:,i) + 2*k2(:,i) + 2*k3(:,i) + k4(:,i))/6;
-%         s(:,i+1) = s(:,i) + dt(i)*avg_dot;
-%     end
-
-
-% Para o calculo da estimativa da respota do sistema, utilizamos a função Runge Kutta
-% Primeiramente calculamos os valores de k1,k2,k3 e k4, calculamos a média da derivada do vetor de variaveis
-% e por fim o calculo do vetor x.
-
-
-
 \section{Modelagem dinâmica de uma impressora 3D}
 Para a modelagem do sistema mecânico são consideradas as seguintes simplificações:
 \begin{itemize}
@@ -266,126 +237,11 @@ Em uma notação simplificada temos a equação \ref{eq:simp_state_space_din_mod
     \dot x = A*x+B*u
 \end{equation}
 
-\section{Otimização FMINCON}
-\subsection{Restrições lineares e limites de borda}
-Não foi utilizado nenhuma restrição linear nessa otimização.
-Os limites superiores (upperbound) e inferiores (lowerbound) foram definidos
-baseados nos limites físicos da impressora para as posições x, xb e y,yb, 
-enquanto os limites para o vetor de variação de tempo foi estipulado uma margem
-configuravel baseada no próprio vetor de variação do tempo.
-Estas definições estão representadas pelo conjunto de equações \ref{eq:ublb_eqs}.
+\section{FMINCON}
 
-\begin{equation}
-    \label{eq:ublb_eqs}
-    \dot x = A*x+B*u
-\end{equation}
-
-% N = length(x(5,:));
-% base = ones(1,N);
-
-% lb(1,:) = base*min_x;
-% lb(2,:) = base*min_y;
-% lb(3,:) = base*min_x; % des_ux
-% lb(4,:) = base*min_y; % vel_ux
-% lb(5,:) = base*-0.0002;
-
-% ub(1,:) = base*max_x;
-% ub(2,:) = base*max_y;
-% ub(3,:) = base*max_x; 
-% ub(4,:) = base*max_y; 
-% ub(5,:) = (x(5,:)+0.0002)*1.2;
-
-\subsection{Restrições não lineares}
-
-************************************
-Blocked
-************************************
-
-
-% t = x(5,:);
-
-% des_x = x(1,:);
-% des_y = x(2,:);
-% vel_x(1) = 0;
-% vel_y(1) = 0;
-% acc_x(1) = 0;
-% acc_y(1) = 0;
-
-% des_xb = x(3,:);
-% des_yb = x(4,:);
-% vel_xb(1) = 0;
-% vel_yb(1) = 0;
-% acc_xb(1) = 0;
-% acc_yb(1) = 0;
-
-% %dv = des/dt; da = dv/dt ; 
-% %des = vi*t+at^2/2; a = 2*(des/t-vi)/t
-% % Vf^2-Vi^2 = 2ades
-
-% ceq=[des_x(1),des_y(1),t(1), des_xb(1), des_yb(1)];    
-% c=[];
-
-% for i = 1 : (length(t)-1)
-%     dt = t(i+1)-t(i);
-    
-%     delta_x = (des_x(i+1)-des_x(i));
-%     delta_y = (des_y(i+1)-des_y(i));
-    
-%     acc_x(i+1) = 2*((delta_x/dt)-vel_x(i))/dt; 
-%     acc_y(i+1) = 2*((delta_y/dt)-vel_y(i))/dt;
-%     vel_x(i+1) = vel_x(i)+acc_x(i+1)*dt;
-%     vel_y(i+1) = vel_y(i)+acc_y(i+1)*dt;
-
-%     delta_xb = (des_xb(i+1)-des_xb(i));
-%     delta_yb = (des_yb(i+1)-des_yb(i));
-    
-%     acc_xb(i+1) = 2*((delta_xb/dt)-vel_xb(i))/dt;
-%     acc_yb(i+1) = 2*((delta_yb/dt)-vel_yb(i))/dt;
-%     vel_xb(i+1) = vel_xb(i)+acc_xb(i+1)*dt;
-%     vel_yb(i+1) = vel_yb(i)+acc_yb(i+1)*dt;
-
-%     AccelXb = abs((vel_xb(i+1)-vel_xb(i))/dt);
-%     AccelYb = abs((vel_yb(i+1)-vel_yb(i))/dt);
-    
-%     c = [c max_acc-AccelXb max_acc-AccelYb];
-    
-%     x_i = [des_x(i);vel_x(i);des_y(i);vel_y(i)];
-%     u_i = [des_xb(i);vel_xb(i);des_yb(i);vel_yb(i)];
-    
-%     f_i = A_model*x_i+B_model*u_i;
-    
-%     x_n = [des_x(i+1);vel_x(i+1);des_y(i+1);vel_y(i+1)];
-%     u_n = [des_xb(i+1);vel_xb(i+1);des_yb(i+1);vel_yb(i+1)];
-    
-%     f_n = A_model*x_n+B_model*u_n;
-    
-%     x_c =(x_i+x_n)/2+dt*(f_i-f_n)/8;
-%     u_c = (u_i+u_n)/2;
-    
-%     x_ca=-3*(x_i-x_n)/(2*dt)-(f_i+f_n)/4;
-    
-%     f_c = A_model*x_c+B_model*u_c;
-    
-%     delta = f_c-x_ca;
-%     ceq=[ceq delta'];
-% end
-\subsection{Função objetivo (Objective Function)}
-A função objetivo (FO) foi escolhida visando minimizar a diferença entre
-as posições reais simuladas e a posição desejada pelo usuário.
-Para isso, foi utilizada a equação \ref{eq:fo_eq}, onde seu resultado é
-um escalar que quantifica o resultado do vetor a ser otimizado, permitindo
-que o algoritimo procure alterar os valores do vetor, sem quebrar suas restrições e limites,
-de maneira a minizar o resultado da FO.
-
-\begin{equation}
-    \label{eq:fo_eq}
-    Ob = (x - x_{desejado})*(x - x_{desejado})'+(y - y_{desejado})*(y - y_{desejado})'
-\end{equation}
-
-\subsection{Cofiguração da Fmincon}
-Foi utilizado as seguintes configurações da função fmincon:
-
-**configurações**
+\subsection{Configurações da função}
+Foi utilizado o seguinte conjunto de configurações opcionais da função (tabela \ref{tab:fmincon_options}).
+As configurações não indicadas se mantem na configuração padrão, que pode ser encontrada nos manuais da mesma.
 
 \begin{table}
     \begin{center}
@@ -404,28 +260,43 @@ Foi utilizado as seguintes configurações da função fmincon:
     \end{center}
 \end{table}
 
-\section{Dados base e cofigurações}
+\subsection{Restrições lineares e limites de borda}
+Não foi utilizado nenhuma restrição linear nessa otimização.
+Os limites superiores (\textit{upperbound}) e inferiores (\textit{lowerbound}) foram definidos
+baseados nos limites físicos da impressora (0 a 200 milímetros) para as posições $x_b$ e $y_b$.
 
-aceleração máxima
-desvio de junção
-delta tempo
-kx
-ky
-bx
-by
-mx
-my
+\subsection{Restrições não lineares}
+A função para as restrições não lineares foi implementada com base nas equaqções \ref{eq:state_center_segment},
+\ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
+popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
+com os valores iniciais. A variável de restrições de inequalidades não foi populada, os motivos são apresentados
+na seção de resultados e discussão.
 
-Levando em conta que modelo teste possui um comprimento de 20 cm e que os valores de rigidez e de amortecimento podem variar com a tensão aplicada, marca e tempo de uso, serão utilizados os valores aproximados para duas configurações (Tabela 2). A massa é estimada como sendo de 250 g que é uma estimativa com base nos conjuntos extrusora e hot end mais comuns.
+\subsection{Função objetivo}
+Foram realizados alguns testes com funções objetivo e seus resultaods são apresentados na seção de resultados e discussão,
+entretanto a função objetiva foi definida como zero, ou seja, pra qualquer valor ela retornara zero nas chamadas da FMINCON.
 
-\begin{table}
-    \begin{center}
-    \caption{Resultados experimentais dos coeficientes de rigidez e armortecimento de correias dentadas utilizadas em impressoras 3D}
-    \label{tab:parametros_expe_belt}
-    \begin{tabular}{c c c}
-        teste & teste2 & teste3 \\ \hline
-        1 & 2 & 3 \\
-        4 & 5 & x+1 \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
+\section{Solução da trajetória da base}
+
+É considerada como trajetória desejada a trajetória obtida através da função de geração de comando apresentada anteriormente
+e são utilizados os vetores de tempo e posição como variáveis globais, para serem acessados dentro da função das
+restrições não lineares, chamada pela FMINCON.
+Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
+na FMINCON, sendo adaptados em forma de matriz.
+
+A variável principal inserida na FMINCON é a matriz contendo os vetores de posição da base ($x_b$ e $y_b$),
+enquanto os vetores de posição da ponta é fixado pela trajetória desejada presente na forma de variáveis globais.
+
+Para conseguir realizar os cálculos necessários dentro da função de restrições não lineares é utilizado o seguinte conjunto
+de equações basicas (\ref{eq:der_acc}) para se derivar a curva posição-tempo considerando aceleração constante,
+sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo,
+$acc_n$ a aceleração do intervalo, $vel_n$ a velocidade final do intervalo e $vel_i$ a velocidade inicial do intervalo.
+Assim construindo o vetor de velocidade a partir da condição inicial de deslocamento e velocidade zero, para ambos os eixos ($x$ e $y$).
+
+\begin{equation}
+    \label{eq:der_acc}
+    \begin{split}        
+        acc_n = 2((des_n-des_i/dt)-vel_i)/dt \\
+        vel_n = vel_i+acc_n*dt \\
+    \end{split}
+\end{equation}
