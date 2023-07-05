@@ -69,7 +69,7 @@ que é obtida extrapolando retas com as inclinações da aceleração na velocid
     v_p = \sqrt{\frac{(v_i^2+v_f^2)}{2}+acc*des_{tot}}
 \end{equation}
 
-A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo *feedrate* disponibilizado no Gcode,
+A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
 é possível determinar o padrão da curva de velocidade deste movimento.
 Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
 que podem ser calculadas pelas equações \ref{eq:des_seg_acc} e \ref{eq:des_seg_no_acc}.
@@ -296,7 +296,7 @@ Assim construindo o vetor de velocidade a partir da condição inicial de desloc
 \begin{equation}
     \label{eq:der_acc}
     \begin{split}        
-        acc_n = 2((des_n-des_i/dt)-vel_i)/dt \\
-        vel_n = vel_i+acc_n*dt \\
+        acc_n = 2\frac{(\frac{des_n-des_i}{dt})-vel_i)}{dt} \\
+        vel_n = vel_i+acc_ndt \\
     \end{split}
 \end{equation}
