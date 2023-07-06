@@ -5,11 +5,11 @@
 mx =.200; % Kg
 my =.200; % Kg
 
-omega_n_x = 50;
-omega_n_y = 50;
+omega_n_x = 100;
+omega_n_y = 00;
 
-zeta_x = 0.5;
-zeta_y = 0.5;
+zeta_x = 0.3;
+zeta_y = 0.3;
 
 kx = omega_n_x^2*mx
 ky =  omega_n_y^2*my
@@ -37,7 +37,7 @@ junction_speed = 0;
 jun_disv = 0;
 
 des_step_size = 0.1;
-dt_step_size = 0.001;
+dt_step_size = 0.0005;
 
 global A_model B_model
 
@@ -58,7 +58,7 @@ B_model = [
 % Otimiza��o
 global options lcon objective_fun
 options = optimoptions(@fmincon, 'TolFun', 0.00001, 'MaxIter', 100000, ...
-                       'MaxFunEvals', 6000, 'Display', 'iter', ...
+                       'MaxFunEvals', 10000, 'Display', 'iter', ...
                        'DiffMinChange', 0.0000001, 'Algorithm', 'interior-point'); %'interior-point' 'sqp'
 
 % objective_fun = @desv_min_9;
