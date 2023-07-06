@@ -337,14 +337,14 @@ Assim, as configurações para as diferentes simulações adcionais segue a tabe
         1 & Frequência & 50 & 200 & 500 & $rad/s$\\
         2 & Coeficiente de amortecimento & 0 & 1 & 2 & - \\
         3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
-        4 & Velocidade desejada & 20 & 200 & - & $mm/s$ \\
+        4 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\
         5 & Resolução de interpolação & 0,01 & 0,001 & 0,0002 & $s$ \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
 
 Além das curvas de posição, deslocamento e velocidade, algumas variáveis também foram explicitadas para análise.
-São elas o tamnho dos vetores, o tempo de simulação e a viabilidade.
+São elas o tamnho dos vetores, o tempo de simulação e a viabilidade ao longo .
 O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
 do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
 O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON

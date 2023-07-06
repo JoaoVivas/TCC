@@ -5,8 +5,8 @@
 mx =.200; % Kg
 my =.200; % Kg
 
-omega_n_x = 50;
-omega_n_y = 50;
+omega_n_x = 100;
+omega_n_y = 100;
 
 zeta_x = 0.5;
 zeta_y = 0.5;
@@ -31,7 +31,7 @@ min_y = -100.0001;
 max_y = 200.0001;
 
 max_acc = 5000;
-max_vel = 1000;
+max_vel = 5000;
 
 junction_speed = 0;
 jun_disv = 0;
