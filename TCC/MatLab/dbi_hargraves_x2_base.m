@@ -1,7 +1,9 @@
 function [c,ceq] = dbi_hargraves_x2_base(x)
     global max_acc
-    global u_base t_base
-    
+    global u_base t_base ceq_jerk ceq_har ceq_initial
+    ceq_jerk =[];
+    ceq_har = [];
+    ceq_initial = [];
     t = t_base;
     
     des_x = u_base(1,:);
@@ -23,7 +25,8 @@ function [c,ceq] = dbi_hargraves_x2_base(x)
     acc_xb(1) = 0;
     acc_yb(1) = 0;
     
-    ceq=[des_x(1) des_y(1) t(1) des_xb(1) des_yb(1)];    
+    ceq_initial = [des_xb(1)*1000000000 des_yb(1)*1000000000];
+        
     c=[];
     
     for i = 1 : (length(t)-1)
@@ -35,7 +38,21 @@ function [c,ceq] = dbi_hargraves_x2_base(x)
         [vel_xb(i+1),vel_yb(i+1),acc_xb(i+1),acc_yb(i+1)] = dot_const_acc(...
             des_xb(i), des_yb(i), des_xb(i+1), des_yb(i+1), vel_xb(i), vel_yb(i), dt);
         
-        % c = [c max_acc-acc_xb(i) max_acc-acc_yb(i)];
+
+        jerk_x = ((abs(acc_xb(i+1) - acc_xb(i))/dt)-(max_acc*1/dt))/10000;
+        jerk_y = ((abs(acc_yb(i+1) - acc_yb(i))/dt)-(max_acc*1/dt))/10000;
+
+        if jerk_x > 0
+            ceq_jerk = [ceq_jerk jerk_x];
+        else
+            ceq_jerk = [ceq_jerk 0];
+        end
+        
+        if jerk_y > 0
+            ceq_jerk = [ceq_jerk jerk_y];
+        else
+            ceq_jerk = [ceq_jerk 0];
+        end
 
         x_i = [des_x(i);des_y(i);vel_x(i);vel_y(i)];
         u_i = [des_xb(i);des_yb(i);vel_xb(i);vel_yb(i)];
@@ -45,7 +62,9 @@ function [c,ceq] = dbi_hargraves_x2_base(x)
         
         delta = hargraves(x_i,u_i,x_n,u_n,dt,@dynamic_model);
 
-        ceq=[ceq delta'];
+        ceq_har = [ceq_har delta'];
     end
-    ceq;
+    ceq = [ceq_initial];
+    ceq = [ceq ceq_har];
+    ceq = [ceq ceq_jerk];
 end

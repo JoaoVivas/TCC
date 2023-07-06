@@ -22,6 +22,10 @@ ub(2,:) = base*max_y;
 %% ------------------------------------------ Fmincon routine ------------------------------
 optimal = [];
 [A_eq,b_eq,A_ineq,b_ineq] = lcon(x);
+global ceq_jerk ceq_har ceq_initial
+ceq_jerk =[];
+ceq_har = [];
+ceq_initial = [];
 
 if isempty(optimal)
          optimal=x;

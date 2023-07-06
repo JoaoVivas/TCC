@@ -8,14 +8,14 @@ base_command
 
 initial_guess = false;
 %%
-runge_kutta_preview
+% runge_kutta_preview
 %%
-% hargraves_base_x2
+ hargraves_base_x2
 % runge_kutta_base_x2
 % runge_kutta_x2
 % runge_kutta_x4
- hargraves_x2
-% hargraves_x4 % roda mais ou menos mas foge da curva mesmo com a função de otimização
+% hargraves_x2
+% hargraves_x4 % roda mais ou menos mas foge da curva mesmo com a funï¿½ï¿½o de otimizaï¿½ï¿½o
 % hargraves_x3 % horrivel
 % hargraves_x5 % horrrivel
 
@@ -47,4 +47,7 @@ figure(1001)
 plot(r_s_base(1,:),r_s_base(2,:),r_base(1,:),r_base(2,:))
 title ('x_y da ponta otimiada e base otimizada')
 legend('ponta','base')
+
+max(ceq_har)
+max(ceq_jerk)
 
