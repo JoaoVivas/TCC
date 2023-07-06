@@ -5,11 +5,11 @@
 mx =.200; % Kg
 my =.200; % Kg
 
-omega_n_x = 500;
-omega_n_y = 500;
+omega_n_x = 50;
+omega_n_y = 50;
 
-zeta_x = 0.1;
-zeta_y = 0.1;
+zeta_x = 0.5;
+zeta_y = 0.5;
 
 kx = omega_n_x^2*mx
 ky =  omega_n_y^2*my

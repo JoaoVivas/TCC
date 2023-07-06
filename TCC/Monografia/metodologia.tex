@@ -269,7 +269,10 @@ baseados nos limites físicos da impressora (0 a 200 milímetros) para as posiç
 A função para as restrições não lineares foi implementada com base nas equaqções \ref{eq:state_center_segment},
 \ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
 popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
-com os valores iniciais. A variável de restrições de inequalidades não foi populada, os motivos são apresentados
+com os valores iniciais. 
+Além disso, foi utilizado também como restrição de equalidade a arrancada, atrelado a um condicional para que
+se comporte como uma inequalidade.
+A variável de restrições de inequalidades não foi populada, os motivos são apresentados
 na seção de resultados e discussão.
 
 \subsection{Função objetivo}
@@ -304,12 +307,25 @@ Assim construindo o vetor de velocidade a partir da condição inicial de desloc
 \section{Descrição das simulações}
 
 Variação da frequência
+range (50 a 500) rad/s
 Variação do coeficiente de amortecimento
+range (0 a 2) delta variado
+
 Variação da velocidade desejada
+range (20 a 200)mm/s
+
 Variação da aceleração máxima
+range (1000 a 10000)mm/s²
+
 Variação da resolução de dt
+range (0.01 a 0.0002)s
+
 
 tempo de simulação
 tamanho dos vetores
-Parametors fmincon (Viabilidade, passo minimo)
+Parametors fmincon Viabilidade, passo minimo
+omega_d
+k
+b
+
 Curvas
