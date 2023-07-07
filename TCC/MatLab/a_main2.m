@@ -24,17 +24,17 @@ toc
 %% --------------------------------------- Result Plots -----------------------------------------
 figure(1)
 plot(r_des_x,r_des_y,r_des_xb,r_des_yb)
-title ('x_y da ponta otimiada e base otimizada')
+title ('Resultado x_y da ponta e base')
 legend('ponta','base')
 
 figure(2)
 plot(r_t,r_des_x,r_t,r_des_y,r_t,r_des_xb,r_t,r_des_yb)
-title ('x_y(t) ponta e base otimizada')
+title ('Resultado x_y(t) ponta e base')
 legend('x da ponta',' y da ponta ','x da base ', 'y da base')
 
 figure(3)
 plot(r_t,r_vel_x,r_t,r_vel_y,r_t,r_vel_xb,r_t,r_vel_yb)
-title ('vx_vy(t) ponta e base otimizada')
+title ('Resultado vx_vy(t) ponta e base')
 legend('vx da ponta',' vy da ponta ','vx da base ', 'vy da base')
 %% --------------------------------------- Runge Kutta Result --------------------------------
 % r_s0 = [0 0 0 0];

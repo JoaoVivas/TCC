@@ -306,26 +306,64 @@ Assim construindo o vetor de velocidade a partir da condição inicial de desloc
 
 \section{Descrição das simulações}
 
-Variação da frequência
-range (50 a 500) rad/s
-Variação do coeficiente de amortecimento
-range (0 a 2) delta variado
+Foi realizado uma série de simulações utilizando como base uma sequência de dois movimentos em 90 graus,
+10 milímetros ao longo do eixo x e depois 10 milímetros ao longo do eixo y, através de um arquivo Gcode de teste.
+Em cada uma dessas simulações um dos parâmetros é alterado, enquanto o restante permanece em uma configuração
+base, apresentada na tabela \ref{tab:base_params}. Além disso, em cada teste foram separados algumas variações do mesmo
+parâmetro em questão e as versões do teste são identificadas por uma letra de A a C.
+Assim, as configurações para as diferentes simulações adcionais segue a tabela \ref{tab:sim_params}.
 
-Variação da velocidade desejada
-range (20 a 200)mm/s
+\begin{table}
+    \begin{center}
+    \caption{Tabela de parâmetros base das simulações}
+    \label{tab:base_params}
+    \begin{tabular}{c c c}
+        Parâmetro & Valor & Unidade\\ \hline
+        Frequência & 100 & $rad/s$\\
+        Coeficiente de amortecimento & 0,5 & - \\
+        Aceleração base & 5000 & $mm/s^2$ \\
+        Velocidade desejada & 100 & $mm/s$ \\
+        Resolução de interpolação & 0,005 & $s$ \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
 
-Variação da aceleração máxima
-range (1000 a 10000)mm/s²
+\begin{table}
+    \begin{center}
+    \caption{Tabela do parâmetro modificado das simulações}
+    \label{tab:sim_params}
+    \begin{tabular}{c c c c c c}
+        Teste & Parâmetro & Valor A & Valor B & Valor C & Unidade\\ \hline
+        1 & Frequência & 50 & 200 & 500 & $rad/s$\\
+        2 & Coeficiente de amortecimento & 0 & 1 & 2 & - \\
+        3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
+        4 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\
+        5 & Resolução de interpolação & 0,01 & 0,001 & 0,0002 & $s$ \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
 
-Variação da resolução de dt
-range (0.01 a 0.0002)s
+Além das curvas de posição, deslocamento e velocidade, algumas variáveis também foram explicitadas para análise.
+São elas o tamnho dos vetores, o tempo de simulação e a viabilidade ao longo .
+O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
+do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
+O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
+termina de ser executada.
+A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
 
+A máquina utilizada para a realização das simulações foi um notebook acer com as configurações apresentadas na tabela
+\ref{tab:note_config}.
 
-tempo de simulação
-tamanho dos vetores
-Parametors fmincon Viabilidade, passo minimo
-omega_d
-k
-b
-
-Curvas
+\begin{table}
+    \begin{center}
+    \caption{Tabela de especificações do computador}
+    \label{tab:note_config}
+    \begin{tabular}{c c}
+        \hline
+        Processador & Intel I7-5500U 2.40GHz \\
+        Memoria & 8,00 GB \\
+        Placa de vídeo & Nvide Geforce 920M \\
+        Sistema & 64 bits \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}

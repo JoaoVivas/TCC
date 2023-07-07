@@ -115,7 +115,7 @@ Após a inclusão dessa etapa, principalmente no controle dinâmico da impressor
 de velocidades e qualidade chegaram a outro patamar se comparados a impressoras que não implementam essa etapa \cite{klipperdoc}.
 % \subsection{Five-phase S-curve Velocity Model}
 
-\subsection{Feedforward}
+\subsection{\textit{Feedforward}}
 Dentre os métodos de controle em aplicações FDM o \textit{Feedforward} 
 é o mais eficiênte dada as limitações de custo em impressoras 
 3D comuns e é capaz de ter um impacto maior em sistemas 
@@ -127,7 +127,7 @@ melhor em aplicações de usinagem utilizando CNCs (\textit{Computer Numerical C
 onde o valor dos equipamentos é maior e as forças envolvidas no corte
 influênciam mais do que as vibrações do próprio sistema.
 Já no caso das impressoras, quase 100\% dos efeitos é causado pelo próprio
-sistema. As principais limitações da aplicação de técnicas Feedforward
+sistema. As principais limitações da aplicação de técnicas \textit{Feedforward}
 em impressoras 3D são a dificuldade de montar um modelo representativo,
 a exigência computacional elevada e por fim a necessidade da simulação
 se extender do incio ao fim, pela dependência de se basear no estado 
@@ -148,7 +148,7 @@ em consideração diferentes objetivos e restrições
 \cite{singhose97}.
 Podemos
 ver na figura \ref{fig:degr_vs_esc} um exemplo comparativo
-das respostas ao degrau e da função escada aplicada pelo shaper.
+das respostas ao degrau e da função escada aplicada pelo \textit{shaper}.
 
 \begin{figure}[!htb]
     \centering
@@ -165,11 +165,11 @@ quando a última patente desse método expirou, e tem aprimorado a área como
 um todo, empurrando os limites anteriores de velocidade e precisão,
 sendo popularizada pelo Klipper \cite{klipperkinematic}.
 
-\subsubsection{filtered basis function (FBF)}
+\subsubsection{\textit{Filtered basis function (FBF)}}
 O método FBF necessita que a trajetória a ser rastreada seja totalmente
 conhecida e que a trajetória controlada possa ser expressa como
 uma combinação linear de funções base possuindo coeficientes desconhecidos.
-As funções base são utilizadas em um controle feedforward utilizando
+As funções base são utilizadas em um controle \textit{feedforward} utilizando
 o modelo dinâmico do sistema e selecionando os coeficientes de maneira a
 minimizar os erros dada uma trajetória desejada (figura \ref{fig:flowchart_fbf}).
 \cite{ramani17}
@@ -225,7 +225,7 @@ propõe, também, a utilização de um filtro robusto em substituição à dinâ
 filtrar as funções de base. Esse filtro robusto é construído com base no inverso de um controlador 
 feedforward ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta 
 como um filtro robusto.
-O esquema do método é apresentado na figura \ref*{fig:flowchart_rfbf}.
+O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
 
 \begin{figure}[!htb]
     \centering
@@ -263,7 +263,7 @@ computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 \subsection{Curvas de velocidade trapezoidal}
 As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
 de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades desejadas
-de cada movimento, enquanto o algorítmo de lookahead calcula as velocidades
+de cada movimento, enquanto o algorítmo de \textit{lookahead} calcula as velocidades
 de junção entre os movimentos, portanto ainda se faz necessário planejar
 o comportamento da velocidade ao longo do tempo do trajeto entre a velocidade incial
 e final do movimento (figura \ref{fig:trapezoidal}).
@@ -278,7 +278,7 @@ fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
 
 \begin{figure}[!htb]
     \centering
-    \caption{Look ahead em uma grande mudança de direção}
+    \caption{\textit{Look ahead} em uma grande mudança de direção}
     \includegraphics[scale=0.3]{lookaheadboth2}
 
     {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
@@ -287,7 +287,7 @@ fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
 
 \begin{figure}[!htb]
     \centering
-    \caption{Look ahead em uma pequena mudança de direção}
+    \caption{\textit{Look ahead} em uma pequena mudança de direção}
     \includegraphics[scale=0.3]{lookaheaddir1}
     \includegraphics[scale=0.3]{lookaheadtrap1}
 
