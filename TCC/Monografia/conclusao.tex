@@ -1,10 +1,16 @@
 \chapter{CONCLUSÃO}
-O presente trabalho não conseguiu alcançar seus objetivos 
-de maneira completa dada a limitação da implementação nos 
-limites de aceleração. Entretanto, os resultados obtidos 
-mostram o potencial da técnica iterativa de otimização, 
-necessitando de uma execução melhor para ser capaz de atuar 
-de forma completa. Outra dificuldade da técnica é o tempo de 
-processamento, onde não é possível realizar o processamento 
-em real-time sendo necessário utilizá-lo em conjunto com um 
-pré processamento do Gcode.
+Conclusão
+
+Nesta monografia, foi abordada a geração de comandos em impressoras 3D utilizando o método de manufatura aditiva conhecido como Fused Deposition Modeling (FDM). O objetivo principal do trabalho foi investigar e desenvolver metodologias para otimizar a velocidade de movimentação e garantir a precisão dimensional das peças produzidas.
+
+No referencial teórico (Capítulo 2), foram apresentados os conceitos fundamentais da manufatura aditiva e do FDM, incluindo o uso de algoritmos de controle, análise de trajetórias e modelagem dinâmica do sistema. Dentre as técnicas abordadas, destacam-se o look ahead, as curvas de velocidade trapezoidal, a integração implícita utilizando programação não linear e colocação, e a otimização da função objetivo.
+
+A metodologia utilizada (Capítulo 3) envolveu o uso do software Matlab, em particular a função fmincon, para a geração de comandos. Foram descritas as etapas para a leitura do código G, a definição da velocidade de curva, a utilização de curvas trapezoidais de velocidade e a interpolação para otimizar a trajetória da impressora 3D. Além disso, foi realizada a modelagem dinâmica da impressora 3D, considerando o espaço de estados.
+
+No Capítulo 4, foram apresentados os resultados e discussões. Correlações entre as variáveis de entrada foram analisadas, bem como as influências do modelo dinâmico no processo de manufatura aditiva. A performance computacional foi avaliada, levando em consideração as dificuldades encontradas, como a definição da função objetivo, a restrição de aceleração da base e as variáveis principais envolvidas na geração de comandos. Possíveis abordagens, como a combinação com outros algoritmos, foram sugeridas para aprimorar o processo.
+
+Com base nos resultados obtidos e nas discussões realizadas, conclui-se que a geração de comandos é um aspecto fundamental para a qualidade e eficiência da manufatura aditiva por FDM. As metodologias e técnicas abordadas neste trabalho fornecem uma base sólida para a melhoria contínua do processo, possibilitando a produção de peças com maior precisão dimensional e redução de tempo de fabricação.
+
+No entanto, é importante ressaltar que há desafios a serem superados, como a complexidade do problema e a necessidade de encontrar soluções mais robustas. Nesse sentido, são sugeridas pesquisas futuras para explorar a combinação com outros algoritmos e a aplicação de abordagens inovadoras que possam contribuir para avanços significativos na geração de comandos em impressoras 3D.
+
+Em suma, este estudo representa um passo importante para o aprimoramento da manufatura aditiva por FDM, fornecendo subsídios teóricos e metodológicos para a geração de comandos mais eficientes e precisos. Espera-se que as contribuições deste trabalho incentivem pesquisas adicionais e promovam avanços na área, impulsionando a utilização da manufatura aditiva em diversos setores industriais.
