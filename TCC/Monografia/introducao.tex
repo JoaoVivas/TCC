@@ -1,12 +1,41 @@
 \chapter{INTRODUÇÃO}
-A manufatura aditiva tem se mostrado uma tecnologia promissora para a fabricação de peças e componentes em diversas áreas, como engenharia, medicina e indústria aeroespacial. Com a crise global logística causada pela pandemia, a manufatura aditiva ganhou destaque devido à sua capacidade de produção flexível e descentralizada. Nesse contexto, a impressão 3D, em particular o método \textit{Fused Deposition Modeling} (FDM), tem se tornado cada vez mais relevante, encontrando aplicações variadas em setores como aeroespacial, automobilístico e prototipagem rápida, tornando-se mais acessível.
+A manufatura aditiva tem se mostrado uma tecnologia promissora para a fabricação de peças e componentes em
+diversas áreas, como engenharia, medicina e indústria aeroespacial. Com a crise global logística causada
+pela pandemia, a manufatura aditiva ganhou destaque devido à sua capacidade de produção flexível e 
+descentralizada. Nesse contexto, a impressão 3D, em particular o método 
+\textit{Fused Deposition Modeling} (FDM), tem se tornado cada vez mais relevante, encontrando aplicações 
+variadas em setores como aeroespacial, automobilístico e prototipagem rápida, tornando-se mais acessível.
 
-No entanto, uma das limitações significativas da impressão 3D, especialmente do tipo FDM, é o tempo de impressão, que ainda restringe o tamanho das peças produzidas em um período razoável. Frequentemente, é necessário reduzir drasticamente a resolução da impressão para compensar esse aspecto. Diante disso, a academia e as comunidades maker têm buscado impressoras capazes de imprimir mais rapidamente, sem comprometer a qualidade. Além da possível redução no tempo de impressão, a capacidade de imprimir em alta velocidade proporciona um aumento proporcional na qualidade de impressão, em relação à diferença entre a velocidade máxima e a velocidade de impressão.
+A modelagem digital, por exemplo \textit{Computer Aided Design} (CAD), anda lado a lado ao processo de impressão 3D
+e desempenha um papel fundamental no processo de criação e distribuição, permitindo a concepção de modelos 
+tridimensionais precisos que podem ser compartilhados e reproduzidos de maneira descentralizada. 
+Para se imprimir um desses modelos é feita uma preparação por meio de um \textit{software} de fatiamento 
+(\textit{slicer}), que divide o modelo em camadas e gera os comandos necessários para a impressora 3D. 
+A partir destes comandos a impressora interpreta os passos que deverão ser tomados e quando cada um deles 
+deve ser realizado. Entre a interpretação e execução destes comandos existe uma diversidade de processos 
+intermediarios que tem impacto direto na qualidade e na velocidade de impressão.
 
-Portanto, é relevante explorar técnicas que permitam alcançar capacidades superiores de qualidade e velocidade de impressão, flexibilizando a tecnologia e ampliando sua aplicação comercial viável. Nesse sentido, a modelagem digital, por exemplo \textit{Computer Aided Design} (CAD), desempenha um papel fundamental no processo de criação, permitindo a concepção de modelos tridimensionais precisos. Posteriormente, os modelos são preparados para impressão por meio de um software de fatiamento (\textit{slicer}), que divide o modelo em camadas e gera os comandos necessários para a impressora 3D. A partir destes comandos a impressora interpreta os passos que deverão ser tomados e quando cada um deles deve ser realizado. Entre a interpretação e execução destes comandos existe uma diversidade de processos intermediarios que tem impacto direto na qualidade e na velocidade de impressão.
+No entanto, uma das limitações significativas da impressão 3D, especialmente do tipo FDM, é o tempo de 
+impressão, que ainda restringe o tamanho das peças produzidas em um período razoável. Frequentemente, é 
+necessário utilizar camadas e linhas mais grossas para compensar esse aspecto, diminuindo a habilidade de
+se reproduzir detalhes menores. Diante disso, existe uma procura por maneiras de se imprimir mais rapidamente, 
+sem comprometer a qualidade.
+Assim, é relevante explorar técnicas que permitam alcançar capacidades superiores de qualidade e 
+velocidade de impressão, flexibilizando a tecnologia e ampliando sua aplicação comercial viável. 
 
-Este trabalho tem como objetivo investigar e desenvolver metodologias para atuação de controle na geração de comandos em impressoras 3D utilizando o método FDM. Será abordado o referencial teórico, contemplando os princípios básicos da manufatura aditiva, os conceitos específicos do \textit{Fused Deposition Modeling}, os métodos de geração de comando, como \textit{look ahead}, curvas de velocidade trapezoidal e o estado da arte quanto ao desenvolvimento de metodos de controle que buscam aprimorar a qualidade e diminuir o tempo necessário para imprimir uma peça, como \textit{InputShaping}.
+Este trabalho tem como objetivo investigar e desenvolver metodologias para atuação de controle na geração de
+comandos em impressoras 3D utilizando o método FDM. Será abordado o referencial teórico, contemplando os 
+princípios básicos da manufatura aditiva, os conceitos específicos do \textit{Fused Deposition Modeling}, 
+os métodos de geração de comando, como \textit{look ahead}, curvas de velocidade trapezoidal e o estado da 
+arte quanto ao desenvolvimento de metodos de controle que buscam aprimorar a qualidade e diminuir o tempo 
+necessário para imprimir uma peça, como \textit{InputShaping}.
 
-Será descrita a metodologia utilizada, incluindo o \textit{software} Matlab e a função fmincon, além das etapas para a geração de comandos e a modelagem dinâmica da impressora 3D. Os resultados obtidos serão apresentados e discutidos, analisando as correlações entre as variáveis de entrada, as influências do modelo dinâmico e a performance computacional. Serão abordadas as dificuldades encontradas durante o desenvolvimento do trabalho e possíveis abordagens para superá-las, como a combinação com outros algoritmos.
+Será descrita a metodologia utilizada, descrevendo as
+etapas para a geração de comandos e a modelagem dinâmica da impressora 3D. Os resultados obtidos serão 
+apresentados e discutidos, analisando as correlações entre as variáveis de entrada, as influências do 
+modelo dinâmico e a performance computacional. Serão abordadas as dificuldades encontradas durante o 
+desenvolvimento do trabalho e possíveis abordagens para superá-las, como a combinação com outros algoritmos.
 
-Por fim, serão apresentadas as conclusões, destacando as contribuições principais e apontando possíveis direções para pesquisas futuras. A proposta é fornecer subsídios para aprimorar a geração de comandos em impressoras 3D, visando melhorar a qualidade e eficiência do processo de manufatura aditiva.
+Por fim, serão apresentadas as conclusões, destacando as contribuições principais e apontando possíveis 
+direções para pesquisas futuras. A proposta é fornecer subsídios para aprimorar a geração de comandos em 
+impressoras 3D, visando melhorar a qualidade e eficiência do processo de manufatura aditiva.
