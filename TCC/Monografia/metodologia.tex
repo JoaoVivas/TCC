@@ -164,10 +164,10 @@ mola amortecedor e a transmissão de movimento e torque dos
 motores é considerada como ideal e não será abordada.
 Assim duas posições de estudo surgem para cada eixo, uma delas 
 representa a posição ideal, caso o sistema não possuiesse nenhuma flexibilidade
-ou perda, que também é a posição desejada pelo usuário ($px_b$). 
+ou perda, que também é a posição desejada pelo usuário ($x_b$). 
 A segunda posição considera as forças inerciais e a 
 flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
-e no caso empírico a posição real ($px$) como na figura \ref{fig:din_model}.
+e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
 
 
 \begin{figure}[!htb]
@@ -180,11 +180,11 @@ e no caso empírico a posição real ($px$) como na figura \ref{fig:din_model}.
 
 \begin{multline}
     \label{eq:mov_impressora}
-    m \ddot{px} + c(\dot{px} - \dot{px_b}) + k(px-px_b) = 0 \\
-    \ddot{px}  = - \frac{c}{m}(\dot{px} - \dot{px_b}) - \frac{k}{m}(px-px_b) \\
-    \ddot{px}  = - \frac{c}{m} \dot{px} + \frac{c}{m} \dot
-    {px_b} - \frac{k}{m} px + \frac{k}{m} px_b \\
-    \ddot{px}  = - \frac{c}{m} \dot{px} - \frac{k}{m} px + \frac{c}{m} \dot{px_b} + \frac{k}{m} px_b
+    m \ddot{x} + c(\dot{x} - \dot{x_b}) + k(x-x_b) = 0 \\
+    \ddot{x}  = - \frac{c}{m}(\dot{x} - \dot{x_b}) - \frac{k}{m}(x-x_b) \\
+    \ddot{x}  = - \frac{c}{m} \dot{x} + \frac{c}{m} \dot
+    {x_b} - \frac{k}{m} x + \frac{k}{m} x_b \\
+    \ddot{x}  = - \frac{c}{m} \dot{x} - \frac{k}{m} x + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b
 \end{multline}
 
 \subsection{Espaço de estados}
