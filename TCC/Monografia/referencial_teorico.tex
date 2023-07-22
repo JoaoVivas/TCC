@@ -221,13 +221,18 @@ O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
     \label{fig:flowchart_rfbf}
 \end{figure}
 
-\section{Geração de comando}
+
+\section{Impressora 3d}
+
+\subsection{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
 atuadores, motores, dentre outros componentes de uma impressora. 
 Ele recebe como base uma série de comandos que precisam ser 
 interpretados e interpolados. Esse processo é responsável pelo 
 controle de velocidade, aceleração dentre outras atividades que 
 variam no tempo \cite{yu20}. 
+
+\subsection{Gcode}
 
 \subsection{Curvas de velocidade trapezoidal}
 As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
@@ -244,8 +249,6 @@ um segmento de desaceleração constante até a velocidade final.
 Alguns ajustes são feitos para as diferentes condições de velocidade inicial, final e
 velocidade máxima atingida com uma determinada aceleração máxima, que pode
 fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
-
-
 
 No processo de impressão 3D são fornecidos para a impressora 
 uma sequência de pontos no espaço e limitações de velocidade 
@@ -292,7 +295,7 @@ computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
 \end{figure}
 
 
-\subsection{Espaço de Estados}
+\section{Espaço de Estados}
 
 Os sistemas dinâmicos podem ser descritos através de uma formulação
 chamada de espaço de estados, que tem como objetivo expressar modelos 
@@ -332,7 +335,7 @@ de espaço de estados \cite{hamilton94}.
     f(t)
 \end{equation}
 
-\subsection{Integração implicita utilizando programação não linear e colocação}
+\section{Integração implicita utilizando programação não linear e colocação}
 
 \citeauthor{hargraves87} (\citeyear{hargraves87}) descreve um algoritmo para a solução numérica direta de problemas de controle ótimo \cite{hargraves87}. 
 O método utiliza polinômios cúbicos para representar as variáveis de estado, interpolação linear para as 

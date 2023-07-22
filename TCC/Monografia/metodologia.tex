@@ -1,109 +1,66 @@
 \chapter{METODOLOGIA}
 
-\section{Matlab}
-
-MATLAB é um software interativo para computação numérica que possui uma série
-de ferramentas, funções, visualisadores, ferramentas para debugging, estrutura de dados, 
-entre outros auxilios que facilitam o desenvolvimento e o estudo de atividades
-que utilizam a computação numérica. Por conta desses facilitadores, o MATLAB é
-amplamente utilizado na indústria e no meio acadêmico.\cite{higham16}
-Dada essa característica e a existência da função FMINCON a disposição
-no ambiente MATBLAB, foi feita a escolha de se utiliza-lo para
-a construção do código presente neste trabalho.
-
-\subsection{fmincon}
-Como o modelo matemático a ser otimizado é multivariável e 
-possuindo restrições não-lineares, a função FMINCON do ambiente 
-do MATLAB é utilizada para otimizar as variações de velocidade 
-de forma a diminuir o erro de trajetória associado às 
-flexibilidades do sistema que causam perturbações e vibrações 
-indesejadas.
-É uma função baseada em gradientes que busca por todos os 
-mínimos locais de uma região que satisfaz outras restrições 
-estipuladas \cite{albaghdadi21}.
-Ela utiliza um conjunto de restrições superiores e inferiores 
-para cada ponto e otimiza a função considerando as restrições 
-estabelecidas pela função não linear, utilizando as equações de 
-movimento para encontrar a solução da EDO de maneira a 
-otimizar os parâmetros. Também permite uma série de configurações
-incluindo a escolha de diferentes algorítimos de otimização entre
-outros parâmetros sobre a função.
-
 \section{Geração de Comando}
 
-\subsection{Leitura Gcode}
-
+A geração de comando se inicia na leitura do Gcode para a obtenção dos movimentos e velocidades desejadas.
 Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo
 as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores
 uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode.
 Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto,
 mas é convertida para milímetros por segundo na construção da matriz de entrada.
 
-\subsection{Velocidade de curva}
+\subsection{Curva trapezoidal de velocidade}
 
-Por conta de alguns problemas de implementação de algoritmos de \textit{lookahead}, a velocidade
-de junção, ou seja, a velocidade de transição desejada entre um movimento e outro, foi fixada como 0.
-Essa condição representa bem trajetórias que possuem angulos entre os vetores de velocidade dos movimentos
-maiores ou iguais a 90°. Portanto, limitando os trajetos testados a esse tipo de trajetória o comando gerado
-se manteria próximo da realidade das impressoras 3D.
-
-\subsection{Curva rapezoidal de velocidade}
 A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecida pelo \textit{lookahead},
 nos casos apresentados neste trabalho fixadas amabas em zero,
 utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
 
-Essa função separa o deslocamento total do movimento em 3 fases de aceleração constante.
-Na primeira fase a velocidade trazida da velocidade incial até a velocidade desejada
-a aceleração constante, na segunda fase a velocidade é mantida constante na velocidade desejada
-e por fim na terceira fase a velocidade é levada da velocidade desejada até a velocidade final.
-Entretanto, em algumas situações pode não ser possível alcançar a velocidade desejada
-e o perfil se limitar a duas fases, outras condições onde alguma das velocidades é igual a
-velocidade desejada faz com que a quantidade de fases visiveis seja reduzida.
-
+Essa função constroi a curva de velocidade trapezoidal a partir dos dados
+de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada.
 Para identificar se a velocidade desejada será alcançada é calculado a velocidade pico ($v_p$)
 que é obtida extrapolando retas com as inclinações da aceleração na velocidade incial e final.
 É possível obter a velocidade de pico através da equação \ref{eq:v_p}.
 
 \begin{equation}
     \label{eq:v_p}
-    v_p = \sqrt{\frac{(v_i^2+v_f^2)}{2}+acc*des_{tot}}
+    v_p = \sqrt{\frac{(v_i^2+v_f^2)}{2}+a*d}
 \end{equation}
 
 A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
-é possível determinar o padrão da curva de velocidade deste movimento.
+é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas.
 Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
-que podem ser calculadas pelas equações \ref{eq:des_seg_acc} e \ref{eq:des_seg_no_acc}.
+que podem ser calculadas pelas equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}.
 Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento
-que são calculadas a partir da equação \ref{eq:des_seg_acc}.
+que são calculadas a partir da equação \ref{eq:des_seg_a}.
 
 \begin{equation}
-    \label{eq:des_seg_acc}
-    des_{segment} = \frac{(v_f^2-v_i^2)}{(2*acc_{segment})}
+    \label{eq:des_seg_a}
+    d = \frac{(v_f^2-v_i^2)}{(2*a)}
 \end{equation}
 
 \begin{equation}
-    \label{eq:des_seg_no_acc}
-    des_{middle} = des_{total}-(des_{up}+des_{down})
+    \label{eq:des_seg_no_a}
+    d_2 = d-(d_1+d_3)
 \end{equation}
 
 É possível calcular também os intervalos de tempo dessas fases, através das 
-equações \ref{eq:dt_seg_acc} e \ref{eq:dt_seg_no_acc}.
+equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
 
 \begin{equation}
-    \label{eq:dt_seg_acc}
-    dt_{segment} = \frac{(v_f-v_i)}{acc_{segment}}
+    \label{eq:dt_seg_a}
+    dt = \frac{(v_f-v_i)}{a}
 \end{equation}
 
 \begin{equation}
-    \label{eq:dt_seg_no_acc}
-    dt_d = \frac{des_d}{v_d}
+    \label{eq:dt_seg_no_a}
+    dt_2 = \frac{d_2}{v_d}
 \end{equation}
 
 Além disso é calculado a variação de velocidade nos intervalos pela equação \ref{eq:delta_vel}.
 
 \begin{equation}
     \label{eq:delta_vel}
-    \Delta vel = v_f-v_i
+    \Delta v = v_f-v_i
 \end{equation}
 
 Esses passos resultam em uma nova matriz contendo informações
@@ -113,9 +70,8 @@ onde existe uma alteração na aceleração.
 
 \subsection{Interpolação}
 
-A partir dessa matriz, é utilizada uma função de interpolação para dividir cada intervalo dessa matriz em intervalos menores
+A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediarios
 baseados em um passo de tempo definido para esta interpolação.
-Assim criando-se uma nova matriz dos dados interpolados.
 Para se dividir esses intervalos é possível utilizar a equação \ref{eq:N_steps}
 calculando o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim
 o restante do intervalo, calculado pela equação \ref{eq:dt_interpol_last_step}.
@@ -134,7 +90,7 @@ através da equação \ref{eq:delta_des_interpol}.
 
 \begin{equation}
     \label{eq:delta_des_interpol}
-    \Delta des_i = \Delta v_i*\Delta t_i+ \frac{acc_{segment}*\Delta t_i^2}{2} 
+    \Delta des_i = \Delta v_i*\Delta t_i+ \frac{a_{segment}*\Delta t_i^2}{2} 
 \end{equation}
 
 A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
@@ -142,10 +98,7 @@ Obtemos uma matriz de posições, velocidades e tempo.
 
 \begin{equation}
     \label{eq:acumulator_function}
-    \begin{split}
-        v_{0} &= init_{value} + v_{0} \\
-        v_k &= v_k+v_{k-1}
-    \end{split}
+        s(k) = s(k)+s(k-1) 
 \end{equation}
 
 \section{Modelagem dinâmica de uma impressora 3D}
@@ -154,7 +107,6 @@ Para a modelagem do sistema mecânico são consideradas as seguintes simplifica�
     \item Não existe escorregamento nem perda de potência na interação entre a polia e a correia
     \item A correia apresenta um comportamento equivalente à uma mola e um amortecedor em paralelo
     \item O bico injetor é um corpo rígido uniforme de geometria simples
-    \item A correia está acoplada nos dois lados da peça que se movimenta nos trilhos, entretanto como a correia só permite o tensionamento ela será considerada como um conjunto mola amortecedor simples
 \end{itemize}
 
 Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
@@ -169,7 +121,6 @@ A segunda posição considera as forças inerciais e a
 flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
 e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
 
-
 \begin{figure}[!htb]
     \centering
     \caption{Visualização das posições do sistema}
@@ -180,17 +131,16 @@ e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
 
 \begin{multline}
     \label{eq:mov_impressora}
+    \\
     m \ddot{x} + c(\dot{x} - \dot{x_b}) + k(x-x_b) = 0 \\
-    \ddot{x}  = - \frac{c}{m}(\dot{x} - \dot{x_b}) - \frac{k}{m}(x-x_b) \\
-    \ddot{x}  = - \frac{c}{m} \dot{x} + \frac{c}{m} \dot
-    {x_b} - \frac{k}{m} x + \frac{k}{m} x_b \\
-    \ddot{x}  = - \frac{c}{m} \dot{x} - \frac{k}{m} x + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b
+    - \frac{c}{m}(\dot{x} - \dot{x_b}) - \frac{k}{m}(x-x_b) = \ddot{x} \\
+    - \frac{c}{m} \dot{x} - \frac{k}{m} x + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b  = \ddot{x} \\
 \end{multline}
 
 \subsection{Espaço de estados}
 A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e
 a a solução do sistema, dado sua característica de dividir uma equação diferencial
-de ordem superior em um sistema de equações diferenciais de ordem 1.
+de ordem superior em um sistema de equações diferenciais de ordem 1 com um número maior de equações.
 O modelo dinâmico do sistema é apresentado na formulação de espaço de estados 
 na equação \ref{eq:espaco_de_estados_din_model}, baseado na equação \ref{eq:mov_impressora},
 utilizando a mesma equação para a base do eixo y.
@@ -198,10 +148,10 @@ utilizando a mesma equação para a base do eixo y.
 \begin{equation}
     \label{eq:espaco_de_estados_din_model}
     \begin{bmatrix}
-        \dot{px} \\
-        \ddot{px} \\
-        \dot{py} \\
-        \ddot{py}
+        \dot{x} \\
+        \ddot{x} \\
+        \dot{y} \\
+        \ddot{y}
     \end{bmatrix}
     =
     \begin{bmatrix}
@@ -211,10 +161,10 @@ utilizando a mesma equação para a base do eixo y.
         0 & 0 & -\frac{k_x}{m_x} & -\frac{c_x}{m_x}
     \end{bmatrix}
     \begin{bmatrix}
-        px \\
-        \dot{px} \\        
-        py \\
-        \dot{py} \\
+        x \\
+        \dot{x} \\        
+        y \\
+        \dot{y} \\
     \end{bmatrix}
     +
     \begin{bmatrix}
@@ -224,10 +174,10 @@ utilizando a mesma equação para a base do eixo y.
         0 & 0 & \frac{k_x}{m_x} & \frac{c_x}{m_x}
     \end{bmatrix}
     \begin{bmatrix}
-        px_b \\
-        \dot{px_b}  \\
-        py_b \\
-        \dot{py_b} 
+        x_b \\
+        \dot{x_b}  \\
+        y_b \\
+        \dot{y_b} 
     \end{bmatrix}
 \end{equation}
 
