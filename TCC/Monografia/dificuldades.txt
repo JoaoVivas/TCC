@@ -1,0 +1,27 @@
+
+\section{Dificuldades}
+Inicialmente tinha-se a ideia de utilizar a otimização da função objetivo da FMINCON, para conseguir encontrar
+a trajetória que possuiesse o menor erro entre o caminho percorrido pela ponta e o caminho desejado estabelecido pelo Gcode.
+Entretanto, se mostrou uma abordagem difícil por conta do custo computacional maior e da falta de previsibilidade
+no comporamento da FMINCON, principalmente na priorização entre função objetivo e as restrições.
+Foram feitas algumas tentativas também na utilização da função objetivo em minimizar o tempo total gasto pelos movimentos, dado
+um caminho fixo da ponta, mas os resultados foram tempos totais extremamente longos, além de um tempo de simulação maior.
+
+Existiram dificuldades também, de forma semelhante, no controle de grandes ocilações de velocidade. Foi utilizado
+uma restrição de arranque para minimiza-las, mas a utilização dessas restrições de maneira a utilizar as inequalidades
+disponiveis pela FMINCON não foi possível. A função não conseguia mais se enquadrar nas restrições de equalidade não linear e,
+portanto, foi utilizado uma função condicional para atribuir a característica de inequalidade dentro da restrição de equalidade,
+resultando em convergências das restrições.
+
+Outro ponto que foi utilizado para de certa forma controlar a prioridade de cada uma das restrições, foi a utilização
+de fatores que multiplicavam ou dividiam os valores das restrições, para que as mesmas fossem mais restritas ou menos restritas.
+
+Esses pontos indicam que o desenvolvimento, utilização de funções mais específicas ou até mesmo a solução em etapas
+facilite na convergência das soluções e no cumprimento das restrições estabelecidas, além de possivelmente mais eficientes
+computacionalmente.
+
+Uma questão a ser considerada quando avaliado a geração de comando exemplificada neste trabalho é a consideração de sua simplicidade.
+Não endereçando diversos fatores relevantes e complexos que incluem a mudança de velocidade em mundanças de direção de angulo menor que 90°
+e situações de frenagens impossíveis, que necessitam de uma abordagem iterativa para serem resolvidas.
+Assim, os exemplos abordados fogem dessas situações para que o escopo da geração de comando não interfira nas análises da solução
+proposta utilizando a FMINCON.

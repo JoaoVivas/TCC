@@ -1,7 +1,7 @@
 \chapter{RESULTADOS E DISCUSSÃO}
 \section{Resultados}
-\subsection{Teste Padrão}
-Podemos observar os resultados das curvas geradas pelo teste utilizando os parâmetros base nas figuras
+\subsection{Caso Padrão}
+Podemos observar os resultados das curvas geradas pelo Caso utilizando os parâmetros referência nas figuras
 \ref{fig:t_padr_vels}, \ref{fig:t_padr_des} e \ref{fig:t_padr_pos}. Nelas temos o comportamento compensador,
 especialmente nas curvas que tem o tempo como abicissa.
 Notamos também, principalmente na figura \ref{fig:t_padr_vels} uma ocilação de alta frequência que é um artefato
@@ -12,7 +12,7 @@ conforme exista uma maior resolução na interpolação do tempo, ou seja, apres
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste base - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso referência - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste Padrao vels}
     \label{fig:t_padr_vels}
     \end{center}
@@ -20,7 +20,7 @@ conforme exista uma maior resolução na interpolação do tempo, ou seja, apres
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste base - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso referência - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste Padrao des}
     \label{fig:t_padr_des}
     \end{center}
@@ -28,7 +28,7 @@ conforme exista uma maior resolução na interpolação do tempo, ou seja, apres
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste base - Caminho percorrido x vs y da ponta e da base}
+    \caption{Caso referência - Caminho percorrido x vs y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste Padrao pos}
     \label{fig:t_padr_pos}
     \end{center}
@@ -38,29 +38,29 @@ No gráfico da figura \ref{fig:t_padr_viab} nos indica a progressção das itera
 ponto uma iteração diferente, possuindo um valor correspondete ao número de vezes em que a função objetivo e as restrições foi avaliada
 no eixo x e o valor da viabilidade, que como comentado na seção de metodologia, indica o maior valor de restrição não cumprido.
 Podemos perceber o processo de convergência no decorrer das iterações, o que costuma indicar uma rodada de sucessos.
-Percebe-se também que os níveis inicias da viabilidade ficam próximos de $7,5x10^3$, que foram niveis próximos na maioria dos testes.
-Por fim, temos que o tempo elapsado de simulação para este teste foi de $89,8$ segundos, com os vetores de posição possuindo
+Percebe-se também que os níveis inicias da viabilidade ficam próximos de $7,5x10^3$, que foram niveis próximos na maioria dos Casos.
+Por fim, temos que o tempo elapsado de simulação para este Caso foi de $89,8$ segundos, com os vetores de posição possuindo
 um tamanho de 241 elementos.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste base - Num de fun x Viabilidade}
+    \caption{Caso referência - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste Padrao Viabilidade}
     \label{fig:t_padr_viab}
     \end{center}
 \end{figure}
 
-\subsection{Teste 1}
+\subsection{Caso 1 - Variação da frequência}
 Os resultados da variação da variavel de entrada frequência natural, que varia basicamente o comportamento da planta do
-modelo dinâmico, exemplifica as diferenças nas amplitudes dos desvios entre a ponta e a base e uma menor necessidade de compensação, assim como previsto
+modelo dinâmico, exemplifica as diferenças nas amplitudes dos desvios entre a ponta e a referência e uma menor necessidade de compensação, assim como previsto
 de um sistema de rigidez maior.
 As diferenças podem ser observadas de forma clara se compadas as figuras \ref{fig:t_1a_vels}, \ref{fig:t_1b_vels} e \ref{fig:t_1c_vels},
-comparando também as diferenças entre o comportamento do deslocamento e do caminho tomado entre os dois estremos do teste (A e C) nas figuras
+comparando também as diferenças entre o comportamento do deslocamento e do caminho tomado entre os dois estremos do Caso (A e C) nas figuras
 \ref{fig:t_1a_des}, \ref{fig:t_1c_des}, \ref{fig:t_1a_pos} e \ref{fig:t_1c_pos}.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1A - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 1A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 A vels}
     \label{fig:t_1a_vels}
     \end{center}
@@ -68,14 +68,14 @@ comparando também as diferenças entre o comportamento do deslocamento e do cam
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1B - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 1B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \label{fig:t_1b_vels}
     \end{center}
 \end{figure}
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1C - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 1C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 C vels}
     \label{fig:t_1c_vels}
     \end{center}
@@ -83,7 +83,7 @@ comparando também as diferenças entre o comportamento do deslocamento e do cam
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1A - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 1A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 A des}
     \label{fig:t_1a_des}
     \end{center}
@@ -91,7 +91,7 @@ comparando também as diferenças entre o comportamento do deslocamento e do cam
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1C - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 1C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 C des}
     \label{fig:t_1c_des}
     \end{center}
@@ -99,7 +99,7 @@ comparando também as diferenças entre o comportamento do deslocamento e do cam
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1A - Caminho percorrido x vs y da ponta e da base}
+    \caption{Caso 1A - Caminho percorrido x vs y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 A pos}
     \label{fig:t_1a_pos}
     \end{center}
@@ -107,38 +107,38 @@ comparando também as diferenças entre o comportamento do deslocamento e do cam
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1C - Caminho percorrido x vs y da ponta e da base}
+    \caption{Caso 1C - Caminho percorrido x vs y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 1 C pos}
     \label{fig:t_1c_pos}
     \end{center}
 \end{figure}
 
 Já na figura \ref{fig:t_1_viab} é possivel notar um comportamento semelhante de convergência, mas nota-se que
-nos testes de maior rigidez a viabilidade alcançada foi menor, ou seja, menores vioções das restrições impostas, dados
+nos Casos de maior rigidez a viabilidade alcançada foi menor, ou seja, menores vioções das restrições impostas, dados
 primordialmente pelos menores desvios e menor necessidade de compensação.
-Essa característica pode ser observada também nos tempos de simulação que foram reduzindo de $96,76 s$ (teste A) até
-$80,77 s$ (teste C), com o teste B ficando entre os dois com $89,04 s$, todos esses com vetores de posição de 241 elementos.
+Essa característica pode ser observada também nos tempos de simulação que foram reduzindo de $96,76 s$ (Caso A) até
+$80,77 s$ (Caso C), com o Caso B ficando entre os dois com $89,04 s$, todos esses com vetores de posição de 241 elementos.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 1 - Num de fun x Viabilidade}
+    \caption{Caso 1 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 1 Viabilidade}
     \label{fig:t_1_viab}
     \end{center}
 \end{figure}
 
-\subsection{Teste 2}
-No teste 2, que varia o coeficiente de amortecimento, podemos avaliar de forma mais clara as diferenças através das figuras
-\ref{fig:t_2b_pos} e \ref{fig:t_2c_pos} que mostram as curvas dos caminhos do teste b e c respectivamente, podemos comparar também
-com a figura \ref{fig:t_padr_pos} que possui um coeficiente intermediario entre os testes A e B.
-Sendo o teste A não apresentado, por não ter convergido, apresentando praticamente o mesmos valores de entrada, esse comportamento
+\subsection{Caso 2 - Variação do coeficiente de amortecimento}
+No Caso 2, que varia o coeficiente de amortecimento, podemos avaliar de forma mais clara as diferenças através das figuras
+\ref{fig:t_2b_pos} e \ref{fig:t_2c_pos} que mostram as curvas dos caminhos do Caso b e c respectivamente, podemos comparar também
+com a figura \ref{fig:t_padr_pos} que possui um coeficiente intermediario entre os Casos A e B.
+Sendo o Caso A não apresentado, por não ter convergido, apresentando praticamente o mesmos valores de entrada, esse comportamento
 é identificado na figura \ref{fig:t_2_viab}, onde podemos observar também um padrão convergência para valores de viabilidade menor conforme
 coeficiente de amortecimento também aumenta, ou seja, uma maior facilidade de compensar os desvios.
-Todos se mantiveram com 241 elementos nos vetores de posição e tempos de simulação de $69, 89 e 52 s$ para os testes 2A, 2B e 2C respectivamente.
+Todos se mantiveram com 241 elementos nos vetores de posição e tempos de simulação de $69, 89 e 52 s$ para os Casos 2A, 2B e 2C respectivamente.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 2B - Caminho percorrido x vs y da ponta e da base}
+    \caption{Caso 2B - Caminho percorrido x vs y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 2 B pos}
     \label{fig:t_2b_pos}
     \end{center}
@@ -146,7 +146,7 @@ Todos se mantiveram com 241 elementos nos vetores de posição e tempos de simul
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 2C - Caminho percorrido x vs y da ponta e da base}
+    \caption{Caso 2C - Caminho percorrido x vs y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 2 C pos}
     \label{fig:t_2c_pos}
     \end{center}
@@ -154,24 +154,24 @@ Todos se mantiveram com 241 elementos nos vetores de posição e tempos de simul
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 2 - Num de fun x Viabilidade}
+    \caption{Caso 2 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 2 Viabilidade}
     \label{fig:t_2_viab}
     \end{center}
 \end{figure}
 
-\subsection{Teste 3}
+\subsection{Caso 3 - Variação na aceleração}
 Podemos observar na figura \ref{fig:t_3a_vels} uma curva de velocidade diferente, dado que reduzimos a aceleração
 na geração de comando, a velocidade não conseguiu alcançar o nivel de velocidade desejada e assim toma-se a forma de um triangulo.
-Já pela figura \ref{fig:t_3_viab}, podemos observar que a função teve dificuldades para solucionar o teste A, enquanto para o teste B
-teve um comporamento semelhante aos testes anteriores, com um aumento nos valores de viabilidade.
-Um dos motivos possíveis para essa dificuldade se da no tamanho dos vetores trabalhados, no teste A o vetor de posições
-possuia 401 elementos, e levou $195 s$ para realizar a simulção, enquanto para o teste B o vetor de posição possuia 221 elementos
-e levou $78 s$, valores bem mais próximos aos testes base assim como suas curvas.
+Já pela figura \ref{fig:t_3_viab}, podemos observar que a função teve dificuldades para solucionar o Caso A, enquanto para o Caso B
+teve um comporamento semelhante aos Casos anteriores, com um aumento nos valores de viabilidade.
+Um dos motivos possíveis para essa dificuldade se da no tamanho dos vetores trabalhados, no Caso A o vetor de posições
+possuia 401 elementos, e levou $195 s$ para realizar a simulção, enquanto para o Caso B o vetor de posição possuia 221 elementos
+e levou $78 s$, valores bem mais próximos aos Casos referência assim como suas curvas.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 3A - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 3A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 3 A vels}
     \label{fig:t_3a_vels}
     \end{center}
@@ -179,23 +179,23 @@ e levou $78 s$, valores bem mais próximos aos testes base assim como suas curva
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 3 - Num de fun x Viabilidade}
+    \caption{Caso 3 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 3 Viabilidade}
     \label{fig:t_3_viab}
     \end{center}
 \end{figure}
 
-\subsection{Teste 4}
+\subsection{Caso 4 - Variação da velocidade}
 Variando a velocidade desejada, através do Gcode de entrada, analisamos os impactos de velocidades desajadas mais baixas e mais altas.
-As mais baixas (teste A) tem seu maior impacto no tamanho dos vetores e no tempo de simulção, já que percorre o percurso em mais tempo,
+As mais baixas (Caso A) tem seu maior impacto no tamanho dos vetores e no tempo de simulção, já que percorre o percurso em mais tempo,
 gerando uma malha com mais pontos, dada a resolulçao de $dt$ como fixa. Ficando assim com um tempo de simulação de $219 s$ e 421 elementos nos vetores de posição.
-Enquanto para o teste B, o tempo de simulação ficou em $60 s$ e com 181 elementos, mas dada a velocidade desejada maior e uma mesma aceleração máxima
-na geração de comando, a curva de velocidade se assemelha a do teste 3A exposta na figura \ref{fig:t_4b_vels} e com a curva de deslocamentos apresentada na figura \ref{fig:t_4b_des}.
+Enquanto para o Caso B, o tempo de simulação ficou em $60 s$ e com 181 elementos, mas dada a velocidade desejada maior e uma mesma aceleração máxima
+na geração de comando, a curva de velocidade se assemelha a do Caso 3A exposta na figura \ref{fig:t_4b_vels} e com a curva de deslocamentos apresentada na figura \ref{fig:t_4b_des}.
 Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 4B - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 4B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 4 B vels}
     \label{fig:t_4b_vels}
     \end{center}
@@ -203,7 +203,7 @@ Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 4 B des}
     \label{fig:t_4b_des}
     \end{center}
@@ -211,13 +211,13 @@ Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 4 - Num de fun x Viabilidade}
+    \caption{Caso 4 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 4 Viabilidade}
     \label{fig:t_4_viab}
     \end{center}
 \end{figure}
 
-\subsection{Teste 5}
+\subsection{Caso 5 - Variação do passo de tempo}
 Por fim, evidenciamos as diferenças nos resultados com resoluções diferentes para a malha de tempo e seu impacto nas respostas.
 As figuras \ref{fig:t_5a_vels}, \ref{fig:t_5b_vels} e \ref{fig:t_5c_vels} revelam principalmente a influência desse parâmetro
 nas ocilações nos graficos de velocidade, entretanto a diferença é menos nítida se avaliados os gráficos de deslocamento das figuras
@@ -225,7 +225,7 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5A - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 5A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 A vels}
     \label{fig:t_5a_vels}
     \end{center}
@@ -233,7 +233,7 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5B - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 5B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 B vels}
     \label{fig:t_5b_vels}
     \end{center}
@@ -241,7 +241,7 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5C - Comportamento no tempo das velocidades em x e y da ponta e da base}
+    \caption{Caso 5C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 C vels}
     \label{fig:t_5c_vels}
     \end{center}
@@ -249,7 +249,7 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5A - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 5A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 A des}
     \label{fig:t_5a_des}
     \end{center}
@@ -257,7 +257,7 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 B des}
     \label{fig:t_5b_des}
     \end{center}
@@ -265,55 +265,28 @@ nas ocilações nos graficos de velocidade, entretanto a diferença é menos ní
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5C - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
+    \caption{Caso 5C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 C des}
     \label{fig:t_5c_des}
     \end{center}
 \end{figure}
 
 Podemos notar também o impacto na velocidade e facilidade de se convergir, podendo ser observado na figura \ref{fig:t_5_viab}, assim
-como os tempos de simulação $0,7 s$, $3 s$ e $279 s$ para os testes A, B e C respectivamente. Além do tamanho dos vetores que extá diretamente relacionado,
-respectivamente em 25, 49 e 481 para os testes A, B e C.
+como os tempos de simulação $0,7 s$, $3 s$ e $279 s$ para os Casos A, B e C respectivamente. Além do tamanho dos vetores que extá diretamente relacionado,
+respectivamente em 25, 49 e 481 para os Casos A, B e C.
 
 \begin{figure}[!htb]
     \begin{center}
-    \caption{Teste 5 - Num de fun x Viabilidade}
+    \caption{Caso 5 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 5 Viabilidade}
     \label{fig:t_5_viab}
     \end{center}
 \end{figure}
 
-\section{Dificuldades}
-Inicialmente tinha-se a ideia de utilizar a otimização da função objetivo da FMINCON, para conseguir encontrar
-a trajetória que possuiesse o menor erro entre o caminho percorrido pela ponta e o caminho desejado estabelecido pelo Gcode.
-Entretanto, se mostrou uma abordagem difícil por conta do custo computacional maior e da falta de previsibilidade
-no comporamento da FMINCON, principalmente na priorização entre função objetivo e as restrições.
-Foram feitas algumas tentativas também na utilização da função objetivo em minimizar o tempo total gasto pelos movimentos, dado
-um caminho fixo da ponta, mas os resultados foram tempos totais extremamente longos, além de um tempo de simulação maior.
-
-Existiram dificuldades também, de forma semelhante, no controle de grandes ocilações de velocidade. Foi utilizado
-uma restrição de arranque para minimiza-las, mas a utilização dessas restrições de maneira a utilizar as inequalidades
-disponiveis pela FMINCON não foi possível. A função não conseguia mais se enquadrar nas restrições de equalidade não linear e,
-portanto, foi utilizado uma função condicional para atribuir a característica de inequalidade dentro da restrição de equalidade,
-resultando em convergências das restrições.
-
-Outro ponto que foi utilizado para de certa forma controlar a prioridade de cada uma das restrições, foi a utilização
-de fatores que multiplicavam ou dividiam os valores das restrições, para que as mesmas fossem mais restritas ou menos restritas.
-
-Esses pontos indicam que o desenvolvimento, utilização de funções mais específicas ou até mesmo a solução em etapas
-facilite na convergência das soluções e no cumprimento das restrições estabelecidas, além de possivelmente mais eficientes
-computacionalmente.
-
-Uma questão a ser considerada quando avaliado a geração de comando exemplificada neste trabalho é a consideração de sua simplicidade.
-Não endereçando diversos fatores relevantes e complexos que incluem a mudança de velocidade em mundanças de direção de angulo menor que 90°
-e situações de frenagens impossíveis, que necessitam de uma abordagem iterativa para serem resolvidas.
-Assim, os exemplos abordados fogem dessas situações para que o escopo da geração de comando não interfira nas análises da solução
-proposta utilizando a FMINCON.
-
 \section{Considerações futuras}
 \subsection{Combinação com outros algoritmos}
 Uma possivel abordagem a ser explorada utilizando a ideia do metodo deste trabalho é a sobreposição de algoritmos, onde
-um método baseado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
+um método referênciaado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
 com a participação de um método como \textit{InputShaping} para atacar as vibrações remanescentes.
 
 \subsection{\textit{Tuning}}

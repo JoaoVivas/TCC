@@ -78,8 +78,12 @@ artigos publicados no tema em anos recentes (2015 a 2018)
 otimização de parâmetros de impressão, acompanhado de 17\% de 
 trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas 27\%
 são relacionados ao restante dos temas, incluindo avanços tecnológicos relacionados
+<<<<<<< HEAD
+a melhorias de \textit{hardware} e \textit{software} desses dispositivos (\ref{fig:distr_artigos}).
+=======
 a melhorias de \textit{hardware} e \textit{software} desses dispositivos.
 (Figura 2).
+>>>>>>> 37d3a707e6fb92d6614b2bbf36d28687a89c476d
 
 \begin{figure}[!htb]
     \centering
@@ -222,7 +226,7 @@ O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
     \label{fig:flowchart_rfbf}
 \end{figure}
 
-\section{Geração de comando}
+\subsection{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
 atuadores, motores, dentre outros componentes de uma impressora. 
 Ele recebe como base uma série de comandos que precisam ser 
@@ -230,71 +234,39 @@ interpretados e interpolados. Esse processo é responsável pelo
 controle de velocidade, aceleração dentre outras atividades que 
 variam no tempo \cite{yu20}. 
 
-\subsection{\textit{Look ahead}}
-No processo de impressão 3D são fornecidos para a impressora 
-uma sequência de pontos no espaço e limitações de velocidade 
-entre os mesmos. A velocidade nos pontos é compartilhada entre 
-trajetos em sequência, o que torna considerá-los 
-independentemente ineficiente, introduzindo aceleração e 
-desaceleração desnecessária impactando negativamente no tempo 
-de impressão e na qualidade da peça impressa.
-O algoritmo \textit{Look Ahead} procura manter o máximo de velocidade 
-possível entre movimentos distintos, evitando acelerações e 
-desacelerações desnecessárias, como podemos observar nas figuras 
-\ref{fig:lookahead_small} e \ref{fig:lookahead_big}, 
-apesar de ser necessário um 
-pré-processamento desses pontos que introduzem um custo 
-computacional maior (YU et al. 2020) \cite{yu20, klipperkinematic}.
+\subsection{Gcode}
+
+O G-code (Código G) é uma linguagem de programação usada em impressoras 3D e máquinas CNC para controlar o movimento e as ações da máquina durante o processo de fabricação. Ele é composto por uma série de comandos textuais, cada um com um formato específico. Aqui estão alguns elementos-chave da estrutura típica de um comando G-code:
+
+\begin{itemize}
+    \item Prefixo (Código G): Todo comando G-code começa com a letra 'G', que indica que é um comando de movimento ou função.
+    \item Número do Comando: Após o 'G', segue um número que identifica o tipo específico de comando. Por exemplo, 'G0' é frequentemente usado para mover rapidamente a cabeça de impressão para uma posição, enquanto 'G1' é usado para movimentos de impressão lineares.
+    \item Parâmetros: Após o número do comando, podem seguir-se parâmetros adicionais. Esses parâmetros variam dependendo do comando, mas podem incluir coordenadas de posicionamento (X, Y, Z), velocidades de movimento, taxas de alimentação, temperaturas e outros valores relevantes.
+    \item Comentários: O G-code também pode incluir comentários precedidos por um ponto e vírgula (;) ou entre parênteses (). Os comentários não afetam a execução do programa, mas ajudam a documentar o código para facilitar a compreensão.
+    \item Fim de Linha: Cada comando G-code é normalmente concluído com um caractere de fim de linha, como o retorno de carro ('\textbackslash n') ou a combinação de retorno de carro e nova linha ('\textbackslash r \textbackslash n'), dependendo do sistema.
+\end{itemize}
 
 \subsection{Curvas de velocidade trapezoidal}
 As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
-de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades desejadas
-de cada movimento, enquanto o algorítmo de \textit{lookahead} calcula as velocidades
-de junção entre os movimentos, portanto ainda se faz necessário planejar
-o comportamento da velocidade ao longo do tempo do trajeto entre a velocidade incial
-e final do movimento (figura \ref{fig:trapezoidal}).
+de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades máximas
+de cada movimento, assim é necessário planejar o comportamento da velocidade ao longo tempo
+dentro de cada comando.
+
 Uma das maneiras mais simples para a criação dessa curva de velocidade é
-a criação de uma curva trapezoidal, onde podemos separar o setor em 3 segmentos
-de aceleração constante. Em um primeiro momento uma crescente de velocidade até
-a velocidade desejada, seguido de um segmento de velocidade constante e por fim
-um segmento de desaceleração constante até a velocidade final.
-Alguns ajustes são feitos para as diferentes condições de velocidade inicial, final e
-velocidade máxima atingida com uma determinada aceleração máxima, que pode
-fazer com que se diminua a quantidade de segmentos \cite{yu20,klipperkinematic}.
+de considerar as transições de velocidade com aceleração constante, criando 
+um perfil de velocidade trapezoidal, em geral com 3 segmentos.
+O primeiro segmento saindo da velocidade inicial para a velocidade máxima,
+o segundo segmento com velocidade constante e o terceiro segmento saindo da velocidade máxima alcançada
+para a velocidade final.
+Em alguns casos as condições do comando e as configurações de aceleração não possibilitam que a impressora
+alcance a velocidade máxima estabelecida no comando, nesses casos não existe o segundo segmento, ou seja, não existe
+no perfil um estágio de velocidade constante.
+\cite{yu20,klipperkinematic}.
+(figura \ref{fig:trapezoidal}).
 
-\begin{figure}[!htb]
-    \centering
-    \caption{\textit{Look ahead} em uma grande mudança de direção}
-    \includegraphics[scale=0.3]{lookaheadboth2}
+\section{Espaço de Estados}
 
-    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:lookahead_big}
-\end{figure}
-
-\begin{figure}[!htb]
-    \centering
-    \caption{\textit{Look ahead} em uma pequena mudança de direção}
-    \includegraphics[scale=0.3]{lookaheaddir1}
-    \includegraphics[scale=0.3]{lookaheadtrap1}
-
-    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:lookahead_small}
-\end{figure}
-
-
-\begin{figure}[!htb]
-    \centering
-    \caption{Curva de velocidades trapezoidal em uma sequência de movimentos}
-    \includegraphics[scale=0.4]{trapezoidex}
-
-    {\footnotesize Fonte: \citeauthor{klipperkinematic}, \citeyear{klipperkinematic}}
-    \label{fig:trapezoidal}
-\end{figure}
-
-
-\subsection{Espaço de Estados}
-
-A maioria dos sistemas dinâmicos pode ser escritos através de uma formulação
+Os sistemas dinâmicos podem ser descritos através de uma formulação
 chamada de espaço de estados, que tem como objetivo expressar modelos 
 de equações diferencias parciais (EDP) ou ordinárias (EDO) de ordem superior
 como um conjunto de EDPs ou EDOs de primeira ordem.
@@ -332,21 +304,27 @@ de espaço de estados \cite{hamilton94}.
     f(t)
 \end{equation}
 
-\subsection{Integração implicita utilizando programação não linear e colocação}
+\section{Integração implicita utilizando programação não linear}
 
 \citeauthor{hargraves87} (\citeyear{hargraves87}) descreve um algoritmo para a solução numérica direta de problemas de controle ótimo \cite{hargraves87}. 
-O método utiliza polinômios cúbicos para representar as variáveis de estado, interpolação linear para as 
-variáveis de controle e colocação para satisfazer as equações diferenciais. 
-Essa representação transforma o problema de controle ótimo em um problema de programação matemática, 
-que é resolvido por meio de programação quadrática sequencial. 
-Esse método tem a vantagem de ser fácil de programar e pode lidar com problemas gerais de otimização 
-de trajetória, incluindo restrições de caminho, estados descontínuos e desigualdades de controle.
+Este algorítmo emprega uma abordagem que utiliza polinômios cúbicos para representar as variáveis de estado. Adicionalmente, recorre à interpolação linear para tratar as variáveis de controle. 
+Esse enfoque converte efetivamente o problema de controle ótimo em um problema de programação matemática.
 
-O método aproxima a solução das equações diferenciais subdividindo cada estado da matriz de espaço de estados
-em segmentos, estes sendo representados por polinômios de 3°, onde o são utilizados os valores do estado no
-contorno e a derivada no tempo do estado, como definido pelas equações, no contorno.
-Os valores de estado são então selecionados de forma que as derivativas no centro do segmento concordem com
-as equações diferenciais.
+Uma das principais vantagens desse método é sua facilidade de implementação e sua capacidade de lidar com uma ampla gama de problemas de otimização de trajetória. Isso inclui a consideração de restrições de caminho, estados descontínuos e desigualdades de controle.
+
+O método alcança sua aproximação das soluções das equações diferenciais através da subdivisão de cada estado na matriz de espaço de estados em segmentos. Cada um desses segmentos é representado por polinômios de terceiro grau.
+
+Os valores de estado são então selecionados de maneira a garantir que a curva resultante da concatenação desses polinômios seja continua, ou seja,
+o valor da função e de sua derivada precisa ser igual para ambos polinômios nas conexões como observado na figura \ref{fig:hargraves_fun}
+
+\begin{figure}[!htb]
+    \centering
+    \caption{Ilustração integração implícita}
+    \includegraphics[scale=0.5]{hargraves_func}
+
+    {\footnotesize Fonte: \citeauthor{hargraves87}, \citeyear{hargraves87}}
+    \label{fig:hargraves_fun}
+\end{figure}
 
 O procedimento base pode ser aplicado pelos seguintes passos.
 
