@@ -1,22 +1,27 @@
 \chapter{RESULTADOS E DISCUSSÃO}
 \section{Resultados}
-\subsection{Caso Padrão}
-Podemos observar os resultados das curvas geradas pelo Caso utilizando os parâmetros referência nas figuras
-\ref{fig:t_padr_vels}, \ref{fig:t_padr_des} e \ref{fig:t_padr_pos}. Nelas temos o comportamento compensador,
-especialmente nas curvas que tem o tempo como abicissa.
-Notamos também, principalmente na figura \ref{fig:t_padr_vels} uma ocilação de alta frequência que é um artefato
-da resposta da FMINCON, essa ocilação se encontrava em amplitude muito maior e foi controlada através de restrições quanto ao 
-arranque, ou seja, a mudança da aceleração no tempo. Entretanto, essa restrição apresentou problemas de priorização
-de restrições que será comentado na seção de dificuldades. Notou-se também que a amplitude dessas ocilações tende a ser menor
-conforme exista uma maior resolução na interpolação do tempo, ou seja, apresente $dt$ menor.
+\subsection{Caso Base}
 
-\begin{figure}[!htb]
+A Figura \ref{fig:t_padr_vels} apresenta o perfil de velocidades para o caso base, no qual evidencia-se o comportamento compensador do sistema e uma oscilação de alta frequência, artefato da resposta da FMINCON. A amplitude das oscilações tende a ser menor conforme exista uma maior resolução na interpolação do tempo, ou seja, apresente $dt$ menor. Ademais, conforme mencionado na seção anterior, o arranque foi restringido afim de controlar a amplitude dessas oscilações. %%COMPLEMENTAR
+
+% Podemos observar os resultados das curvas geradas pelo Caso utilizando os parâmetros referência nas figuras
+% \ref{fig:t_padr_vels}, \ref{fig:t_padr_des} e \ref{fig:t_padr_pos}. Nelas temos o comportamento compensador,
+% especialmente nas curvas que tem o tempo como abicissa.
+% Notamos também, principalmente na figura \ref{fig:t_padr_vels} uma ocilação de alta frequência que é um artefato
+% da resposta da FMINCON, essa ocilação se encontrava em amplitude muito maior e foi controlada através de restrições quanto ao 
+% arranque, ou seja, a mudança da aceleração no tempo. Entretanto, essa restrição apresentou problemas de priorização
+% de restrições que será comentado na seção de dificuldades. Notou-se também que a amplitude dessas ocilações tende a ser menor
+% conforme exista uma maior resolução na interpolação do tempo, ou seja, apresente $dt$ menor.
+
+\begin{figure}[htp]
     \begin{center}
     \caption{Caso referência - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste Padrao vels}
     \label{fig:t_padr_vels}
     \end{center}
 \end{figure}
+
+A Figura \ref{fig:t_padr_des} ...
 
 \begin{figure}[!htb]
     \begin{center}
