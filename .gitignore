@@ -226,6 +226,8 @@ pythontex-files-*/
 # xmpincl
 *.xmpi
 
+*.json
+
 # xindy
 *.xdy
 
