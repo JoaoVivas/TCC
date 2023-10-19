@@ -6,7 +6,7 @@ integrada, dispensando a necessidade de planejar as operações de maneira indiv
 consideração das configurações globais.
 O processo é calculado pelo fatiador com base em um modelo tridimensional digital,
 geralmente criado a partir de \textit{Computer Aided Design} (CAD) e nas configurações do mesmo
-e resulta nas intruções necessárias para a máquina de manufatura aditiva construir o modelo físico.
+e resulta nas instruções necessárias para a máquina de manufatura aditiva construir o modelo físico.
 Uma das características 
 principais da MA é a rapidez na qual é possível criar protótipo
 diretamente de modelos digitais, por conta disso, em um contexto 
@@ -26,9 +26,9 @@ e aglutinação. Além disso, os materiais que podem ser utilizados incluem plá
 Como mencionado anteriormente, um dos métodos de manufatura aditiva mais populares
 é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade
 como as tecnologias baseadas na cura seletiva de resinas, \textit{stereolithography} (SLA) e \textit{Masked stereolithography Apparatus} (MSLA),
-alem de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo
+além de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo
 \textit{selective laser melting} (SLM) e \textit{Selective laser Sintering} (SLS) \cite{bikas16}.  
-Na figura \ref{fig:MA_industrias} podemos observar a distruibuição do uso de 
+Na figura \ref{fig:MA_industrias} podemos observar a distribuição do uso de 
 tecnologias MA por tipo de industria.   
 
 \begin{figure}[!htb]
@@ -103,7 +103,7 @@ a melhorias de \textit{hardware} e \textit{software} desses dispositivos (\ref{f
 
 Extrusora: A extrusora é responsável por derreter o filamento de material termoplástico e extrudá-lo 
 em forma de filamento derretido. 
-Ela consiste em um bico aquecido (hotend) que funde o material e um motor que empurra o 
+Ela consiste em um bico aquecido (\textit{hotend}) que funde o material e um motor que empurra o 
 filamento através do bico. Alguns modelos mais avançados podem ter extrusoras duplas para 
 imprimir com materiais diferentes ou suportes solúveis.
 
@@ -144,10 +144,7 @@ estratégia de trajetória para se realizar os diferentes deslocamentos na impre
 Esses comandos são utilizados para movimentar os motores e outros equipamentos da impressora.
 Na etapa de controle, uma etapa relativamente nova nas impressoras 3D mais acessíveis, 
 técnicas de controle são utilizadas para se diminuir vibrações e variações indesejadas em quaisquer
-parâmetros controlados, como a temperatura do bico. Um dos grandes avanços nessa etapa
-foi a implementação da técnica de \textit{Input Shaping} por um \textit{firmware Open Source} de impressora 3D chamado Klipper,
-que permitiu velocidades de impressão mais altas, sem a necessidade de alteração física de impressoras antigas \cite{klipperdoc}.
-
+parâmetros controlados, como a temperatura do bico.
 
 \subsection{Geração de comando}
 A geração de comando é o processo que coordena a ativação dos 
@@ -196,7 +193,7 @@ antes que ele aconteça. As principais limitações da aplicação de técnicas 
 em impressoras 3D são a dificuldade de montar um modelo representativo,
 a exigência computacional elevada e por fim a necessidade da simulação
 se extender do incio ao fim, pela dependência de se basear no estado 
-incial da impressão \cite{ramani20,duan18}.
+inicial da impressão \cite{ramani20,duan18}.
 
 \subsubsection{\textit{Input Shaper}}
 Ao conhecer a trajetória desejada e as características do sistema, é possível calcular uma série de 
@@ -247,28 +244,18 @@ minimizar os erros dada uma trajetória desejada (figura \ref{fig:flowchart_fbf}
 \end{figure}
 
 Uma das maiores dificuldades que os métodos avançados para o
-controle \textit{feedforward} de trajetórias é a necesidade de se conhecer
+controle \textit{feedforward} de trajetórias é a necessidade de se conhecer
 completamente a trajetória desejada, o que implica em um grande custo
 computacional, principalmente em situações onde são necessárias uma
 grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução
 e casos de longa duração.
 O \textit{limited-preview filtered B-splines} adapta a solução do FBF de forma a dividir a 
-trajetória desejada em subgrupos com um número menor de amostras e utiliza um algorítmo de 
+trajetória desejada em subgrupos com um número menor de amostras e utiliza um algorítimo de 
 \textit{receiding horizon} para calcular recursivamente os coeficientes da função B-spline que 
 minimizam os erros de trajetória \cite{duan18}.
 
 A partir dessa otimização da divisão da trajetória em subgrupos, esse método
 conseguiu ser testado utilizando uma impressora 3D de verdade com modelos simples.
-Apresentando resultados promissores apresentados na figura \ref{fig:duancubo}.
-
-\begin{figure}[!htb]
-    \centering
-    \caption{Resultados práticos da LPFBF}
-    \includegraphics[scale=0.5]{duancubo}
-
-    {\footnotesize Fonte: \citeauthor{duan18}, \citeyear{duan18}}
-    \label{fig:duancubo}
-\end{figure}
 
 Com base nos desenvolvimentos nos trabalhos de \cite{ramani17} e \cite{duan18}, comentados anteriormente, 
 \cite{ramani20} busca atacar um segundo desafio pratico na implementação da FBF, sendo o primeiro desafio prático
@@ -283,7 +270,7 @@ do mundo real abre espaço para uma crescente divergência entre o modelo e a re
 Considerando o requisito de manter a performance computacional alcançada com o método LPFBF, \cite{ramani20} 
 propõe, também, a utilização de um filtro robusto em substituição à dinâmica nominal da planta para 
 filtrar as funções de base. Esse filtro robusto é construído com base no inverso de um controlador 
-feedforward ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta 
+\textit{feedforward}ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta 
 como um filtro robusto.
 O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
 
