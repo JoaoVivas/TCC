@@ -98,6 +98,42 @@ a melhorias de \textit{hardware} e \textit{software} desses dispositivos (\ref{f
     \label{fig:distr_artigos}
 \end{figure}
 
+
+\section{Impressora 3d}
+
+Extrusora: A extrusora é responsável por derreter o filamento de material termoplástico e extrudá-lo 
+em forma de filamento derretido. 
+Ela consiste em um bico aquecido (hotend) que funde o material e um motor que empurra o 
+filamento através do bico. Alguns modelos mais avançados podem ter extrusoras duplas para 
+imprimir com materiais diferentes ou suportes solúveis.
+
+Mesa de impressão: A mesa de impressão é a superfície onde o objeto está sendo construído. 
+Ela é aquecida em muitas impressoras FDM para ajudar a aderência do material à superfície. 
+Além disso, algumas mesas de impressão têm características especiais, como superfícies 
+texturizadas ou magnéticas, para facilitar a aderência e a remoção do objeto após a conclusão.
+
+Plataforma de construção: A plataforma de construção é o suporte físico onde a mesa de impressão é montada. 
+Ela pode ser ajustada em altura para nivelar a superfície de impressão e garantir que a primeira camada do 
+objeto seja depositada com precisão.
+
+Motor de movimento: Impressoras 3D FDM possuem motores de movimento que controlam a posição da extrusora e 
+da mesa de impressão ao longo dos eixos X, Y e Z. Geralmente são motores de passo e seus movimentos de rotação
+são geralmente convertidos em movimentos lineares através de correias ou parafusos de rosca trapezoidal.
+
+Filamento: O filamento é o material de alimentação para a impressora 3D. Ele é um longo fio de plástico 
+termoplástico que é inserido na extrusora e derretido durante o processo de impressão. Os filamentos vêm 
+em várias cores e tipos de material, dependendo do objeto a ser impresso.
+
+Software de fatiamento: Para imprimir um objeto em uma impressora 3D FDM, você precisa de um software de fatiamento. 
+Este software converte modelos 3D em camadas finas onde é definido um percurso preenchendo essas camandas junto
+a outros comandos e configurações, como a temperatura do bico injetor, as velocidades máximas desejadas de cada movimento,
+a unidade utilizada, entre outras configurações e comandos. Estes comandos descritos através de Gcode e enviado para a impressora. 
+
+Sistema de controle e geração de comando: A eletrônica de controle inclui a placa-mãe da impressora, que recebe comandos do 
+software, em geral no formato Gcode, e os traduz em movimentos dos motores, controle de temperatura da extrusora e da mesa de impressão, 
+velocidade dos ventiladores entre outros acessórios. 
+Ela também pode ter uma tela de exibição e controles para operação manual.
+
 Podemos separar, de maneira simplificada, o \textit{software} de impressoras 3D
 FDM em três principais etapas: fatiamento (\textit{slicing}), geração de comando e controle.
 A etapa de fatiamento envolve a topologia e a criação de instruções a partir do modelo digitalizado da peça a ser produzida,
@@ -111,6 +147,45 @@ técnicas de controle são utilizadas para se diminuir vibrações e variações
 parâmetros controlados, como a temperatura do bico. Um dos grandes avanços nessa etapa
 foi a implementação da técnica de \textit{Input Shaping} por um \textit{firmware Open Source} de impressora 3D chamado Klipper,
 que permitiu velocidades de impressão mais altas, sem a necessidade de alteração física de impressoras antigas \cite{klipperdoc}.
+
+
+\subsection{Geração de comando}
+A geração de comando é o processo que coordena a ativação dos 
+atuadores, motores, dentre outros componentes de uma impressora. 
+Ele recebe como base uma série de comandos que precisam ser 
+interpretados e interpolados. Esse processo é responsável pelo 
+controle de velocidade, aceleração dentre outras atividades que 
+variam no tempo \cite{yu20}. 
+
+\subsection{Gcode}
+
+O G-code (Código G) é uma linguagem de programação usada em impressoras 3D e máquinas CNC para controlar o movimento e as ações da máquina durante o processo de fabricação. Ele é composto por uma série de comandos textuais, cada um com um formato específico. Aqui estão alguns elementos-chave da estrutura típica de um comando G-code:
+
+\begin{itemize}
+    \item Prefixo (Código G): Todo comando G-code começa com a letra 'G', que indica que é um comando de movimento ou função.
+    \item Número do Comando: Após o 'G', segue um número que identifica o tipo específico de comando. Por exemplo, 'G0' é frequentemente usado para mover rapidamente a cabeça de impressão para uma posição, enquanto 'G1' é usado para movimentos de impressão lineares.
+    \item Parâmetros: Após o número do comando, podem seguir-se parâmetros adicionais. Esses parâmetros variam dependendo do comando, mas podem incluir coordenadas de posicionamento (X, Y, Z), velocidades de movimento, taxas de alimentação, temperaturas e outros valores relevantes.
+    \item Comentários: O G-code também pode incluir comentários precedidos por um ponto e vírgula (;) ou entre parênteses (). Os comentários não afetam a execução do programa, mas ajudam a documentar o código para facilitar a compreensão.
+    \item Fim de Linha: Cada comando G-code é normalmente concluído com um caractere de fim de linha, como o retorno de carro ('\textbackslash n') ou a combinação de retorno de carro e nova linha ('\textbackslash r \textbackslash n'), dependendo do sistema.
+\end{itemize}
+
+\subsection{Curvas de velocidade trapezoidal}
+As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
+de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades máximas
+de cada movimento, assim é necessário planejar o comportamento da velocidade ao longo tempo
+dentro de cada comando.
+
+Uma das maneiras mais simples para a criação dessa curva de velocidade é
+de considerar as transições de velocidade com aceleração constante, criando 
+um perfil de velocidade trapezoidal, em geral com 3 segmentos.
+O primeiro segmento saindo da velocidade inicial para a velocidade máxima,
+o segundo segmento com velocidade constante e o terceiro segmento saindo da velocidade máxima alcançada
+para a velocidade final.
+Em alguns casos as condições do comando e as configurações de aceleração não possibilitam que a impressora
+alcance a velocidade máxima estabelecida no comando, nesses casos não existe o segundo segmento, ou seja, não existe
+no perfil um estágio de velocidade constante.
+\cite{yu20,klipperkinematic}.
+(figura \ref{fig:trapezoidal}).
 
 \subsection{\textit{Feedforward}}
 Dentre os métodos de controle em aplicações FDM o \textit{Feedforward} 
@@ -221,43 +296,7 @@ O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
     \label{fig:flowchart_rfbf}
 \end{figure}
 
-\subsection{Geração de comando}
-A geração de comando é o processo que coordena a ativação dos 
-atuadores, motores, dentre outros componentes de uma impressora. 
-Ele recebe como base uma série de comandos que precisam ser 
-interpretados e interpolados. Esse processo é responsável pelo 
-controle de velocidade, aceleração dentre outras atividades que 
-variam no tempo \cite{yu20}. 
-
-\subsection{Gcode}
-
-O G-code (Código G) é uma linguagem de programação usada em impressoras 3D e máquinas CNC para controlar o movimento e as ações da máquina durante o processo de fabricação. Ele é composto por uma série de comandos textuais, cada um com um formato específico. Aqui estão alguns elementos-chave da estrutura típica de um comando G-code:
-
-\begin{itemize}
-    \item Prefixo (Código G): Todo comando G-code começa com a letra 'G', que indica que é um comando de movimento ou função.
-    \item Número do Comando: Após o 'G', segue um número que identifica o tipo específico de comando. Por exemplo, 'G0' é frequentemente usado para mover rapidamente a cabeça de impressão para uma posição, enquanto 'G1' é usado para movimentos de impressão lineares.
-    \item Parâmetros: Após o número do comando, podem seguir-se parâmetros adicionais. Esses parâmetros variam dependendo do comando, mas podem incluir coordenadas de posicionamento (X, Y, Z), velocidades de movimento, taxas de alimentação, temperaturas e outros valores relevantes.
-    \item Comentários: O G-code também pode incluir comentários precedidos por um ponto e vírgula (;) ou entre parênteses (). Os comentários não afetam a execução do programa, mas ajudam a documentar o código para facilitar a compreensão.
-    \item Fim de Linha: Cada comando G-code é normalmente concluído com um caractere de fim de linha, como o retorno de carro ('\textbackslash n') ou a combinação de retorno de carro e nova linha ('\textbackslash r \textbackslash n'), dependendo do sistema.
-\end{itemize}
-
-\subsection{Curvas de velocidade trapezoidal}
-As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
-de um planejamento de velocidade, pois o Gcode fornece apenas as velocidades máximas
-de cada movimento, assim é necessário planejar o comportamento da velocidade ao longo tempo
-dentro de cada comando.
-
-Uma das maneiras mais simples para a criação dessa curva de velocidade é
-de considerar as transições de velocidade com aceleração constante, criando 
-um perfil de velocidade trapezoidal, em geral com 3 segmentos.
-O primeiro segmento saindo da velocidade inicial para a velocidade máxima,
-o segundo segmento com velocidade constante e o terceiro segmento saindo da velocidade máxima alcançada
-para a velocidade final.
-Em alguns casos as condições do comando e as configurações de aceleração não possibilitam que a impressora
-alcance a velocidade máxima estabelecida no comando, nesses casos não existe o segundo segmento, ou seja, não existe
-no perfil um estágio de velocidade constante.
-\cite{yu20,klipperkinematic}.
-(figura \ref{fig:trapezoidal}).
+\section{Sistema massa mola}
 
 \section{Espaço de Estados}
 
