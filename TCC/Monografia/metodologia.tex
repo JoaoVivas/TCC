@@ -96,9 +96,7 @@ utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
 
 Essa função constroi a curva de velocidade trapezoidal a partir dos dados
 de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada.
-Para identificar se a velocidade desejada será alcançada é calculado a velocidade pico ($v_p$)
-que é obtida extrapolando retas com as inclinações da aceleração na velocidade incial e final.
-É possível obter a velocidade de pico através da equação \ref{eq:v_p}.
+Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
 
 \begin{figure}[!htb]
     \centering
@@ -124,9 +122,8 @@ que é obtida extrapolando retas com as inclinações da aceleração na velocid
 A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
 é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas.
 Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
-que podem ser calculadas pelas equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}.
-Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento
-que são calculadas a partir da equação \ref{eq:des_seg_a}.
+que podem ser calculadas pelas Equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}. Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento,
+que são calculadas a partir da Equação \ref{eq:des_seg_a}.
 
 \begin{equation}
     \label{eq:des_seg_a}
@@ -154,7 +151,7 @@ que são calculadas a partir da equação \ref{eq:des_seg_a}.
 \end{equation}
 
 É possível calcular também os intervalos de tempo dessas fases, através das 
-equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
+Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
 
 \begin{equation}
     \label{eq:dt_seg_a}
@@ -187,19 +184,14 @@ equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
 % \end{equation}
 
 Esses passos resultam em uma nova matriz contendo informações
-sobre o a variação da posição, do tempo, da velocidade e sobre a aceleração e 
+sobre a variação da posição, do tempo, da velocidade e sobre a aceleração e 
 direção de deslocamento nos pontos iniciais e finais do Gcode e também nos pontos
 onde existe uma alteração na aceleração.
 
 \subsection{Interpolação}
 
-A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediarios
-baseados em um passo de tempo definido para esta interpolação.
-Para se dividir esses intervalos é possível utilizar a equação \ref{eq:N_steps}
-calculando o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim
-o restante do intervalo, calculado pela equação \ref{eq:dt_interpol_last_step}.
-Com base nestes passos de tempo, é possível calcular o deslocamento para cada um destes passos
-através da equação \ref{eq:delta_des_interpol}.
+A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediários baseados em um passo de tempo definido para esta interpolação. Para se dividir esses intervalos é possível utilizar a Equação \ref{eq:N_steps}, que calcula o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim
+o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}. Com base nesses passos de tempo, é possível calcular o deslocamento para cada um destes passos através da Equação \ref{eq:delta_des_interpol}.
 
 \begin{equation}
     \label{eq:N_steps}
@@ -216,8 +208,8 @@ através da equação \ref{eq:delta_des_interpol}.
     \Delta d_i = \Delta v_i*\Delta t_i+ \frac{a_s*\Delta t_i^2}{2} 
 \end{equation}
 
-A partir dos vetores de direção e da função acumuladora que se consite em acumular os valores de um vetor.
-Obtemos uma matriz de posições, velocidades e tempo.
+% A partir dos vetores de direção e da função acumuladora que se consiste em acumular os valores de um vetor.
+% Obtemos uma matriz de posições, velocidades e tempo.
 
 % \begin{equation}
 %     \label{eq:acumulator_function}
@@ -227,12 +219,12 @@ Obtemos uma matriz de posições, velocidades e tempo.
 \section{FMINCON}
 
 \subsection{Configurações da função}
-Foi utilizado o seguinte conjunto de configurações opcionais da função (tabela \ref{tab:fmincon_options}).
-As configurações não indicadas se mantem na configuração padrão, que pode ser encontrada nos manuais da mesma.
+
+A Tabela \ref{tab:fmincon_options} apresenta o conjunto de configurações customizadas da função FMINCON. As configurações não explicitadas foram mantidas como os padrões disponibilizados pelo Matlab. A função objetivo foi considerada nula por hipótese.
 
 \begin{table}
     \begin{center}
-    \caption{Parâmetros opcionais da FMINCON}
+    \caption{Parâmetros modificados na função FMINCON.}
     \label{tab:fmincon_options}
     \begin{tabular}{c c}
         Opção & Valor \\ \hline
@@ -248,40 +240,41 @@ As configurações não indicadas se mantem na configuração padrão, que pode 
 \end{table}
 
 \subsection{Restrições lineares e limites de borda}
-Não foi utilizado nenhuma restrição linear nessa otimização.
-Os limites superiores (\textit{upperbound}) e inferiores (\textit{lowerbound}) foram definidos
-baseados nos limites físicos da impressora (0 a 200 milímetros) para as posições $x_b$ e $y_b$.
+
+Não foram utilizadas restrições lineares na otimização. Os limites superiores (\textit{upperbound}) e inferiores (\textit{lowerbound}) foram definidos com base nos limites físicos da impressora para as posições $x_b$ e $y_b$ (ver Seção \ref{parametrosimp}).
 
 \subsection{Restrições não lineares}
+
 A função para as restrições não lineares foi implementada com base nas equaqções \ref{eq:state_center_segment},
 \ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
 popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
 com os valores iniciais. 
-Além disso, foi utilizado também como restrição de equalidade a arrancada, atrelado a um condicional para que
-se comporte como uma inequalidade.
-A variável de restrições de inequalidades não foi populada, os motivos são apresentados
-na seção de resultados e discussão.
 
-\subsection{Função objetivo}
-Foram realizados alguns testes com funções objetivo e seus resultaods são apresentados na seção de resultados e discussão,
-entretanto a função objetiva foi definida como zero, ou seja, pra qualquer valor ela retornara zero nas chamadas da FMINCON.
+A arrancada também foi utilizada como restrição de equalidade, atrelada ao condicional ?? para que se comporte como uma inequalidade.
+A variável de restrições de inequalidades não foi populada (ver Seção ?? Resultados e Discussão).
+
+% \subsection{Função objetivo}
+
+% Foram realizados alguns testes com funções objetivo e seus resultados são apresentados na seção de resultados e discussão,
+% entretanto a função objetiva foi definida como zero, ou seja, pra qualquer valor ela retornara zero nas chamadas da FMINCON.
 
 \section{Solução da trajetória da base}
 
 É considerada como trajetória desejada a trajetória obtida através da função de geração de comando apresentada anteriormente
 e são utilizados os vetores de tempo e posição como variáveis globais, para serem acessados dentro da função das
-restrições não lineares, chamada pela FMINCON.
-Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
+restrições não lineares, chamada pela FMINCON. Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
 na FMINCON, sendo adaptados em forma de matriz.
 
 A variável principal inserida na FMINCON é a matriz contendo os vetores de posição da base ($x_b$ e $y_b$),
-enquanto os vetores de posição da ponta é fixado pela trajetória desejada presente na forma de variáveis globais.
+enquanto os vetores de posição da ponta são fixados pela trajetória desejada presente na forma de variáveis globais.
 
-Para conseguir realizar os cálculos necessários dentro da função de restrições não lineares é utilizado o seguinte conjunto
-de equações basicas (\ref{eq:der_a}) para se derivar a curva posição-tempo considerando aceleração constante,
-sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo,
-$a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo.
-Assim construindo o vetor de velocidade a partir da condição inicial de deslocamento e velocidade zero, para ambos os eixos ($x$ e $y$).
+As Equações \ref{eq:der_a} e \ref{eq:der_b} foram utilizadas para reconstrução do vetor de velocidade a partir dos vetores deslocamento e tempo, sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo, $a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo. 
+
+% Para conseguir realizar os cálculos necessários dentro da função de restrições não lineares é utilizado o seguinte conjunto
+% de equações basicas (\ref{eq:der_a}) para se derivar a curva posição-tempo considerando aceleração constante,
+% sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo,
+% $a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo.
+% Assim construindo o vetor de velocidade a partir da condição inicial de deslocamento e velocidade zero, para ambos os eixos ($x$ e $y$).
 
 \begin{equation}
     \label{eq:der_a}      
@@ -293,18 +286,17 @@ Assim construindo o vetor de velocidade a partir da condição inicial de desloc
         v(k) = v(k-1)+a(k) \Delta t(k)
 \end{equation}
 
-\section{Estudos de caso}
+\section{Simulação de controle de impressora 3D}
 
-Foi realizado uma série de simulações utilizando como base uma sequência de dois movimentos em 90 graus,
-10 milímetros ao longo do eixo x e depois 10 milímetros ao longo do eixo y, através de um arquivo Gcode de teste.
-Em cada uma dessas simulações um dos parâmetros é alterado, enquanto o restante permanece em uma configuração
-base, apresentada na tabela \ref{tab:base_params}. Além disso, em cada teste foram separados algumas variações do mesmo
-parâmetro em questão e as versões do teste são identificadas por uma letra de A a C.
-Assim, as configurações para as diferentes simulações adcionais segue a tabela \ref{tab:sim_params}.
+\subsection{Caso base} 
+
+Com base no modelo proposto, foi simulada a trajetória do ponteiro em 10 milímetros ao longo do eixo x e depois 10 milímetros ao longo do eixo y. Para as análises do caso base, foram avaliados os cenários com controle e sem controle. Também foram analisados os perfis de deslocamento e velocidade. 
+
+A Tabela \ref{tab:base_params} apresenta os parâmetros de frequência, coeficiente de amortecimento, aceleração base, velocidade desejada e resolução de interpolação ("parâmetros-chave") considerados para este cenário base.
 
 \begin{table}
     \begin{center}
-    \caption{Parâmetros referência dos Estudos de Caso}
+    \caption{Parâmetros referência dos Estudos de Caso.}
     \label{tab:base_params}
     \begin{tabular}{c c c}
         Parâmetro & Valor & Unidade\\ \hline
@@ -316,6 +308,15 @@ Assim, as configurações para as diferentes simulações adcionais segue a tabe
     \end{tabular}
     \end{center}
 \end{table}
+
+O tamanho dos vetores, o tempo de simulação e o índice viabilidade da FMINCON também foram analisados. O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
+do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
+O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
+termina de ser executada.
+A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
+
+O computador utilizado para a realização das simulações foi um notebook Acer com as configurações apresentadas na Tabela
+\ref{tab:note_config}.
 
 \begin{table}
     \begin{center}
