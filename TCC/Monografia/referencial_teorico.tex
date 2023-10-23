@@ -2,11 +2,10 @@
 
 \section{Manufatura Aditiva}
 O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma 
-integrada, dispensando a necessidade de planejar as operações de maneira individual e priorizando a 
-consideração das configurações globais.
+integrada, dispensando a necessidade de planejar as operações de maneira individual.
 O processo é calculado pelo fatiador com base em um modelo tridimensional digital,
 geralmente criado a partir de \textit{Computer Aided Design} (CAD) e nas configurações do mesmo
-e resulta nas instruções necessárias para a máquina de manufatura aditiva construir o modelo físico.
+e resulta nas instruções necessárias para a máquina de manufatura aditiva construir o modelo físico, essas instruções variam muito dependendo da tecnologia utilizada, podendo se traduzir em instruções em texto, como no Gcode, ou até mesmo em imagens.
 Uma das características 
 principais da MA é a rapidez na qual é possível criar protótipo
 diretamente de modelos digitais, por conta disso, em um contexto 
@@ -31,7 +30,7 @@ além de outras tecnologias menos acessíveis, mas com aplicações em diversas 
 Na figura \ref{fig:MA_industrias} podemos observar a distribuição do uso de 
 tecnologias MA por tipo de industria.   
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \begin{center}
     \caption{Distribuição de uso de MA nas industrias}
     \includegraphics[scale=0.6]{bikas15industries}
@@ -59,7 +58,7 @@ anteriores e a primeira camada continue fixa na plataforma ou
 cama, até que o processo finalize \cite{turner14}.
 Podemos observar a disposição desses componentes na figura \ref{fig:fdm_ex}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \begin{center}
     \caption{Principio e processo de impressão para FDM}
     \includegraphics[scale=0.6]{bikas2015FDM}
@@ -80,7 +79,7 @@ trabalhos relacionados a aplicações utilizando o processo FDM, enquanto apenas
 são relacionados ao restante dos temas, incluindo avanços tecnológicos relacionados
 a melhorias de \textit{hardware} e \textit{software} desses dispositivos (\ref{fig:distr_artigos}).
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Número de aritos publicados sobre FDM ao longo do tempo}
     \includegraphics[scale=0.5]{vyan20npub}
@@ -89,7 +88,7 @@ a melhorias de \textit{hardware} e \textit{software} desses dispositivos (\ref{f
     \label{fig:numero_artigos}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Distribuição das pesquisas sobre FDM}
     \includegraphics[scale=0.6]{vyan20oizzama}
@@ -210,7 +209,7 @@ Podemos
 ver na figura \ref{fig:degr_vs_esc} um exemplo comparativo
 das respostas ao degrau e da função escada aplicada pelo \textit{shaper}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Comparação da resposta ao degrau e da resposta a escada}
     \includegraphics[scale=0.5]{inputshaperstepresponse1order}
@@ -229,7 +228,7 @@ o modelo dinâmico do sistema e selecionando os coeficientes de maneira a
 minimizar os erros dada uma trajetória desejada (figura \ref{fig:flowchart_fbf}).
 \cite{ramani17}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Fluxograma FBF}
     \includegraphics[scale=0.5]{ramani17blockfbf}
@@ -269,7 +268,7 @@ filtrar as funções de base. Esse filtro robusto é construído com base no inv
 como um filtro robusto.
 O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Fluxograma RFBF}
     \includegraphics[scale=0.5]{ramani20blockfbf}
@@ -332,7 +331,7 @@ O método alcança sua aproximação das soluções das equações diferenciais 
 Os valores de estado são então selecionados de maneira a garantir que a curva resultante da concatenação desses polinômios seja continua, ou seja,
 o valor da função e de sua derivada precisa ser igual para ambos polinômios nas conexões como observado na figura \ref{fig:hargraves_fun}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
     \caption{Ilustração integração implícita}
     \includegraphics[scale=0.5]{hargraves_func}
