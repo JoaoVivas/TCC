@@ -14,7 +14,7 @@ a flexibilidade da correia é aproximada utilizando um conjunto
 mola amortecedor e a transmissão de movimento e torque dos 
 motores é considerada como ideal e não será abordada.
 Assim duas posições de estudo surgem para cada eixo, uma delas 
-representa a posição ideal, caso o sistema não possuiesse nenhuma flexibilidade
+representa a posição ideal, caso o sistema não possuísse nenhuma flexibilidade
 ou perda, que também é a posição desejada pelo usuário ($x_b$). 
 A segunda posição considera as forças inerciais e a 
 flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
@@ -94,7 +94,7 @@ mas é convertida para milímetros por segundo na construção da matriz de entr
 A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecido pelos comandos do Gcode,
 utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
 
-Essa função constroi a curva de velocidade trapezoidal a partir dos dados
+Essa função constrói a curva de velocidade trapezoidal a partir dos dados
 de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada.
 Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
 
@@ -116,7 +116,7 @@ Para identificar se a velocidade desejada será alcançada é calculada a veloci
 
 \begin{equation}
     \label{eq:v_p}
-    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a*d}
+    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
 \end{equation}
 
 A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
@@ -127,22 +127,22 @@ que são calculadas a partir da Equação \ref{eq:des_seg_a}.
 
 \begin{equation}
     \label{eq:des_seg_a}
-    d_1 = \frac{(v_d^2-v_1^2)}{(2*a)}
+    d_1 = \frac{(v_d^2-v_1^2)}{(2 a)}
 \end{equation}
 
 \begin{equation}
     \label{eq:des_seg_a}
-    d_2 = \frac{(v_2^2-v_d^2)}{(2*a)}
+    d_2 = \frac{(v_2^2-v_d^2)}{(2 a)}
 \end{equation}
 
 \begin{equation}
     \label{eq:des_seg_a}
-    d_1 = \frac{(v_p^2-v_1^2)}{(2*a)}
+    d_1 = \frac{(v_p^2-v_1^2)}{(2 a)}
 \end{equation}
 
 \begin{equation}
     \label{eq:des_seg_a}
-    d_2 = \frac{(v_2^2-v_p^2)}{(2*a)}
+    d_2 = \frac{(v_2^2-v_p^2)}{(2 a)}
 \end{equation}
 
 \begin{equation}
@@ -200,12 +200,12 @@ o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}
 
 \begin{equation}
     \label{eq:dt_interpol_last_step}
-    \Delta t_f= \Delta t - \Delta p*N 
+    \Delta t_f= \Delta t - \Delta p N 
 \end{equation}
 
 \begin{equation}
     \label{eq:delta_des_interpol}
-    \Delta d_i = \Delta v_i*\Delta t_i+ \frac{a_s*\Delta t_i^2}{2} 
+    \Delta d_i = \Delta v_i \Delta t_i+ \frac{a_s \Delta t_i^2}{2} 
 \end{equation}
 
 % A partir dos vetores de direção e da função acumuladora que se consiste em acumular os valores de um vetor.
@@ -245,7 +245,7 @@ Não foram utilizadas restrições lineares na otimização. Os limites superior
 
 \subsection{Restrições não lineares}
 
-A função para as restrições não lineares foi implementada com base nas equaqções \ref{eq:state_center_segment},
+A função para as restrições não lineares foi implementada com base nas equações \ref{eq:state_center_segment},
 \ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
 popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
 com os valores iniciais. 
@@ -352,7 +352,7 @@ A máquina utilizada para a realização das simulações foi um notebook acer c
         \hline
         Processador & Intel I7-5500U 2.40GHz \\
         Memoria & 8,00 GB \\
-        Placa de vídeo & Nvide Geforce 920M \\
+        Placa de vídeo & Nvidia Geforce 920M \\
         Sistema & 64 bits \\ \hline
     \end{tabular}
     \end{center}

@@ -145,14 +145,6 @@ Na etapa de controle, uma etapa relativamente nova nas impressoras 3D mais acess
 técnicas de controle são utilizadas para se diminuir vibrações e variações indesejadas em quaisquer
 parâmetros controlados, como a temperatura do bico.
 
-\subsection{Geração de comando}
-A geração de comando é o processo que coordena a ativação dos 
-atuadores, motores, dentre outros componentes de uma impressora. 
-Ele recebe como base uma série de comandos que precisam ser 
-interpretados e interpolados. Esse processo é responsável pelo 
-controle de velocidade, aceleração dentre outras atividades que 
-variam no tempo \cite{yu20}. 
-
 \subsection{Gcode}
 
 O G-code (Código G) é uma linguagem de programação usada em impressoras 3D e máquinas CNC para controlar o movimento e as ações da máquina durante o processo de fabricação. Ele é composto por uma série de comandos textuais, cada um com um formato específico. Aqui estão alguns elementos-chave da estrutura típica de um comando G-code:
@@ -164,6 +156,21 @@ O G-code (Código G) é uma linguagem de programação usada em impressoras 3D e
     \item Comentários: O G-code também pode incluir comentários precedidos por um ponto e vírgula (;) ou entre parênteses (). Os comentários não afetam a execução do programa, mas ajudam a documentar o código para facilitar a compreensão.
     \item Fim de Linha: Cada comando G-code é normalmente concluído com um caractere de fim de linha, como o retorno de carro ('\textbackslash n') ou a combinação de retorno de carro e nova linha ('\textbackslash r \textbackslash n'), dependendo do sistema.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \caption{Exemplo de um arquivo Gcode}
+    \includegraphics[scale=0.6]{Gcode_ex}
+    \label{fig:gcode_ex}
+\end{figure}
+
+\subsection{Geração de comando}
+A geração de comando é o processo que coordena a ativação dos 
+atuadores, motores, dentre outros componentes de uma impressora. 
+Ele recebe como base uma série de comandos que precisam ser 
+interpretados e interpolados. Esse processo é responsável pelo 
+controle de velocidade, aceleração dentre outras atividades que 
+variam no tempo \cite{yu20}. 
 
 \subsection{Curvas de velocidade trapezoidal}
 As impressoras 3D entre outros equipamentos, como máquinas CNC, necessitam
@@ -181,29 +188,22 @@ Em alguns casos as condições do comando e as configurações de aceleração n
 alcance a velocidade máxima estabelecida no comando, nesses casos não existe o segundo segmento, ou seja, não existe
 no perfil um estágio de velocidade constante.
 \cite{yu20,klipperkinematic}.
-(figura \ref{fig:trapezoidal}).
 
 \subsection{\textit{Feedforward}}
-Dentre os métodos de controle em aplicações FDM o \textit{Feedforward} 
-é o mais eficiente dada as limitações de custo em impressoras 
-3D comuns e é capaz de ter um impacto maior em sistemas 
-conhecidos e sensíveis ao erro, onde buscam corrigir o erro 
-antes que ele aconteça. As principais limitações da aplicação de técnicas \textit{Feedforward}
-em impressoras 3D são a dificuldade de montar um modelo representativo,
-a exigência computacional elevada e por fim a necessidade da simulação
-se extender do incio ao fim, pela dependência de se basear no estado 
-inicial da impressão \cite{ramani20,duan18}.
+Entre os métodos de controle aplicados em impressoras 3D Fused Deposition Modeling (FDM), o uso do controle feedforward se destaca como a abordagem mais eficiente, considerando as limitações de custo comuns em impressoras 3D convencionais.
+
+O controle feedforward é uma técnica de controle aplicada em sistemas automáticos, com o propósito de antecipar e corrigir perturbações que podem afetar um processo ou sistema, agindo antes que essas perturbações tenham impacto na saída desejada do sistema. Sua eficácia é notável em sistemas nos quais as perturbações são conhecidas e podem ser previstas com precisão.
+
+No contexto das impressoras 3D, que geralmente apresentam poucas perturbações externas, é possível, com base em um modelo adequado, antecipar o comportamento dinâmico da impressora com precisão, sem a necessidade de incorporar sensores caros. Isso torna o controle feedforward uma opção viável para aprimorar o desempenho de impressoras já existentes, com alterações físicas mínimas e uma simples adaptação de software.
+
+No entanto, a aplicação de técnicas de controle feedforward em impressoras 3D enfrenta algumas limitações. Isso inclui a dificuldade na montagem de um modelo representativo, o requisito de recursos computacionais substanciais e a necessidade de realizar simulações desde o início até o fim do processo, devido à dependência do estado inicial da impressão \cite{ramani20,duan18}.
 
 \subsubsection{\textit{Input Shaper}}
-Ao conhecer a trajetória desejada e as características do sistema, é possível calcular uma série de 
-comandos que levam em consideração essas características para modificar o comando de referência. 
-Isso permite que a trajetória final seja o mais próxima possível do comando de referência. 
-Entretanto, ao invés de 
-computar todo o comando de referência, é possível obter um 
-comando modificado em tempo real através de um filtro. 
-Uma das abordagens desse tipo de filtro de comando é o 
-\textit{Input Shaper}, onde variados \textit{Shapers} são construídos levando 
-em consideração diferentes objetivos e restrições 
+Ao conhecer a trajetória desejada e as características do sistema, é possível calcular uma série de comandos que levam em consideração essas características para modificar o comando de referência. Isso permite que a trajetória final seja o mais próxima possível do comando de referência. Entretanto, ao invés de computar todo o comando de referência, é possível obter um comando modificado em tempo real através de um filtro. Uma das abordagens desse tipo de filtro de comando é o "Input Shaper," onde variados "Shapers" são construídos levando em consideração diferentes objetivos e restrições.
+
+O "Input Shaping" é uma técnica de controle projetada especificamente para minimizar ou eliminar vibrações indesejadas em sistemas mecânicos ou estruturas controladas por atuadores, como robôs, veículos e máquinas. Esta técnica otimiza a sequência de pulsos de entrada, projetando-os de forma a minimizar a excitação das frequências naturais de ressonância do sistema. Dessa forma, o Input Shaping contribui significativamente para reduzir a resposta vibratória do sistema, tornando-o mais preciso e estável durante a execução de movimentos ou tarefas.
+
+O Input Shaping é particularmente valioso em sistemas de controle de alta precisão, como robótica, onde a minimização das vibrações é essencial para a qualidade do trabalho e a precisão do posicionamento. Essa técnica utiliza o conhecimento das características do sistema e da trajetória desejada para calcular os comandos de entrada de forma a evitar a excitação das frequências naturais de vibração, resultando em sistemas de controle mais estáveis e eficazes.
 \cite{singhose97}.
 Podemos
 ver na figura \ref{fig:degr_vs_esc} um exemplo comparativo
