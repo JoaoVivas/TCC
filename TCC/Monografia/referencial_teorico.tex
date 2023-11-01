@@ -33,9 +33,49 @@ tecnologias MA por tipo de industria.
 \begin{figure}[H]
     \begin{center}
     \caption{Distribuição de uso de MA nas industrias}
-    \includegraphics[scale=0.6]{bikas15industries}
+    % \includegraphics[scale=0.6]{bikas15industries}
+    
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            width=12cm,
+            height=8cm,
+            enlarge x limits=0.1,
+            ylabel={\%},
+            symbolic x coords={
+                Construção Civil, 
+                Outros, 
+                Governo/Militar, 
+                Instituições Acadêmicas, 
+                Máquinas Industriais/Comerciais, 
+                Aeroespacial, 
+                Médico/Dental, 
+                Veículos Motorizados, 
+                Produtos Eletrônicos
+            },
+            xtick=data,
+            nodes near coords,
+            nodes near coords align={vertical},
+            x tick label style={rotate=45, anchor=east, align=center},
+            ymin=0,
+            ymax=25
+        ]
+        \addplot coordinates {
+            (Construção Civil, 3)
+            (Outros, 5.3)
+            (Governo/Militar, 6)
+            (Instituições Acadêmicas, 8)
+            (Máquinas Industriais/Comerciais, 10.8)
+            (Aeroespacial, 12.1)
+            (Médico/Dental, 15.1)
+            (Veículos Motorizados, 19.5)
+            (Produtos Eletrônicos, 20.3)
+        };
+        \end{axis}
+    \end{tikzpicture}
 
-    {\footnotesize Fonte: \citeauthor{bikas16}, \citeyear{bikas16}}
+    
+    {\footnotesize Fonte: Adaptado de \citeauthor{bikas16}, \citeyear{bikas16}}
     \label{fig:MA_industrias}
     \end{center}
 \end{figure}
