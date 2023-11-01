@@ -1,7 +1,7 @@
 \chapter{REFERENCIAL TEÓRICO}
 
 \section{Manufatura Aditiva}
-O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual.O processo é calculado pelo fatiador com base em um modelo tridimensional digital,geralmente criado a partir de \textit{Computer Aided Design} (CAD) e nas configurações do mesmoe resulta nas instruções necessárias para a máquina de manufatura aditiva construir o modelo físico, essas instruções variam muito dependendo da tecnologia utilizada, podendo se traduzir em instruções em texto, como no Gcode, ou até mesmo em imagens.
+O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual.O processo é calculado pelo fatiador com base em um modelo tridimensional digital, geralmente criado a partir de \textit{Computer Aided Design} (CAD) e nas configurações dos parâmetros do fatiador e resulta nas instruções necessárias para a máquina de manufatura aditiva construir o modelo físico, as instruções e a maneira com que são transmitidas para a impressora varia de acordo com a tecnologia e a implementação específica dos modelos de impressora. Uma maneira comum dessas instruções serem transmitidas é através do Gcode, podendo ser complementado com outras informações como por exemplo arquivos de imagens.
 
 Uma das características principais da MA é a rapidez na qual é possível criar protótipodiretamente de modelos digitais, por conta disso, em um contexto de desenvolvimento de produto, o termo prototipagem rápida era utilizado. Entretanto, conforme a MA foi se aperfeiçoando era perceptível a capacidade dessas tecnologias não só se aterem à produção de protótipos, mas também de peças utilizadas em produtos finais. Além disso, o termo prototipagem rápida não considerava o princípio básico que unia essas tecnologias e assim o termo manufatura aditiva foi apresentado e adotado pela \textit{American Society for Testing and Materials} (ASTM) \cite{gibson15}.
 
@@ -85,13 +85,20 @@ Software de fatiamento: Para imprimir um objeto em uma impressora 3D FDM, você 
 
 Sistema de controle: A eletrônica de controle inclui a placa-mãe da impressora, que recebe comandos do software, em geral no formato Gcode, e os traduz em movimentos dos motores, controle de temperatura da extrusora e da mesa de impressão, velocidade dos ventiladores entre outros acessórios. Ela também pode ter uma tela de exibição e controles para operação manual.
 
-A Figura \ref{fig:impressora3d_comp} indica alguns destes componentes.
+A Figura \ref{fig:impressora3d_comp} indica alguns destes componentes e a Figura \ref{fig:slicer_inter} mostra a interface de um fatiador.
 
 \begin{figure}[H]
     \centering
     \caption{Indicação dos componentes de uma impressora 3D}
     \includegraphics[scale=0.04]{impressora3d_comp}
     \label{fig:impressora3d_comp}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Interface do fatiador PrusaSlicer}
+    \includegraphics[scale=0.4]{slicer_inter}
+    \label{fig:slicer_inter}
 \end{figure}
 
 Podemos separar, de maneira simplificada, o \textit{software} de impressoras 3D FDM em algumas etapas: fatiamento (\textit{slicing}), geração de comando e controle. A etapa de geração de comando, realizado pelo fatiador, onde o volume do modelo é dividido em camadas, definindo um percurso através de uma sequência de comandos. Esses comandos controlam os movimentos a serem realizados, definição de configurações, o controle da temperatura e outros dispositvos. Já na etapa de geração de trajetória, os comandos criados pelo fatiador (\textit{slicer}) na etapa anterior são interpretadas, entretanto esses comandos não descrevem em detalhes. Portanto, é necessário a definição do comportamento que a impressora deve tomar para cumprir o comando interpretado, no caso de um comando de movimento por exemplo precisamos construir a trajetória dos eixos para poder realizar o comando com sucesso, assim chamamos esta etapa de geração de trajetória. Podemos, antes de prosseguir para a próxima etapa, utilizar de técnicas de controle para melhorar a performace da execução dos comandos, por exemplo utilizar os sensores de temperatura para modificar a taxa de aquecimento do bico extrusor, ou utilizar essas técnicas de controle para alterar a trajetória construida na etapa anterior de maneira a contribuir para a qualidade da impressão. Por fim, temos a etapa de geração de sinais, onde a impressora precisa converter as abstrações definidas sobre seus dispositivos em sinais que são responsáveis em controla-los. Por exemplo, converter as características do movimento de um eixo em uma série de pulsos elétricos que controlam os motores de passo. 
