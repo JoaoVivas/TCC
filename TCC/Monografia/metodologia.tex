@@ -8,17 +8,8 @@ Para a modelagem do sistema mecânico são consideradas as seguintes simplifica�
     \item O bico injetor é um corpo rígido uniforme de geometria simples
 \end{itemize}
 
-Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
-é considerado que os eixos são completamente independentes, 
-a flexibilidade da correia é aproximada utilizando um conjunto 
-mola amortecedor e a transmissão de movimento e torque dos 
-motores é considerada como ideal e não será abordada.
-Assim duas posições de estudo surgem para cada eixo, uma delas 
-representa a posição ideal, caso o sistema não possuísse nenhuma flexibilidade
-ou perda, que também é a posição desejada pelo usuário ($x_b$). 
-A segunda posição considera as forças inerciais e a 
-flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
-e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
+Para a modelagem dinâmica dos eixos X e Y da impressora 3D, é considerado que os eixos são completamente independentes, a flexibilidade da correia é aproximada utilizando um conjunto 
+mola amortecedor e a transmissão de movimento e torque dos motores é considerada como ideal e não será abordada. Assim duas posições de estudo surgem para cada eixo, uma delas representa a posição ideal, caso o sistema não possuísse nenhuma flexibilidade ou perda, que também é a posição desejada pelo usuário ($x_b$). A segunda posição considera as forças inerciais e a flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
 
 \begin{multline}
     \label{eq:mov_impressora}
@@ -30,15 +21,7 @@ e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
 (Figura - placeholder)
 
 \subsection{Espaço de estados}
-A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e
-a a solução do sistema, dado sua característica de dividir uma equação diferencial
-de ordem superior em um sistema de equações diferenciais de ordem 1 com um número maior de equações.
-O modelo dinâmico do sistema é apresentado na formulação de espaço de estados 
-na equação \ref{eq:simp_state_space_din_model}, onde $\dot x$ $x$ $A$ $u$ $B$.
-Baseado na equação \ref{eq:mov_impressora} expandimos as matrizes e vetores na equação 
-\ref{eq:espaco_de_estados_din_model}.
-Como o modelo dos eixos x e y estão sendo considerados como iguais, também podemos utilizar a equação 
-\ref{eq:espaco_de_estados_din_model} para a base do eixo y.
+A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e a a solução do sistema, dado sua característica de dividir uma equação diferencial de ordem superior em um sistema de equações diferenciais de ordem 1 com um número maior de equações. O modelo dinâmico do sistema é apresentado na formulação de espaço de estados na equação \ref{eq:simp_state_space_din_model}, onde $\dot x$ $x$ $A$ $u$ $B$. Baseado na equação \ref{eq:mov_impressora} expandimos as matrizes e vetores na equação \ref{eq:espaco_de_estados_din_model}. Como o modelo dos eixos x e y estão sendo considerados como iguais, também podemos utilizar a equação \ref{eq:espaco_de_estados_din_model} para a base do eixo y.
 
 \begin{equation}
     \label{eq:simp_state_space_din_model}
@@ -83,21 +66,13 @@ Como o modelo dos eixos x e y estão sendo considerados como iguais, também pod
 
 \section{Geração de Comando}
 
-A geração de comando se inicia na leitura do Gcode para a obtenção dos movimentos e velocidades desejadas.
-Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo
-as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores
-uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode.
-Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto,
-mas é convertida para milímetros por segundo na construção da matriz de entrada.
+A geração de comando se inicia na leitura do Gcode para a obtenção dos movimentos e velocidades desejadas. Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode. Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto, mas é convertida para milímetros por segundo na construção da matriz de entrada.
 
 \subsection{Curva trapezoidal de velocidade}
 
-A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecido pelos comandos do Gcode,
-utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
+A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecido pelos comandos do Gcode,utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
 
-Essa função constrói a curva de velocidade trapezoidal a partir dos dados
-de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada.
-Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
+Essa função constrói a curva de velocidade trapezoidal a partir dos dados de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada. Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
 
 \begin{figure}[H]
     \centering
@@ -120,11 +95,7 @@ Para identificar se a velocidade desejada será alcançada é calculada a veloci
     v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
 \end{equation}
 
-A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
-é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas.
-Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
-que podem ser calculadas pelas Equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}. Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento,
-que são calculadas a partir da Equação \ref{eq:des_seg_a}.
+A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode, é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas. Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento que podem ser calculadas pelas Equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}. Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento, que são calculadas a partir da Equação \ref{eq:des_seg_a}.
 
 \begin{equation}
     \label{eq:des_seg_a}
@@ -151,8 +122,7 @@ que são calculadas a partir da Equação \ref{eq:des_seg_a}.
     d_c = d-(d_1+d_2)
 \end{equation}
 
-É possível calcular também os intervalos de tempo dessas fases, através das 
-Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
+É possível calcular também os intervalos de tempo dessas fases, através das Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
 
 \begin{equation}
     \label{eq:dt_seg_a}
@@ -184,15 +154,11 @@ Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
 %     \Delta v = v_f-v_i
 % \end{equation}
 
-Esses passos resultam em uma nova matriz contendo informações
-sobre a variação da posição, do tempo, da velocidade e sobre a aceleração e 
-direção de deslocamento nos pontos iniciais e finais do Gcode e também nos pontos
-onde existe uma alteração na aceleração.
+Esses passos resultam em uma nova matriz contendo informações sobre a variação da posição, do tempo, da velocidade e sobre a aceleração e direção de deslocamento nos pontos iniciais e finais do Gcode e também nos pontos onde existe uma alteração na aceleração.
 
 \subsection{Interpolação}
 
-A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediários baseados em um passo de tempo definido para esta interpolação. Para se dividir esses intervalos é possível utilizar a Equação \ref{eq:N_steps}, que calcula o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim
-o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}. Com base nesses passos de tempo, é possível calcular o deslocamento para cada um destes passos através da Equação \ref{eq:delta_des_interpol}.
+A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediários baseados em um passo de tempo definido para esta interpolação. Para se dividir esses intervalos é possível utilizar a Equação \ref{eq:N_steps}, que calcula o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}. Com base nesses passos de tempo, é possível calcular o deslocamento para cada um destes passos através da Equação \ref{eq:delta_des_interpol}.
 
 \begin{equation}
     \label{eq:N_steps}
@@ -246,13 +212,9 @@ Não foram utilizadas restrições lineares na otimização. Os limites superior
 
 \subsection{Restrições não lineares}
 
-A função para as restrições não lineares foi implementada com base nas equações \ref{eq:state_center_segment},
-\ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
-popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
-com os valores iniciais. 
+A função para as restrições não lineares foi implementada com base nas equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também com os valores iniciais. 
 
-A arrancada também foi utilizada como restrição de equalidade, atrelada ao condicional ?? para que se comporte como uma inequalidade.
-A variável de restrições de inequalidades não foi populada (ver Seção ?? Resultados e Discussão).
+A arrancada também foi utilizada como restrição de equalidade, atrelada ao condicional ?? para que se comporte como uma inequalidade. A variável de restrições de inequalidades não foi populada (ver Seção ?? Resultados e Discussão).
 
 % \subsection{Função objetivo}
 
@@ -261,13 +223,10 @@ A variável de restrições de inequalidades não foi populada (ver Seção ?? R
 
 \section{Solução da trajetória da base}
 
-É considerada como trajetória desejada a trajetória obtida através da função de geração de comando apresentada anteriormente
-e são utilizados os vetores de tempo e posição como variáveis globais, para serem acessados dentro da função das
-restrições não lineares, chamada pela FMINCON. Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
+É considerada como trajetória desejada a trajetória obtida através da função de geração de comando apresentada anteriormente e são utilizados os vetores de tempo e posição como variáveis globais, para serem acessados dentro da função das restrições não lineares, chamada pela FMINCON. Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
 na FMINCON, sendo adaptados em forma de matriz.
 
-A variável principal inserida na FMINCON é a matriz contendo os vetores de posição da base ($x_b$ e $y_b$),
-enquanto os vetores de posição da ponta são fixados pela trajetória desejada presente na forma de variáveis globais.
+A variável principal inserida na FMINCON é a matriz contendo os vetores de posição da base ($x_b$ e $y_b$), enquanto os vetores de posição da ponta são fixados pela trajetória desejada presente na forma de variáveis globais.
 
 As Equações \ref{eq:der_a} e \ref{eq:der_b} foram utilizadas para reconstrução do vetor de velocidade a partir dos vetores deslocamento e tempo, sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo, $a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo. 
 
@@ -310,11 +269,7 @@ A Tabela \ref{tab:base_params} apresenta os parâmetros de frequência, coeficie
     \end{center}
 \end{table}
 
-O tamanho dos vetores, o tempo de simulação e o índice viabilidade da FMINCON também foram analisados. O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
-do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
-O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
-termina de ser executada.
-A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
+O tamanho dos vetores, o tempo de simulação e o índice viabilidade da FMINCON também foram analisados. O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando. O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON termina de ser executada. A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
 
 O computador utilizado para a realização das simulações foi um notebook Acer com as configurações apresentadas na Tabela
 \ref{tab:note_config}.
@@ -334,13 +289,7 @@ O computador utilizado para a realização das simulações foi um notebook Acer
     \end{center}
 \end{table}
 
-Além das curvas de posição, deslocamento e velocidade, algumas variáveis também foram explicitadas para análise.
-São elas o tamnho dos vetores, o tempo de simulação e a viabilidade ao longo .
-O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
-do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
-O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
-termina de ser executada.
-A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
+Além das curvas de posição, deslocamento e velocidade, algumas variáveis também foram explicitadas para análise. São elas o tamanho dos vetores, o tempo de simulação e a viabilidade ao longo. O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando. O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON termina de ser executada. A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
 
 A máquina utilizada para a realização das simulações foi um notebook acer com as configurações apresentadas na tabela
 \ref{tab:note_config}.
