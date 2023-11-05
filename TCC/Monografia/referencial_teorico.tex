@@ -179,7 +179,7 @@ O método FBF necessita que a trajetória a ser rastreada seja totalmente conhec
     \label{fig:flowchart_fbf}
 \end{figure}
 
-Uma das maiores dificuldades que os métodos avançados para o controle \textit{feedforward} de trajetórias é a necessidade de se conhecer completamente a trajetória desejada, o que implica em um grande custo computacional, principalmente em situações onde são necessárias uma grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução e casos de longa duração. O \textit{limited-preview filtered B-splines} adapta a solução do FBF de forma a dividir a trajetória desejada em subgrupos com um número menor de amostras e utiliza um algorítimo de \textit{receiding horizon} para calcular recursivamente os coeficientes da função B-spline que minimizam os erros de trajetória \cite{duan18}.
+Uma das maiores dificuldades que os métodos avançados para o controle \textit{feedforward} de trajetórias é a necessidade de se conhecer completamente a trajetória desejada, o que implica em um grande custo computacional, principalmente em situações onde são necessárias uma grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução e casos de longa duração. O \textit{limited-preview filtered B-splines} adapta a solução do FBF de forma a dividir a trajetória desejada em subgrupos com um número menor de amostras e utiliza um algoritmo de \textit{receiding horizon} para calcular recursivamente os coeficientes da função B-spline que minimizam os erros de trajetória \cite{duan18}.
 
 A partir dessa otimização da divisão da trajetória em subgrupos, esse método conseguiu ser testado utilizando uma impressora 3D de verdade com modelos simples.
 
