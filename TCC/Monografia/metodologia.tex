@@ -1,18 +1,19 @@
 \chapter{METODOLOGIA}
-Neste estudo, a metodologia adotada para investigar o controle de trajetória de impressoras 3D através do uso de algoritmos iterativos e programação não linear é dividida em três fases principais. Inicialmente, procede-se com uma revisão bibliográfica extensiva para estabelecer uma base teórica sólida sobre os algoritmos iterativos e a programação não linear aplicados no contexto da impressão 3D. Em seguida, desenvolve-se um modelo computacional para simular o comportamento da impressora 3D, integrando o algoritmo iterativo ao sistema de controle não linear. Esta simulação visa identificar os parâmetros ótimos que resultam em uma trajetória precisa e eficiente. Por fim, testes empíricos são conduzidos utilizando uma impressora 3D real, onde o algoritmo e a programação são implementados e ajustados com base nos resultados da simulação. A análise de dados quantitativos, coletados durante os testes, permite avaliar a eficácia do método proposto. Este procedimento iterativo entre simulação e experimentação prática garante a refinamento contínuo do controle de trajetória.
+Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em três etapas fundamentais. A primeira fase consiste em uma análise bibliográfica detalhada que visa construir uma fundação teórica robusta sobre as estratégias de controle atualmente empregadas em impressão 3D. A segunda etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
+
+O processo metodológico é visualizado de forma esquemática no fluxograma abaixo (Figura \ref{fig:fluxo_geral}), o qual esclarece as etapas consecutivas desde a geração do comando até a geração dos sinais de controle, enfatizando a aplicação do modelo desenvolvido na fase de controle de trajetória.
 
 \begin{figure}[H]
     \centering
-    \caption{Curva de velocidade trapezoidal}
+    \caption{Fluxograma geral das etapas para o controle de trajetória}
     \includegraphics[scale=0.4]{fluxo_geral}
 
     \label{fig:fluxo_geral}
 \end{figure}
-%chat gpt /\
 
 \section{Geração de Trajetória}
 
-A geração de comando se inicia na leitura do Gcode para a obtenção dos movimentos e velocidades desejadas. Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode. Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto, mas é convertida para milímetros por segundo na construção da matriz de entrada.
+A fase de geração de trajetória inicia-se com a análise do Gcode, que fornece as coordenadas e velocidades de destino dos movimentos. Neste processo, são considerados exclusivamente os comandos G1, que indicam movimentos lineares, e são extraídas as informações referentes aos eixos X, Y e à taxa de avanço (feedrate - F). É importante notar que a taxa de avanço, usualmente expressa em milímetros por minuto nos arquivos Gcode gerados por fatiadores, é convertida para milímetros por segundo.
 
 \begin{figure}[H]
     \centering
@@ -24,17 +25,59 @@ A geração de comando se inicia na leitura do Gcode para a obtenção dos movim
 
 \subsection{Curva trapezoidal de velocidade}
 
-A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecido pelos comandos do Gcode,utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
+A próxima etapa  envolve a elaboração da curva trapezoidal de velocidade. Esta etapa se baseia em dados de entrada como deslocamento, velocidades iniciais e finais, e a velocidade almejada. A execução desta velocidade desejada é avaliada através do cálculo da velocidade de pico \(v_p\). Tal velocidade é obtida pela interseção das trajetórias de aceleração e desaceleração, que iniciam nas velocidades iniciais e finais respectivamente, e considerando que a área sob a curva deve ser equivalente ao deslocamento requerido. A fórmula para calcular \(v_p\) é expressa pela Equação \ref{eq:v_p}:
 
-Essa função constrói a curva de velocidade trapezoidal a partir dos dados de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada. Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
+\begin{equation}
+    \label{eq:v_p}
+    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
+\end{equation}
+
+Nesta equação, \(v_1\) e \(v_2\) representam as velocidades iniciais e finais, \(a\) denota a aceleração definida na impressora, e \(d\) corresponde ao deslocamento.
+
+A comparação entre a velocidade de pico e a velocidade desejada, esta última estabelecida pelo feedrate no Gcode, é crucial para definir se a trajetória do movimento adotará um perfil trapezoidal ou triangular de velocidade. A configuração do perfil depende da relação entre a velocidade de pico e a velocidade desejada: caso a primeira seja superior, o movimento será estruturado em três segmentos distintos, conforme ilustrado na Figura \ref{fig:trap_curv}.
 
 \begin{figure}[H]
     \centering
     \caption{Curva de velocidade trapezoidal}
     \includegraphics[scale=0.4]{trap_curv}
-
     \label{fig:trap_curv}
 \end{figure}
+
+Os segmentos de deslocamento \(d_1\), \(d_2\), e \(d_c\) correspondem às fases de aceleração, velocidade constante e desaceleração do movimento, respectivamente, e devem totalizar \(d\), o deslocamento total necessário. As variações temporais \(\Delta t_1\), \(\Delta t_2\), e \(\Delta t_c\) representam as durações de cada fase, baseadas nas velocidades inicial (\(v_1\)) e final (\(v_2\)), e na velocidade desejada (\(v_d\)). Os deslocamentos parciais são determinados pelas equações abaixo (Equação \ref{eq:des_seg_1_trap},  \ref{eq:des_seg_2_trap} e  \ref{eq:des_seg_c_trap}), que levam em conta a aceleração \(a\):
+
+\begin{equation}
+    \label{eq:des_seg_1_trap}
+    d_1 = \frac{(v_d^2-v_1^2)}{(2 a)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_2_trap}
+    d_2 = \frac{(v_2^2-v_d^2)}{(2 a)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_c_trap}
+    d_c = d-(d_1+d_2)
+\end{equation}
+
+Os intervalos de tempo para as fases de aceleração, velocidade constante e desaceleração são calculados conforme (Equação \ref{eq:dt_seg_1_trap},  \ref{eq:dt_seg_2_trap} e  \ref{eq:dt_seg_c_trap}):
+
+\begin{equation}
+    \label{eq:dt_seg_1_trap}
+    \Delta t_1 = \frac{(v_d-v_1)}{a}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_2_trap}
+    \Delta t_2 = \frac{(v_2-v_d)}{a}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_c_trap}
+    \Delta t_c = \frac{d_c}{v_d}
+\end{equation}
+
+Quando a velocidade de pico (\(v_p\)) é inferior à velocidade desejada (\(v_d\)), o perfil da trajetória de movimento assume uma forma triangular, em vez de trapezoidal. Esta condição implica que a velocidade desejada não é atingida durante o comando e, por conseguinte, o movimento é caracterizado por uma aceleração constante seguida de uma desaceleração constante, sem fase de velocidade constante. A Figura \ref{fig:triang_curv} ilustra este perfil de velocidade triangular.
 
 \begin{figure}[H]
     \centering
@@ -44,98 +87,59 @@ Essa função constrói a curva de velocidade trapezoidal a partir dos dados de 
     \label{fig:triang_curv}
 \end{figure}
 
-\begin{equation}
-    \label{eq:v_p}
-    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
-\end{equation}
-
-A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode, é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas. Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento que podem ser calculadas pelas Equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}. Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento, que são calculadas a partir da Equação \ref{eq:des_seg_a}.
+Neste cenário, os segmentos de deslocamento \(d_1\) e \(d_2\) representam, respectivamente, as etapas de aceleração até a velocidade de pico e a desaceleração de volta à velocidade final. Os valores de \(d_1\) e \(d_2\) são calculados pelas seguintes equações (Equação \ref{eq:des_seg_1_tri}, \ref{eq:des_seg_2_tri}), que incorporam a aceleração (\(a\)) e as velocidades inicial (\(v_1\)) e final (\(v_2\)):
 
 \begin{equation}
-    \label{eq:des_seg_a}
-    d_1 = \frac{(v_d^2-v_1^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_a}
-    d_2 = \frac{(v_2^2-v_d^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_a}
+    \label{eq:des_seg_1_tri}
     d_1 = \frac{(v_p^2-v_1^2)}{(2 a)}
 \end{equation}
 
 \begin{equation}
-    \label{eq:des_seg_a}
+    \label{eq:des_seg_2_tri}
     d_2 = \frac{(v_2^2-v_p^2)}{(2 a)}
 \end{equation}
 
-\begin{equation}
-    \label{eq:des_seg_no_a}
-    d_c = d-(d_1+d_2)
-\end{equation}
-
-É possível calcular também os intervalos de tempo dessas fases, através das Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
+É possível calcular os intervalos de tempo dessas fases, através das Equações \ref{eq:dt_seg_1_tri} e \ref{eq:dt_seg_2_tri}.
 
 \begin{equation}
-    \label{eq:dt_seg_a}
-    t_1 = \frac{(v_d-v_1)}{a}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_a}
-    t_2 = \frac{(v_2-v_d)}{a}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_no_a}
-    t_c = \frac{d_c}{v_d}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_a}
+    \label{eq:dt_seg_1_tri}
     t_1 = \frac{(v_p-v_1)}{a}
 \end{equation}
 
 \begin{equation}
-    \label{eq:dt_seg_a}
+    \label{eq:dt_seg_2_tri}
     t_2 = \frac{(v_2-v_p)}{a}
 \end{equation}
 
-% \begin{equation}
-%     \label{eq:delta_vel}
-%     \Delta v = v_f-v_i
-% \end{equation}
+Onde os tempos \(t_1\) e \(t_2\) representam, respectivamente, o tempo necessário para acelerar de \(v_1\) a \(v_p\) e para desacelerar de \(v_p\) a \(v_2\). 
 
-Esses passos resultam em uma nova matriz contendo informações sobre a variação da posição, do tempo, da velocidade e sobre a aceleração e direção de deslocamento nos pontos iniciais e finais do Gcode e também nos pontos onde existe uma alteração na aceleração.
+Esses passos transformam a sequência de comandos movimentos do Gcode em uma trajetória com pontos com informações do deslocamento, velocidade, tempo, definidos nos nós onde ha alteração na aceleração, estabelecendo o comportamento dos movimentos de x e y no tempo.
 
 \subsection{Interpolação}
+A interpolação é um passo crucial para refinar a trajetória de movimento na impressão 3D. Esta fase trabalha sobre a trajetória definida para cada eixo na etapa anterior, empregando uma função de interpolação que gera pontos intermediários. Esses pontos são criados com base em um intervalo de tempo previamente definido, melhorando significativamente a resolução da trajetória.
 
-A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediários baseados em um passo de tempo definido para esta interpolação. Para se dividir esses intervalos é possível utilizar a Equação \ref{eq:N_steps}, que calcula o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}. Com base nesses passos de tempo, é possível calcular o deslocamento para cada um destes passos através da Equação \ref{eq:delta_des_interpol}.
+Para subdividir esses intervalos de maneira eficaz, a Equação \ref{eq:N_steps} é utilizada para calcular o número de passos de interpolação necessários:
 
 \begin{equation}
     \label{eq:N_steps}
     N = \lceil\frac{\Delta t}{\Delta p}-1\rceil
 \end{equation}
 
+Esta fórmula determina o número \( N \) de passos a serem tomados dentro de um dado intervalo de tempo \( \Delta t \), com cada passo tendo um período \( \Delta p \). Após a divisão dos intervalos, a Equação \ref{eq:dt_interpol_last_step} calcula o tempo restante no último passo de interpolação (\(\Delta t_f\)):
+
 \begin{equation}
     \label{eq:dt_interpol_last_step}
     \Delta t_f= \Delta t - \Delta p N 
 \end{equation}
 
+Finalmente, com base nesses passos de tempo determinados (\(\Delta t_i\)) anexando \(\Delta t_f\) à lista de passos \(\Delta p\) de tamanho \(N\), a Equação \ref{eq:delta_des_interpol} é empregada para calcular o deslocamento correspondente a cada passo (\(\Delta d_i\)), utilizando a aceleração do segmento a ser interpolado (\(a_s\)) e a velocidade inicial do segmento (\(v_s\)):
+
 \begin{equation}
     \label{eq:delta_des_interpol}
-    \Delta d_i = \Delta v_i \Delta t_i+ \frac{a_s \Delta t_i^2}{2} 
+    \Delta d_i = \Delta v_s \Delta t_i+ \frac{a_s \Delta t_i^2}{2} 
 \end{equation}
 
-% A partir dos vetores de direção e da função acumuladora que se consiste em acumular os valores de um vetor.
-% Obtemos uma matriz de posições, velocidades e tempo.
-
-% \begin{equation}
-%     \label{eq:acumulator_function}
-%         s(k) = s(k)+s(k-1) 
-% \end{equation}
+Esses cálculos são fundamentais para garantir que a trajetória seja suficientemente detalhada, permitindo que a fase de controle da trajetória seja executada com sucesso.
 
 \section{Modelagem dinâmica de uma impressora 3D}
 
@@ -152,9 +156,15 @@ A modelagem do sistema mecânico da impressora 3D é um passo crucial para a imp
     \item Condições Iniciais de Movimento: Assume-se que todos os movimentos da impressora iniciam a partir do estado de repouso.
 \end{itemize}
 
-Com base nesses parâmetros, definimos duas posições-chave para análise em cada eixo. A primeira é a posição ideal (\(x_b\)) ou posição da base, que representa o ponto desejado pelo usuário, assumindo um sistema sem flexibilidade ou perdas. A segunda é a posição real (\(x_p\)) ou a posição da ponta, que leva em conta as forças inerciais e a flexibilidade introduzida pela correia. Este modelo é ilustrado na figura \ref{fig:din_model}.
+Com base nesses parâmetros, definimos duas posições-chave para análise em cada eixo. A primeira é a posição ideal (\(x_b\)) ou posição da base, que representa o ponto desejado pelo usuário, assumindo um sistema sem flexibilidade ou perdas. A segunda é a posição real (\(x_p\)) ou a posição da ponta, que leva em conta as forças inerciais e a flexibilidade introduzida pela correia. Este modelo é ilustrado na figura \ref{fig:model_1_axis}.
 
-(Figura - placeholder)
+\begin{figure}[H]
+    \centering
+    \caption{Modelagem de 1 eixo}
+    \includegraphics[scale=0.4]{model_1_axis}
+
+    \label{fig:model_1_axis}
+\end{figure}
 
 As equações de movimento para a impressora são descritas a seguir:
 \begin{multline}
@@ -164,11 +174,17 @@ As equações de movimento para a impressora são descritas a seguir:
     \ddot{x_p} = - \frac{c}{m} \dot{x_p} - \frac{k}{m} x_p + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b \\
 \end{multline}
 
-Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é o coeficiente de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D.
+Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é a constante de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação das Equação \ref{eq:mov_impressora} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subindices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
+
+\begin{figure}[H]
+    \centering
+    \caption{Modelagem dos eixos x e y}
+    \includegraphics[scale=0.4]{model_2_axis}
+
+    \label{fig:model_2_axis}
+\end{figure}
 
 \subsection{Espaço de estados}
-% A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e a a solução do sistema, dado sua característica de dividir uma equação diferencial de ordem superior em um sistema de equações diferenciais de ordem 1 com um número maior de equações. O modelo dinâmico do sistema é apresentado na formulação de espaço de estados na equação \ref{eq:simp_state_space_din_model}, onde $\dot x$ $x$ $A$ $u$ $B$. 
-
 A formulação do espaço de estados é adotada neste estudo para simplificar as operações e a solução do sistema dinâmico da impressora 3D. Esta abordagem é eficaz pois transforma uma equação diferencial de ordem superior em um sistema de equações diferenciais de primeira ordem, mas com um número maior de equações. Esta metodologia facilita o entendimento e a manipulação das dinâmicas do sistema.
 
 O modelo dinâmico no espaço de estados é representado na seguinte forma (Equação \ref{eq:simp_state_space_din_model}):
@@ -224,7 +240,7 @@ Nesta equação, \(x_p\) e \(y_p\) são as posições reais (da ponta) nos eixos
 
 \begin{figure}[H]
     \centering
-    \caption{Curva de velocidade trapezoidal}
+    \caption{Fluxograma Controle de Trajetória}
     \includegraphics[scale=0.4]{controle_de_trajetoria}
 
     \label{fig:controle_de_trajetoria}
