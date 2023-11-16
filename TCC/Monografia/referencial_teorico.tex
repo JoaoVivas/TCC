@@ -81,14 +81,14 @@ Motor de movimento: Impressoras 3D FDM possuem motores de movimento que controla
 
 Filamento: O filamento é o material de alimentação para a impressora 3D. Ele é um longo fio de plástico termoplástico que é inserido na extrusora e derretido durante o processo de impressão. Os filamentos vêm em várias cores e tipos de material, dependendo do objeto a ser impresso.
 
-Sistema de controle: A eletrônica de controle inclui a placa-mãe da impressora, que recebe comandos do software, em geral no formato Gcode, e os traduz em movimentos dos motores, controle de temperatura da extrusora e da mesa de impressão, velocidade dos ventiladores entre outros acessórios. Ela também pode ter uma tela de exibição e controles para operação manual.
+Circuitos eletrônicos: O principal circuito eletrônico em uma impressora 3D é a placa-mãe, que recebe comandos do software, em geral no formato Gcode, e os traduz em movimentos dos motores, controle de temperatura da extrusora e da mesa de impressão, velocidade dos ventiladores entre outros acessórios. A impressora também pode apresentar um painel de controle, disponibilizando uma tela de exibição e controles para operação manual.
 
 A Figura \ref{fig:impressora3d_comp} indica alguns destes componentes e a Figura \ref{fig:slicer_inter} mostra a interface de um fatiador.
 
 \begin{figure}[H]
     \centering
     \caption{Indicação dos componentes de uma impressora 3D}
-    \includegraphics[scale=0.04]{impressora3d_comp}
+    \includegraphics[scale=0.58]{printer_components}
     \label{fig:impressora3d_comp}
 \end{figure}
 
@@ -228,7 +228,8 @@ Os sistemas dinâmicos podem ser descritos através de uma formulação chamada 
     f(t)
 \end{equation}
 
-\section{Integração implícita utilizando programação não linear}
+\section{Segmentação Cúbica e Programação Não Linear}
+\label{sec:hargraves}
 
 \citeauthor{hargraves87} (\citeyear{hargraves87}) descreve um algoritmo para a solução numérica direta de problemas de controle ótimo. Este algoritmo emprega uma abordagem que utiliza polinômios cúbicos para representar as variáveis de estado. Adicionalmente, recorre à interpolação linear para tratar as variáveis de controle. Esse enfoque converte efetivamente o problema de controle ótimo em um problema de programação matemática.
 
@@ -240,7 +241,7 @@ Os valores de estado são então selecionados de maneira a garantir que a curva 
 
 \begin{figure}[H]
     \centering
-    \caption{Ilustração integração implícita}
+    \caption{Ilustração Segmentação Cúbica}
     \includegraphics[scale=0.5]{hargraves_func}
 
     {\footnotesize Fonte: \citeauthor{hargraves87}, \citeyear{hargraves87}}
