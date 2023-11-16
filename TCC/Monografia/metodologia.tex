@@ -1,25 +1,179 @@
 \chapter{METODOLOGIA}
+Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em três etapas fundamentais. A primeira fase consiste em uma análise bibliográfica detalhada que visa construir uma fundação teórica robusta sobre as estratégias de controle atualmente empregadas em impressão 3D. A segunda etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
 
-\section{Modelagem dinâmica de uma impressora 3D}
-Para a modelagem do sistema mecânico são consideradas as seguintes simplificações:
+O processo metodológico é visualizado de forma esquemática no fluxograma abaixo (Figura \ref{fig:fluxo_geral}), o qual esclarece as etapas consecutivas desde a geração do comando até a geração dos sinais de controle, enfatizando a aplicação do modelo desenvolvido na fase de controle de trajetória.
+
+\begin{figure}[H]
+    \centering
+    \caption{Fluxograma geral das etapas para o controle de trajetória}
+    \includegraphics[scale=0.4]{fluxo_geral}
+
+    \label{fig:fluxo_geral}
+\end{figure}
+
+\section{Geração de Trajetória}
+
+A fase de geração de trajetória inicia-se com a análise do Gcode, que fornece as coordenadas e velocidades de destino dos movimentos. Neste processo, são considerados exclusivamente os comandos G1, que indicam movimentos lineares, e são extraídas as informações referentes aos eixos X, Y e à taxa de avanço (feedrate - F). É importante notar que a taxa de avanço, usualmente expressa em milímetros por minuto nos arquivos Gcode gerados por fatiadores, é convertida para milímetros por segundo.
+
+\begin{figure}[H]
+    \centering
+    \caption{Curva de velocidade trapezoidal}
+    \includegraphics[scale=0.4]{geracao_de_trajetoria}
+
+    \label{fig:geracao_de_trajetoria}
+\end{figure}
+
+\subsection{Curva trapezoidal de velocidade}
+
+A próxima etapa  envolve a elaboração da curva trapezoidal de velocidade. Esta etapa se baseia em dados de entrada como deslocamento, velocidades iniciais e finais, e a velocidade almejada. A execução desta velocidade desejada é avaliada através do cálculo da velocidade de pico \(v_p\). Tal velocidade é obtida pela interseção das trajetórias de aceleração e desaceleração, que iniciam nas velocidades iniciais e finais respectivamente, e considerando que a área sob a curva deve ser equivalente ao deslocamento requerido. A fórmula para calcular \(v_p\) é expressa pela Equação \ref{eq:v_p}:
+
+\begin{equation}
+    \label{eq:v_p}
+    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
+\end{equation}
+
+Nesta equação, \(v_1\) e \(v_2\) representam as velocidades iniciais e finais, \(a\) denota a aceleração definida na impressora, e \(d\) corresponde ao deslocamento.
+
+A comparação entre a velocidade de pico e a velocidade desejada, esta última estabelecida pelo feedrate no Gcode, é crucial para definir se a trajetória do movimento adotará um perfil trapezoidal ou triangular de velocidade. A configuração do perfil depende da relação entre a velocidade de pico e a velocidade desejada: caso a primeira seja superior, o movimento será estruturado em três segmentos distintos, conforme ilustrado na Figura \ref{fig:trap_curv}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Curva de velocidade trapezoidal}
+    \includegraphics[scale=0.4]{trap_curv}
+    \label{fig:trap_curv}
+\end{figure}
+
+Os segmentos de deslocamento \(d_1\), \(d_2\), e \(d_c\) correspondem às fases de aceleração, velocidade constante e desaceleração do movimento, respectivamente, e devem totalizar \(d\), o deslocamento total necessário. As variações temporais \(\Delta t_1\), \(\Delta t_2\), e \(\Delta t_c\) representam as durações de cada fase, baseadas nas velocidades inicial (\(v_1\)) e final (\(v_2\)), e na velocidade desejada (\(v_d\)). Os deslocamentos parciais são determinados pelas equações abaixo (Equação \ref{eq:des_seg_1_trap},  \ref{eq:des_seg_2_trap} e  \ref{eq:des_seg_c_trap}), que levam em conta a aceleração \(a\):
+
+\begin{equation}
+    \label{eq:des_seg_1_trap}
+    d_1 = \frac{(v_d^2-v_1^2)}{(2 a)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_2_trap}
+    d_2 = \frac{(v_2^2-v_d^2)}{(2 a)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_c_trap}
+    d_c = d-(d_1+d_2)
+\end{equation}
+
+Os intervalos de tempo para as fases de aceleração, velocidade constante e desaceleração são calculados conforme (Equação \ref{eq:dt_seg_1_trap},  \ref{eq:dt_seg_2_trap} e  \ref{eq:dt_seg_c_trap}):
+
+\begin{equation}
+    \label{eq:dt_seg_1_trap}
+    \Delta t_1 = \frac{(v_d-v_1)}{a}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_2_trap}
+    \Delta t_2 = \frac{(v_2-v_d)}{a}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_c_trap}
+    \Delta t_c = \frac{d_c}{v_d}
+\end{equation}
+
+Quando a velocidade de pico (\(v_p\)) é inferior à velocidade desejada (\(v_d\)), o perfil da trajetória de movimento assume uma forma triangular, em vez de trapezoidal. Esta condição implica que a velocidade desejada não é atingida durante o comando e, por conseguinte, o movimento é caracterizado por uma aceleração constante seguida de uma desaceleração constante, sem fase de velocidade constante. A Figura \ref{fig:triang_curv} ilustra este perfil de velocidade triangular.
+
+\begin{figure}[H]
+    \centering
+    \caption{Curva de velocidade triangular}
+    \includegraphics[scale=0.4]{triang_curv}
+
+    \label{fig:triang_curv}
+\end{figure}
+
+Neste cenário, os segmentos de deslocamento \(d_1\) e \(d_2\) representam, respectivamente, as etapas de aceleração até a velocidade de pico e a desaceleração de volta à velocidade final. Os valores de \(d_1\) e \(d_2\) são calculados pelas seguintes equações (Equação \ref{eq:des_seg_1_tri}, \ref{eq:des_seg_2_tri}), que incorporam a aceleração (\(a\)) e as velocidades inicial (\(v_1\)) e final (\(v_2\)):
+
+\begin{equation}
+    \label{eq:des_seg_1_tri}
+    d_1 = \frac{(v_p^2-v_1^2)}{(2 a)}
+\end{equation}
+
+\begin{equation}
+    \label{eq:des_seg_2_tri}
+    d_2 = \frac{(v_2^2-v_p^2)}{(2 a)}
+\end{equation}
+
+É possível calcular os intervalos de tempo dessas fases, através das Equações \ref{eq:dt_seg_1_tri} e \ref{eq:dt_seg_2_tri}.
+
+\begin{equation}
+    \label{eq:dt_seg_1_tri}
+    t_1 = \frac{(v_p-v_1)}{a}
+\end{equation}
+
+\begin{equation}
+    \label{eq:dt_seg_2_tri}
+    t_2 = \frac{(v_2-v_p)}{a}
+\end{equation}
+
+Onde os tempos \(t_1\) e \(t_2\) representam, respectivamente, o tempo necessário para acelerar de \(v_1\) a \(v_p\) e para desacelerar de \(v_p\) a \(v_2\). 
+
+Esses passos transformam a sequência de comandos movimentos do Gcode em uma trajetória com pontos com informações do deslocamento, velocidade, tempo, definidos nos nós onde ha alteração na aceleração, estabelecendo o comportamento dos movimentos de x e y no tempo.
+
+\subsection{Interpolação}
+A interpolação é um passo crucial para refinar a trajetória de movimento na impressão 3D. Esta fase trabalha sobre a trajetória definida para cada eixo na etapa anterior, empregando uma função de interpolação que gera pontos intermediários. Esses pontos são criados com base em um intervalo de tempo previamente definido, melhorando significativamente a resolução da trajetória.
+
+Para subdividir esses intervalos de maneira eficaz, a Equação \ref{eq:N_steps} é utilizada para calcular o número de passos de interpolação necessários:
+
+\begin{equation}
+    \label{eq:N_steps}
+    N = \lceil\frac{\Delta t}{\Delta p}-1\rceil
+\end{equation}
+
+Esta fórmula determina o número \( N \) de passos a serem tomados dentro de um dado intervalo de tempo \( \Delta t \), com cada passo tendo um período \( \Delta p \). Após a divisão dos intervalos, a Equação \ref{eq:dt_interpol_last_step} calcula o tempo restante no último passo de interpolação (\(\Delta t_f\)):
+
+\begin{equation}
+    \label{eq:dt_interpol_last_step}
+    \Delta t_f= \Delta t - \Delta p N 
+\end{equation}
+
+Finalmente, com base nesses passos de tempo determinados (\(\Delta t_i\)) anexando \(\Delta t_f\) à lista de passos \(\Delta p\) de tamanho \(N\), a Equação \ref{eq:delta_des_interpol} é empregada para calcular o deslocamento correspondente a cada passo (\(\Delta d_i\)), utilizando a aceleração do segmento a ser interpolado (\(a_s\)) e a velocidade inicial do segmento (\(v_s\)):
+
+\begin{equation}
+    \label{eq:delta_des_interpol}
+    \Delta d_i = \Delta v_s \Delta t_i+ \frac{a_s \Delta t_i^2}{2} 
+\end{equation}
+
+Esses cálculos são fundamentais para garantir que a trajetória seja suficientemente detalhada, permitindo que a fase de controle da trajetória seja executada com sucesso.
+
+\section{Modelagem dinâmica de uma impressora 3D} 
+\label{sec:modelagem}
+
+A modelagem do sistema mecânico da impressora 3D é um passo crucial para a implementação eficaz do método proposto. Essa modelagem não só facilita a compreensão do comportamento da impressora mas também é fundamental para definir as restrições necessárias na etapa subsequente de controle de trajetória, restrições essas que aplicam as equações de movimento e condições de contorno definidas no modelo.
+
+É fundamental enfatizar a importância de um modelo representativo. A eficácia do método proposto depende diretamente da acurácia com que o modelo simula o comportamento real da impressora 3D. Neste estudo, consideramos as seguintes características principais do sistema (Figura \ref{fig:simple_model}):
+
 \begin{itemize}
-    \item Não existe escorregamento nem perda de potência na interação entre a polia e a correia
-    \item A correia apresenta um comportamento equivalente à uma mola e um amortecedor em paralelo
-    \item O bico injetor é um corpo rígido uniforme de geometria simples
+    \item Influência da Correia: A correia é o componente chave responsável por introduzir desvios nas trajetórias de impressão. Ela age como uma combinação de mola e amortecedor, afetando a dinâmica do movimento.
+    \item Modelagem do Conjunto Bico Injetor e Extrusora: Este conjunto é tratado como um corpo rígido uniforme, simplificando sua representação geométrica. Sua massa é considerada como 200g, o que influencia a dinâmica do movimento.
+    \item Dimensões da Mesa de Impressão: A área útil da mesa de impressão é de 200 mm x 200 mm, definindo o espaço de trabalho disponível.
+    \item Configuração Cartesiana: A impressora opera em um sistema cartesiano, com eixos ortogonais, o que simplifica a análise de movimento.
+    \item Independência dos Eixos: Cada eixo da impressora opera independentemente dos outros, permitindo uma análise mais simplificada das dinâmicas individuais.
+    \item Condições Iniciais de Movimento: Assume-se que todos os movimentos da impressora iniciam a partir do estado de repouso.
 \end{itemize}
 
-Para a modelagem dinâmica dos eixos X e Y da impressora 3D, 
-é considerado que os eixos são completamente independentes, 
-a flexibilidade da correia é aproximada utilizando um conjunto 
-mola amortecedor e a transmissão de movimento e torque dos 
-motores é considerada como ideal e não será abordada.
-Assim duas posições de estudo surgem para cada eixo, uma delas 
-representa a posição ideal, caso o sistema não possuísse nenhuma flexibilidade
-ou perda, que também é a posição desejada pelo usuário ($x_b$). 
-A segunda posição considera as forças inerciais e a 
-flexibilidade introduzida pela correia, ou seja, a posição real simulada pelo modelo
-e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
+\begin{figure}[H]
+    \centering
+    \caption{Modelo simplificado impressora 3D}
+    \includegraphics[scale=0.58]{simple_model}
+    \label{fig:simple_model}
+\end{figure}
+Com base nesses parâmetros, definimos duas posições-chave para análise em cada eixo. A primeira é a posição ideal (\(x_b\)) ou posição da base, que representa o ponto desejado pelo usuário, assumindo um sistema sem flexibilidade ou perdas. A segunda é a posição real (\(x_p\)) ou a posição da ponta, que leva em conta as forças inerciais e a flexibilidade introduzida pela correia. Este modelo é ilustrado na figura \ref{fig:model_1_axis}.
 
+\begin{figure}[H]
+    \centering
+    \caption{Modelagem de 1 eixo}
+    \includegraphics[scale=0.4]{model_1_axis}
+
+    \label{fig:model_1_axis}
+\end{figure}
+
+As equações de movimento para a impressora são descritas a seguir:
 \begin{multline}
     \label{eq:mov_impressora}
     \\
@@ -27,23 +181,29 @@ e no caso empírico a posição real ($x$) como na figura \ref{fig:din_model}.
     \ddot{x_p} = - \frac{c}{m} \dot{x_p} - \frac{k}{m} x_p + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b \\
 \end{multline}
 
-(Figura - placeholder)
+Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é a constante de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação das Equação \ref{eq:mov_impressora} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subindices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
+
+\begin{figure}[H]
+    \centering
+    \caption{Modelagem dos eixos x e y}
+    \includegraphics[scale=0.4]{model_2_axis}
+
+    \label{fig:model_2_axis}
+\end{figure}
 
 \subsection{Espaço de estados}
-A formulação de espaço de estados foi utilizada com intuito de facilitar as operações e
-a a solução do sistema, dado sua característica de dividir uma equação diferencial
-de ordem superior em um sistema de equações diferenciais de ordem 1 com um número maior de equações.
-O modelo dinâmico do sistema é apresentado na formulação de espaço de estados 
-na equação \ref{eq:simp_state_space_din_model}, onde $\dot x$ $x$ $A$ $u$ $B$.
-Baseado na equação \ref{eq:mov_impressora} expandimos as matrizes e vetores na equação 
-\ref{eq:espaco_de_estados_din_model}.
-Como o modelo dos eixos x e y estão sendo considerados como iguais, também podemos utilizar a equação 
-\ref{eq:espaco_de_estados_din_model} para a base do eixo y.
+A formulação do espaço de estados é adotada neste estudo para simplificar as operações e a solução do sistema dinâmico da impressora 3D. Esta abordagem é eficaz pois transforma uma equação diferencial de ordem superior em um sistema de equações diferenciais de primeira ordem, mas com um número maior de equações. Esta metodologia facilita o entendimento e a manipulação das dinâmicas do sistema.
+
+O modelo dinâmico no espaço de estados é representado na seguinte forma (Equação \ref{eq:simp_state_space_din_model}):
 
 \begin{equation}
     \label{eq:simp_state_space_din_model}
     \dot x = A*x+B*u
 \end{equation}
+
+Nesta equação, \(\dot x\) representa o vetor de estados derivados, \(x\) é o vetor de estados, \(A\) é a matriz do sistema que define a relação entre os estados atuais e suas taxas de mudança, \(u\) é o vetor de entradas externas, e \(B\) é a matriz de controle que relaciona as entradas com os estados.
+
+Baseado na equação de movimento \ref{eq:mov_impressora}, análogos ao eixo y, expandimos as matrizes e vetores para representar com precisão a dinâmica do sistema no espaço de estados, conforme apresentado na equação \ref{eq:espaco_de_estados_din_model}:
 
 \begin{equation}
     \label{eq:espaco_de_estados_din_model}
@@ -81,269 +241,107 @@ Como o modelo dos eixos x e y estão sendo considerados como iguais, também pod
     \end{bmatrix}
 \end{equation}
 
-\section{Geração de Comando}
+Nesta equação, \(x_p\) e \(y_p\) são as posições reais (da ponta) nos eixos X e Y, respectivamente, enquanto \(x_b\) e \(y_b\) são as posições ideais (da base). As variáveis \(\dot{x_p}\) e \(\dot{y_p}\) representam a primeira derivada do tempo das posições nos eixos X e Y, indicando a velocidade e aceleração. \(k_x\) e \(k_y\) denotam as constantes elásticas das correias nos eixos X e Y, enquanto \(c_x\) e \(c_y\) representam as constantes de amortecimento dessas correias. \(m_x\) e \(m_y\) são as massas associadas aos conjuntos de bico injetor e extrusora nos respectivos eixos.
 
-A geração de comando se inicia na leitura do Gcode para a obtenção dos movimentos e velocidades desejadas.
-Foi considerado no mapeamento do Gcode apenas comandos G1, extraindo
-as informações dos eixos X, Y e do \textit{feedrate} (F). Com base nesses valores
-uma matriz 3 por n é criada, n sendo o número de comandos lidos do arquivo Gcode.
-Em geral a unidade de F em arquivos Gcode gerados pelos fatiadores se dão em milímetros por minuto,
-mas é convertida para milímetros por segundo na construção da matriz de entrada.
+\section{Controle de Trajetória}
+O Controle de Trajetória desempenha um papel essencial em aperfeiçoar a precisão dos movimentos na impressora 3D. A escolha das estratégias de controle é crucial para maximizar a eficiência operacional. No escopo deste estudo, a técnica de controle adotada se baseia no modelo estabelecido anteriormente, onde aplicamos uma abordagem feedforward à trajetória gerada na fase de construção da trajetória.
 
-\subsection{Curva trapezoidal de velocidade}
+A metodologia de controle em foco procura resolver as equações de movimento e atender às condições de contorno estipuladas pela modelagem da impressora. O ajuste é feito na trajetória da base do sistema, ajustando-a de forma que a saída do vetor de estados corresponda à trajetória da ponta projetada.
 
-A partir da matriz de entrada e das velocidades finais e iniciais dos movimentos estabelecido pelos comandos do Gcode,
-utilizamos a função responsável por gerar a curva trapezoidal de velocidades.
+Utiliza-se uma função de otimização iterativa para refinar a trajetória da base, que é a principal variável de interesse. Este refinamento é feito minimizando um conjunto de restrições derivadas das equações de movimento e das condições de contorno. A iteração prossegue até que um critério de parada estabelecido seja alcançado, sugerindo que a trajetória base modificada satisfaz a trajetória da ponta almejada.
 
-Essa função constrói a curva de velocidade trapezoidal a partir dos dados
-de entrada, sendo estes o deslocamento do movimento, as velocidades iniciais, velocidades finais e a velocidade desejada.
-Para identificar se a velocidade desejada será alcançada é calculada a velocidade pico ($v_p$) através do encontro das retas de velocidades. É possível obter a velocidade de pico através da Equação \ref{eq:v_p}.
+Este método assegura uma resposta proativa às dinâmicas da impressora, alinhando-se à trajetória planejada e, consequentemente, elevando a acuidade dos movimentos da impressora 3D. A Figura \ref{fig:controle_de_trajetoria} ilustra o esquema do método de controle proposto.
 
 \begin{figure}[H]
     \centering
-    \caption{Curva de velocidade trapezoidal}
-    \includegraphics[scale=0.4]{trap_curv}
+    \caption{Fluxograma Controle de Trajetória}
+    \includegraphics[scale=0.5]{controle_de_trajetoria}
 
-    \label{fig:trap_curv}
+    \label{fig:controle_de_trajetoria}
 \end{figure}
 
-\begin{figure}[H]
+\subsection{Restrições}
+
+A formulação do conjunto de restrições é um componente crucial do método, pois é através dele que as equações de movimento são implementadas. A função de otimização adota um algoritmo para minimizar essas restrições, ou seja, para que se aproximem tanto quanto possível de zero.
+
+As condições de contorno são aplicadas estabelecendo que tanto a posição quanto a velocidade sejam zero no instante inicial e que a velocidade também seja zero ao final do percurso. As equações de movimento são incorporadas nas restrições através da técnica de segmentação cúbica, baseada no modelo em espaço de estados especificado na Seção \ref{sec:modelagem}. Utilizamos as Equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:input_value_center_segment} e \ref{eq:defect_calc} para criar um vetor de defeitos, como descrito no Capítulo \ref{sec:hargraves}. A minimização destas diferenças faz com que os polinômios cúbicos dos segmentos da curva se aproximem das soluções das equações de movimento, que são então integradas ao vetor de restrições.
+
+\subsection{Função de Otimização}
+
+Os limites da variável de interesse, que neste caso são determinados pela área de trabalho da impressora, também são definidos para que a extrusora não ultrapasse os limites da base de impressão, estabelecendo-se entre o mínimo de 0 e o máximo de 200 mm para os eixos x e y.
+
+A função de otimização adota o algoritmo interior-point, eficaz em resolver problemas de otimização não-linear com restrições. Este método é preferível para grandes conjuntos de dados, por ser mais rápido e numericamente estável do que abordagens tradicionais. Os critérios de parada para o algoritmo são apresentados na Tabela \ref{tab:stop_crit}.
+
+\begin{table}[H]
     \centering
-    \caption{Curva de velocidade triangular}
-    \includegraphics[scale=0.4]{triang_curv}
-
-    \label{fig:triang_curv}
-\end{figure}
-
-\begin{equation}
-    \label{eq:v_p}
-    v_p = \sqrt{\frac{(v_1^2+v_2^2)}{2}+a d}
-\end{equation}
-
-A partir da comparação da velocidade pico com a velocidade desejada, indicada pelo \textit{feedrate} disponibilizado no Gcode,
-é possível determinar se a velocidade desejada será alcançada e assim determinar o perfil das curvas e como serão calculadas.
-Caso a velocidade de pico for maior do que a velocidade desejada, temos 3 fases de deslocamento
-que podem ser calculadas pelas Equações \ref{eq:des_seg_a} e \ref{eq:des_seg_no_a}. Caso a velocidade de pico seja igual ou menor do que a velocidade desejada, teremos 2 fases de deslocamento,
-que são calculadas a partir da Equação \ref{eq:des_seg_a}.
-
-\begin{equation}
-    \label{eq:des_seg_a}
-    d_1 = \frac{(v_d^2-v_1^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_a}
-    d_2 = \frac{(v_2^2-v_d^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_a}
-    d_1 = \frac{(v_p^2-v_1^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_a}
-    d_2 = \frac{(v_2^2-v_p^2)}{(2 a)}
-\end{equation}
-
-\begin{equation}
-    \label{eq:des_seg_no_a}
-    d_c = d-(d_1+d_2)
-\end{equation}
-
-É possível calcular também os intervalos de tempo dessas fases, através das 
-Equações \ref{eq:dt_seg_a} e \ref{eq:dt_seg_no_a}.
-
-\begin{equation}
-    \label{eq:dt_seg_a}
-    t_1 = \frac{(v_d-v_1)}{a}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_a}
-    t_2 = \frac{(v_2-v_d)}{a}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_no_a}
-    t_c = \frac{d_c}{v_d}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_a}
-    t_1 = \frac{(v_p-v_1)}{a}
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_seg_a}
-    t_2 = \frac{(v_2-v_p)}{a}
-\end{equation}
-
-% \begin{equation}
-%     \label{eq:delta_vel}
-%     \Delta v = v_f-v_i
-% \end{equation}
-
-Esses passos resultam em uma nova matriz contendo informações
-sobre a variação da posição, do tempo, da velocidade e sobre a aceleração e 
-direção de deslocamento nos pontos iniciais e finais do Gcode e também nos pontos
-onde existe uma alteração na aceleração.
-
-\subsection{Interpolação}
-
-A partir dos pontos de posição, velocidade, aceleração e tempo de cada eixo, é utilizada uma função de interpolação esses intervalos em pontos intermediários baseados em um passo de tempo definido para esta interpolação. Para se dividir esses intervalos é possível utilizar a Equação \ref{eq:N_steps}, que calcula o número de passos neste intervalo, anexando à matriz os passos de tempo e por fim
-o restante do intervalo, calculado pela Equação \ref{eq:dt_interpol_last_step}. Com base nesses passos de tempo, é possível calcular o deslocamento para cada um destes passos através da Equação \ref{eq:delta_des_interpol}.
-
-\begin{equation}
-    \label{eq:N_steps}
-    N = \lceil\frac{\Delta t}{\Delta p}-1\rceil
-\end{equation}
-
-\begin{equation}
-    \label{eq:dt_interpol_last_step}
-    \Delta t_f= \Delta t - \Delta p N 
-\end{equation}
-
-\begin{equation}
-    \label{eq:delta_des_interpol}
-    \Delta d_i = \Delta v_i \Delta t_i+ \frac{a_s \Delta t_i^2}{2} 
-\end{equation}
-
-% A partir dos vetores de direção e da função acumuladora que se consiste em acumular os valores de um vetor.
-% Obtemos uma matriz de posições, velocidades e tempo.
-
-% \begin{equation}
-%     \label{eq:acumulator_function}
-%         s(k) = s(k)+s(k-1) 
-% \end{equation}
-
-\section{FMINCON}
-
-\subsection{Configurações da função}
-
-A Tabela \ref{tab:fmincon_options} apresenta o conjunto de configurações customizadas da função FMINCON. As configurações não explicitadas foram mantidas como os padrões disponibilizados pelo Matlab. A função objetivo foi considerada nula por hipótese.
-
-\begin{table}
-    \begin{center}
-    \caption{Parâmetros modificados na função FMINCON.}
-    \label{tab:fmincon_options}
+    \caption{Critérios de Parada do Algoritmo de Otimização}
+    \label{tab:stop_crit}
     \begin{tabular}{c c}
         Opção & Valor \\ \hline
-        TolFun & 0.000000001 \\
-        MaxIter & 100000 \\
-        Display & iter \\
-        DiffMinChange & 0.0001 \\
-        Algorithm & interior-point \\
-        StepTolerance & 1e-12 \\
-        MaxFunEvals & 700000  \\ \hline
+        Máximo de Iterações & 100000 \\
+        Diferença Mínima entre Iterações & 0.0001 \\ \hline
     \end{tabular}
-    \end{center}
 \end{table}
 
-\subsection{Restrições lineares e limites de borda}
+\section{Simulação Computacional e Análise de Dados}
 
-Não foram utilizadas restrições lineares na otimização. Os limites superiores (\textit{upperbound}) e inferiores (\textit{lowerbound}) foram definidos com base nos limites físicos da impressora para as posições $x_b$ e $y_b$ (ver Seção \ref{parametrosimp}).
+Nesta seção, descrevemos o processo de simulação para testar o método proposto. Iniciamos com a simulação de dois movimentos lineares: um deslocamento de 10 milímetros no eixo x seguido de um movimento similar no eixo y, partindo da posição inicial (0,0) e em estado de repouso. A Figura \ref{fig:base_mov} ilustra estes movimentos.
 
-\subsection{Restrições não lineares}
+\begin{figure}[H]
+    \centering
+    \caption{Movimento base}
+    \includegraphics[scale=0.6]{base_mov}
 
-A função para as restrições não lineares foi implementada com base nas equações \ref{eq:state_center_segment},
-\ref{eq:state_dot_center_segment}, \ref{eq:defect_calc}, \ref{eq:input_value_center_segment} de maneira a
-popular a variável de restrições de igualdades com os valores do defeito dos segmentos ($\Delta$) e também
-com os valores iniciais. 
+    \label{fig:base_mov}
+\end{figure}
 
-A arrancada também foi utilizada como restrição de equalidade, atrelada ao condicional ?? para que se comporte como uma inequalidade.
-A variável de restrições de inequalidades não foi populada (ver Seção ?? Resultados e Discussão).
+Selecionamos parâmetros chave para o controle da simulação, apresentados na Figura \ref{fig:fluxo_geral_var}, e seus respectivos valores são listados na Tabela \ref{tab:base_params}.
 
-% \subsection{Função objetivo}
+\begin{figure}[H]
+    \centering
+    \caption{Fluxograma geral com os parâmetros.}
+    \includegraphics[scale=0.5]{fluxo_geral_var}
 
-% Foram realizados alguns testes com funções objetivo e seus resultados são apresentados na seção de resultados e discussão,
-% entretanto a função objetiva foi definida como zero, ou seja, pra qualquer valor ela retornara zero nas chamadas da FMINCON.
-
-\section{Solução da trajetória da base}
-
-É considerada como trajetória desejada a trajetória obtida através da função de geração de comando apresentada anteriormente
-e são utilizados os vetores de tempo e posição como variáveis globais, para serem acessados dentro da função das
-restrições não lineares, chamada pela FMINCON. Além disso, esses mesmos vetores de posição também são considerados como o chute inicial e variável principal
-na FMINCON, sendo adaptados em forma de matriz.
-
-A variável principal inserida na FMINCON é a matriz contendo os vetores de posição da base ($x_b$ e $y_b$),
-enquanto os vetores de posição da ponta são fixados pela trajetória desejada presente na forma de variáveis globais.
-
-As Equações \ref{eq:der_a} e \ref{eq:der_b} foram utilizadas para reconstrução do vetor de velocidade a partir dos vetores deslocamento e tempo, sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo, $a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo. 
-
-% Para conseguir realizar os cálculos necessários dentro da função de restrições não lineares é utilizado o seguinte conjunto
-% de equações basicas (\ref{eq:der_a}) para se derivar a curva posição-tempo considerando aceleração constante,
-% sendo $dt$ a variação do tempo no intervalo, $des_n$ o deslocamento final do intervalo, $des_i$ o deslocamento inicial no intervalo,
-% $a_n$ a aceleração do intervalo, $v_n$ a velocidade final do intervalo e $v_i$ a velocidade inicial do intervalo.
-% Assim construindo o vetor de velocidade a partir da condição inicial de deslocamento e velocidade zero, para ambos os eixos ($x$ e $y$).
-
-\begin{equation}
-    \label{eq:der_a}      
-        a(k) = \frac{2}{\Delta t(k)} \left( \frac{d(k)-d(k-1)}{\Delta t(k)}-v(k-1) \right)
-\end{equation}
-
-\begin{equation}
-    \label{eq:der_b}      
-        v(k) = v(k-1)+a(k) \Delta t(k)
-\end{equation}
-
-\section{Simulação de controle de impressora 3D}
-
-\subsection{Caso base} 
-
-Com base no modelo proposto, foi simulada a trajetória do ponteiro em 10 milímetros ao longo do eixo x e depois 10 milímetros ao longo do eixo y. Para as análises do caso base, foram avaliados os cenários com controle e sem controle. Também foram analisados os perfis de deslocamento e velocidade. 
-
-A Tabela \ref{tab:base_params} apresenta os parâmetros de frequência, coeficiente de amortecimento, aceleração base, velocidade desejada e resolução de interpolação ("parâmetros-chave") considerados para este cenário base.
+    \label{fig:fluxo_geral_var}
+\end{figure}
 
 \begin{table}
     \begin{center}
-    \caption{Parâmetros referência dos Estudos de Caso.}
+    \caption{Valores dos parâmetros utilizados na simulação.}
     \label{tab:base_params}
     \begin{tabular}{c c c}
         Parâmetro & Valor & Unidade\\ \hline
         Frequência & 100 & $rad/s$\\
         Coeficiente de amortecimento & 0,5 & - \\
         Aceleração base & 5000 & $mm/s^2$ \\
-        Velocidade desejada & 100 & $mm/s$ \\
-        Resolução de interpolação & 0,005 & $s$ \\ \hline
+        Passo de tempo & 0,005 & $s$ \\ 
+        Velocidade desejada & 100 & $mm/s$ \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
 
-O tamanho dos vetores, o tempo de simulação e o índice viabilidade da FMINCON também foram analisados. O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
-do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
-O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
-termina de ser executada.
-A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
+Avaliamos a trajetória resultante focando em três aspectos: a viabilidade, o número de iterações e a dimensão do vetor de variáveis de interesse. A viabilidade é medida pelo maior desvio em relação às restrições do modelo, o que nos ajuda a compreender a capacidade da simulação de atingir uma solução que respeite todas as restrições estabelecidas, além de indicar o padrão de convergência ao observar a evolução da viabilidade ao longo das iterações. O tamanho do vetor de variáveis também é considerado, dada a sua relevância para o desempenho computacional da simulação.
 
-O computador utilizado para a realização das simulações foi um notebook Acer com as configurações apresentadas na Tabela
-\ref{tab:note_config}.
+\subsection{Análise de Sensibilidade}
+
+Realizamos uma análise de sensibilidade para examinar o comportamento do método frente a variações nos parâmetros listados na Tabela \ref{tab:base_params}. Alteramos cada parâmetro individualmente em 2 ou 3 simulações distintas, conforme detalhado na Tabela \ref{tab:sim_params}. Cada simulação é identificada por um número e uma letra, indicando o parâmetro modificado e o valor aplicado.
 
 \begin{table}
     \begin{center}
-    \caption{Estudos de Caso}
+    \caption{Parâmetros utilizados na análise de sensibilidade.}
     \label{tab:sim_params}
     \begin{tabular}{c c c c c c}
         Caso & Parâmetro & Valor A & Valor B & Valor C & Unidade\\ \hline
         1 & Frequência & 50 & 200 & 500 & $rad/s$\\
-        2 & Coeficiente de amortecimento & 0 & 1 & 2 & - \\
+        2 & Coeficiente de amortecimento & 0 & 0,75 & 1 & - \\
         3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
-        4 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\
-        5 & Resolução de interpolação & 0,01 & 0,001 & 0,0002 & $s$ \\ \hline
+        4 & Passo de tempo & 0,01 & 0,001 & 0,0002 & $s$ \\
+        5 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
 
-Além das curvas de posição, deslocamento e velocidade, algumas variáveis também foram explicitadas para análise.
-São elas o tamnho dos vetores, o tempo de simulação e a viabilidade ao longo .
-O tamanho dos vetores é definido na fase de geração de comando e tem influência direta da resolução de interpolação definida e
-do tempo necessário para percorrer o caminho dada as definições de velocidades na geração de comando.
-O tempo de simulação começa a ser contado logo depois da geração de comando e para quando a função FMINCON
-termina de ser executada.
-A viabilidade é um dos resultados da função FMINCON e este representa o valor da maior restrição não cumprida.
-
-A máquina utilizada para a realização das simulações foi um notebook acer com as configurações apresentadas na tabela
-\ref{tab:note_config}.
+As simulações foram executadas em um computador com as especificações listadas na Tabela \ref{tab:note_config}.
 
 \begin{table}
     \begin{center}
