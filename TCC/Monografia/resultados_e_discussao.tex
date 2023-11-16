@@ -1,15 +1,5 @@
 \chapter{RESULTADOS E DISCUSSÃO}
-\section{Resultados}
-\subsection{Caso Base}
 
-A Figura \ref{fig:t_padr_vels} apresenta o perfil de velocidades para o caso base, no qual evidencia-se o comportamento compensador do sistema e uma oscilação de alta frequência, artefato da resposta da FMINCON. A amplitude das oscilações tende a ser menor conforme exista uma maior resolução na interpolação do tempo, ou seja, apresente $dt$ menor. Ademais, conforme mencionado na seção anterior, o arranque foi restringido afim de controlar a amplitude dessas oscilações. %%COMPLEMENTAR
-
-% Podemos observar os resultados das curvas geradas pelo Caso utilizando os parâmetros referência nas figuras
-% \ref{fig:t_padr_vels}, \ref{fig:t_padr_des} e \ref{fig:t_padr_pos}. Nelas temos o comportamento compensador,
-% especialmente nas curvas que tem o tempo como abicissa.
-% Notamos também, principalmente na figura \ref{fig:t_padr_vels} uma ocilação de alta frequência que é um artefato
-% da resposta da FMINCON, essa ocilação se encontrava em amplitude muito maior e foi controlada através de restrições quanto ao 
-% arranque, ou seja, a mudança da aceleração no tempo.
 
 \begin{figure}[H]
     \begin{center}
@@ -44,6 +34,8 @@ Podemos perceber o processo de convergência no decorrer das iterações, o que 
 Percebe-se também que os níveis inicias da viabilidade ficam próximos de $7,5x10^3$, que foram niveis próximos na maioria dos Casos.
 Por fim, temos que o tempo elapsado de simulação para este Caso foi de $89,8$ segundos, com os vetores de posição possuindo
 um tamanho de 241 elementos.
+
+\section{Análise de sensibilidade}
 
 \begin{figure}[H]
     \begin{center}
@@ -188,39 +180,7 @@ e levou $78 s$, valores bem mais próximos aos Casos referência assim como suas
     \end{center}
 \end{figure}
 
-\subsection{Caso 4 - Variação da velocidade}
-Variando a velocidade desejada, através do Gcode de entrada, analisamos os impactos de velocidades desajadas mais baixas e mais altas.
-As mais baixas (Caso A) tem seu maior impacto no tamanho dos vetores e no tempo de simulção, já que percorre o percurso em mais tempo,
-gerando uma malha com mais pontos, dada a resolução de $dt$ como fixa. Ficando assim com um tempo de simulação de $219 s$ e 421 elementos nos vetores de posição.
-Enquanto para o Caso B, o tempo de simulação ficou em $60 s$ e com 181 elementos, mas dada a velocidade desejada maior e uma mesma aceleração máxima
-na geração de comando, a curva de velocidade se assemelha a do Caso 3A exposta na figura \ref{fig:t_4b_vels} e com a curva de deslocamentos apresentada na figura \ref{fig:t_4b_des}.
-Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 4 B vels}
-    \label{fig:t_4b_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 4 B des}
-    \label{fig:t_4b_des}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 4 Viabilidade}
-    \label{fig:t_4_viab}
-    \end{center}
-\end{figure}
-
-\subsection{Caso 5 - Variação do passo de tempo}
+\subsection{Caso 4 - Variação do passo de tempo}
 Por fim, evidenciamos as diferenças nos resultados com resoluções diferentes para a malha de tempo e seu impacto nas respostas.
 As figuras \ref{fig:t_5a_vels}, \ref{fig:t_5b_vels} e \ref{fig:t_5c_vels} revelam principalmente a influência desse parâmetro
 nas oscilações nos gráficos de velocidade, entretanto a diferença é menos nítida se avaliados os gráficos de deslocamento das figuras
@@ -228,7 +188,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
+    \caption{Caso 4A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 A vels}
     \label{fig:t_5a_vels}
     \end{center}
@@ -236,7 +196,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
+    \caption{Caso 4B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 B vels}
     \label{fig:t_5b_vels}
     \end{center}
@@ -244,7 +204,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
+    \caption{Caso 4C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 C vels}
     \label{fig:t_5c_vels}
     \end{center}
@@ -252,7 +212,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
+    \caption{Caso 4A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 A des}
     \label{fig:t_5a_des}
     \end{center}
@@ -260,7 +220,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
+    \caption{Caso 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 B des}
     \label{fig:t_5b_des}
     \end{center}
@@ -268,7 +228,7 @@ nas oscilações nos gráficos de velocidade, entretanto a diferença é menos n
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
+    \caption{Caso 4C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
     \includegraphics[scale=0.44]{Teste 5 C des}
     \label{fig:t_5c_des}
     \end{center}
@@ -280,9 +240,41 @@ respectivamente em 25, 49 e 481 para os Casos A, B e C.
 
 \begin{figure}[H]
     \begin{center}
-    \caption{Caso 5 - Num de fun x Viabilidade}
+    \caption{Caso 4 - Num de fun x Viabilidade}
     \includegraphics[scale=0.44]{Teste 5 Viabilidade}
     \label{fig:t_5_viab}
+    \end{center}
+\end{figure}
+
+\subsection{Caso 5 - Variação da velocidade}
+Variando a velocidade desejada, através do Gcode de entrada, analisamos os impactos de velocidades desajadas mais baixas e mais altas.
+As mais baixas (Caso A) tem seu maior impacto no tamanho dos vetores e no tempo de simulção, já que percorre o percurso em mais tempo,
+gerando uma malha com mais pontos, dada a resolução de $dt$ como fixa. Ficando assim com um tempo de simulação de $219 s$ e 421 elementos nos vetores de posição.
+Enquanto para o Caso B, o tempo de simulação ficou em $60 s$ e com 181 elementos, mas dada a velocidade desejada maior e uma mesma aceleração máxima
+na geração de comando, a curva de velocidade se assemelha a do Caso 3A exposta na figura \ref{fig:t_4b_vels} e com a curva de deslocamentos apresentada na figura \ref{fig:t_4b_des}.
+Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
+
+\begin{figure}[H]
+    \begin{center}
+    \caption{Caso 5B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
+    \includegraphics[scale=0.44]{Teste 4 B vels}
+    \label{fig:t_4b_vels}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+    \caption{Caso 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
+    \includegraphics[scale=0.44]{Teste 4 B des}
+    \label{fig:t_4b_des}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+    \caption{Caso 5 - Num de fun x Viabilidade}
+    \includegraphics[scale=0.44]{Teste 4 Viabilidade}
+    \label{fig:t_4_viab}
     \end{center}
 \end{figure}
 
@@ -292,9 +284,8 @@ Uma possível abordagem a ser explorada utilizando a ideia do método deste trab
 um método referenciado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
 com a participação de um método como \textit{InputShaping} para atacar as vibrações remanescentes.
 
-\subsection{\textit{Tuning}}
-Uma possibilidade que o tipo de método abordado neste trabalho oferece é a capacidade de otimizar, de maneira
-semelhante aos mapas de injeção eletrônica para carros, os parâmetros da planta para uma determinada posição.
+\subsection{Discretização do volume em diferentes modelos}
+Uma possibilidade que o tipo de método abordado neste trabalho oferece é a capacidade de otimizar os parâmetros da planta para uma determinada posição.
 Assim, oferecendo a capacidade de se ajustar em grande nível de detalhe as peculiaridades do sistema, podendo até
 construir a malha utilizando sensores, semelhantemente a rotinas de configuração de \textit{InputShaping} que amostram
 o comportamento em frequência no ponto central da impressora. Considerando também que a utilização desse tipo de malha,
