@@ -1,5 +1,5 @@
 \chapter{METODOLOGIA}
-Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em três etapas fundamentais. A primeira fase consiste em uma análise bibliográfica detalhada que visa construir uma fundação teórica robusta sobre as estratégias de controle atualmente empregadas em impressão 3D. A segunda etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
+Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em duas etapas fundamentais. A primeira etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
 
 O processo metodológico é visualizado de forma esquemática no fluxograma abaixo (Figura \ref{fig:fluxo_geral}), o qual esclarece as etapas consecutivas desde a geração do comando até a geração dos sinais de controle, enfatizando a aplicação do modelo desenvolvido na fase de controle de trajetória.
 
@@ -333,7 +333,7 @@ Realizamos uma análise de sensibilidade para examinar o comportamento do métod
     \begin{tabular}{c c c c c c}
         Caso & Parâmetro & Valor A & Valor B & Valor C & Unidade\\ \hline
         1 & Frequência & 50 & 200 & 500 & $rad/s$\\
-        2 & Coeficiente de amortecimento & 0 & 0,75 & 1 & - \\
+        2 & Coeficiente de amortecimento & 0 & 0,25 & 1 & - \\
         3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
         4 & Passo de tempo & 0,01 & 0,001 & 0,0002 & $s$ \\
         5 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\ \hline
