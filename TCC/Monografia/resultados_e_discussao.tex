@@ -1,5 +1,10 @@
 \chapter{RESULTADOS E DISCUSSÃO}
+Este capítulo detalha os resultados alcançados por meio da análise de sensibilidade aplicada às simulações no estudo do controle de trajetória em impressoras 3D. Essa análise é essencial para avaliar a eficiência do método de controle proposto, considerando sua resposta diante de diferentes condições e parâmetros operacionais. Os resultados destacam a robustez e a viabilidade do método em um contexto real de operação, ao mesmo tempo em que apontam suas possíveis limitações. A apresentação e interpretação dos dados têm como objetivo enfatizar o desempenho do método e oferecer percepções valiosas para futuros avanços e aplicações práticas na área de controle de trajetória para a manufatura aditiva.
 
+Prosseguindo, a análise dos resultados inicia-se com a avaliação da simulação base, estabelecendo um ponto de referência para comparação. Em seguida, detalhamos o impacto e as implicações de cada um dos cinco parâmetros escolhidos na análise de sensibilidade. Estes parâmetros foram criteriosamente selecionados com o objetivo de explorar diferentes aspectos do método de controle e sua resposta em variados cenários operacionais. A investigação destes parâmetros oferece uma visão abrangente sobre como cada elemento influencia o desempenho geral do sistema, permitindo uma compreensão mais profunda e um refinamento do método proposto.
+
+\section{Resultados da Simulação Base}
+% Detalhe os resultados da simulação de referência.
 
 \begin{figure}[H]
     \begin{center}
@@ -35,8 +40,6 @@ Percebe-se também que os níveis inicias da viabilidade ficam próximos de $7,5
 Por fim, temos que o tempo elapsado de simulação para este Caso foi de $89,8$ segundos, com os vetores de posição possuindo
 um tamanho de 241 elementos.
 
-\section{Análise de sensibilidade}
-
 \begin{figure}[H]
     \begin{center}
     \caption{Caso referência - Num de fun x Viabilidade}
@@ -45,6 +48,7 @@ um tamanho de 241 elementos.
     \end{center}
 \end{figure}
 
+\section{Análise de Sensibilidade dos Resultados}
 \subsection{Caso 1 - Variação da frequência}
 Os resultados da variação da variavel de entrada frequência natural, que varia basicamente o comportamento da planta do
 modelo dinâmico, exemplifica as diferenças nas amplitudes dos desvios entre a ponta e a referência e uma menor necessidade de compensação, assim como previsto
@@ -278,13 +282,13 @@ Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
     \end{center}
 \end{figure}
 
-\section{Considerações futuras}
-\subsection{Combinação com outros algoritmos}
+\section{Discussão Integrada dos Resultados}
+
+\subsection{Considerações futuras}
 Uma possível abordagem a ser explorada utilizando a ideia do método deste trabalho é a sobreposição de algoritmos, onde
 um método referenciado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
 com a participação de um método como \textit{InputShaping} para atacar as vibrações remanescentes.
 
-\subsection{Discretização do volume em diferentes modelos}
 Uma possibilidade que o tipo de método abordado neste trabalho oferece é a capacidade de otimizar os parâmetros da planta para uma determinada posição.
 Assim, oferecendo a capacidade de se ajustar em grande nível de detalhe as peculiaridades do sistema, podendo até
 construir a malha utilizando sensores, semelhantemente a rotinas de configuração de \textit{InputShaping} que amostram
