@@ -31,7 +31,7 @@ input_vi = [0,acumulator(input_vel,0)];
 % input_dt
 % input_acc
 for i = 1:length(input_dt)
-    Nsteps = ceil(input_dt(i)/dt_step_size)-1;
+    Nsteps = ceil(round(input_dt(i)/dt_step_size, 8))-1;
     if Nsteps > 0 
         dt_interpol = [ones(1,Nsteps)*dt_step_size,input_dt(i)-dt_step_size*Nsteps];
         dt = [dt, dt_interpol];

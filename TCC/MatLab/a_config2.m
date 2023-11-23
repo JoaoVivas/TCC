@@ -8,8 +8,8 @@ my =.200; % Kg
 omega_n_x = 100;
 omega_n_y = 100;
 
-zeta_x = 0.75;
-zeta_y = 0.75;
+zeta_x = 0.5;
+zeta_y = 0.5;
 
 kx = omega_n_x^2*mx
 ky =  omega_n_y^2*my
@@ -37,7 +37,7 @@ junction_speed = 0;
 jun_disv = 0;
 
 des_step_size = 0.1;
-dt_step_size = 0.005;
+dt_step_size = 0.001;
 
 global A_model B_model
 

@@ -1,5 +1,8 @@
 function [s] = runge_kutta(s0,u,t,dynamic_model)
+%%
     global A_model B_model
+%     s0 = r_s0;
+    
     s(:,1) = s0;
 %     u(1,:) = x;
 %     u(2,:) = y;
@@ -9,14 +12,23 @@ function [s] = runge_kutta(s0,u,t,dynamic_model)
     A = A_model;
     B = B_model;
     N = length(t)-1;
+%     N = 92;
     for i=1:N
+        dt_test = t(i+1)-t(i);
         dt(i) = t(i+1)-t(i);
         uhalf = u_t_interpolator(u(:,i),u(:,i+1),dt(i),dt(i)/2);
-
+       
         k1(:,i) = dynamic_model(s(:,i),u(:,i),A,B);
         k2(:,i) = dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf,A,B);
         k3(:,i) = dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf,A,B);
         k4(:,i) = dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1),A,B);
+        
+%         dynamic_model(s(:,i),u(:,i),A,B)
+%         dynamic_model(s(:,i)+k1(i)*dt(i)/2,uhalf,A,B)
+%         dynamic_model(s(:,i)+k2(i)*dt(i)/2,uhalf,A,B)
+%         dynamic_model(s(:,i)+k3(i)*dt(i),u(:,i+1),A,B)
+%         
+%         s(:,i)+k1(i)*dt(i)/2
 
         avg_dot = (k1(:,i) + 2*k2(:,i) + 2*k3(:,i) + k4(:,i))/6;
         s(:,i+1) = s(:,i) + dt(i)*avg_dot;
