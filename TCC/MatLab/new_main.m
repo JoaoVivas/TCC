@@ -37,17 +37,18 @@ for i=1:length(sim_title_list)
    [g_code_x,g_code_y,g_code_v] = config_params(c_l(i,1), c_l(i,2), c_l(i,3), c_l(i,4), c_l(i,5));
    [sim_time(i), vec_size(i), d_b, d_i, u_b, u_i, p_c, p_n, t_b, t_i] = trajectory_control(g_code_x,g_code_y,g_code_v);
    plot_and_save_graphs(sim_title_list(i), d_b, d_i, u_b, u_i, p_c, p_n, t_b, t_i);
+   pause(1);
    close all
-   pause(2);
+   pause(5);
 end
 
 %%
-resp = struct('Caso', {}, 'TempoDeSimulacao', {}, 'TamanhoDoVetor', {});
-
-for i=1:length(sim_title_list)
-resp(i).Caso = char(sim_title_list(i));
-resp(i).TempoDeSimulacao = sprintf('%.2f',sim_time(i));
-resp(i).TamanhoDoVetor = vec_size(i);
-end
-
-resp
+% resp = struct('Caso', {}, 'TempoDeSimulacao', {}, 'TamanhoDoVetor', {});
+% 
+% for i=1:length(sim_title_list)
+% resp(i).Caso = char(sim_title_list(i));
+% resp(i).TempoDeSimulacao = sprintf('%.2f',sim_time(i));
+% resp(i).TamanhoDoVetor = vec_size(i);
+% end
+% 
+% resp

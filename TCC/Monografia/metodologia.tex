@@ -174,13 +174,17 @@ Com base nesses parâmetros, definimos duas posições-chave para análise em ca
     \label{fig:model_1_axis}
 \end{figure}
 
-As equações de movimento para a impressora são descritas a seguir:
-\begin{multline}
-    \label{eq:mov_impressora}
-    \\
-    m \ddot{x_p} + c(\dot{x_p} - \dot{x_b}) + k(x_p-x_b) = 0 \\
-    \ddot{x_p} = \frac{c}{m}(\dot{x_b} - \dot{x_p}) + \frac{k}{m}(x_b - x_p)\\
-\end{multline}
+As equações de movimento para a impressora são descritas a seguir (Equações \ref{eq:mov_impressora_1} e \ref{eq:mov_impressora_2}):
+
+\begin{equation}
+    \label{eq:mov_impressora_1}
+    m \ddot{x_p} + c(\dot{x_p} - \dot{x_b}) + k(x_p-x_b) = 0 
+\end{equation}
+
+\begin{equation}
+    \label{eq:mov_impressora_2}
+    \ddot{x_p} = \frac{c}{m}(\dot{x_b} - \dot{x_p}) + \frac{k}{m}(x_b - x_p) 
+\end{equation}
 
 Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é a constante de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. 
 
