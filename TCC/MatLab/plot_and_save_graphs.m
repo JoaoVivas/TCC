@@ -178,6 +178,4 @@ ax.FontSize = 10;
 
 saveas(gcf, char(strcat(path, sim_title,'_vel_p')), 'fig')
 saveas(gcf, char(strcat(path, sim_title,'_vel_p')), 'png')
-
-% close all
 end
