@@ -1,5 +1,5 @@
 \chapter{METODOLOGIA}
-Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em três etapas fundamentais. A primeira fase consiste em uma análise bibliográfica detalhada que visa construir uma fundação teórica robusta sobre as estratégias de controle atualmente empregadas em impressão 3D. A segunda etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
+Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em duas etapas fundamentais. A primeira etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle.
 
 O processo metodológico é visualizado de forma esquemática no fluxograma abaixo (Figura \ref{fig:fluxo_geral}), o qual esclarece as etapas consecutivas desde a geração do comando até a geração dos sinais de controle, enfatizando a aplicação do modelo desenvolvido na fase de controle de trajetória.
 
@@ -13,7 +13,7 @@ O processo metodológico é visualizado de forma esquemática no fluxograma abai
 
 \section{Geração de Trajetória}
 
-A fase de geração de trajetória inicia-se com a análise do Gcode, que fornece as coordenadas e velocidades de destino dos movimentos. Neste processo, são considerados exclusivamente os comandos G1, que indicam movimentos lineares, e são extraídas as informações referentes aos eixos X, Y e à taxa de avanço (feedrate - F). É importante notar que a taxa de avanço, usualmente expressa em milímetros por minuto nos arquivos Gcode gerados por fatiadores, é convertida para milímetros por segundo.
+A fase de geração de trajetória inicia-se com a análise do Gcode, que fornece as coordenadas e velocidades de destino dos movimentos. Neste processo, são considerados exclusivamente os comandos G1, que indicam movimentos lineares, e são extraídas as informações referentes aos eixos X, Y e à taxa de avanço (\textit{feedrate} - F). É importante notar que a taxa de avanço, usualmente expressa em milímetros por minuto nos arquivos Gcode gerados por fatiadores, é convertida para milímetros por segundo.
 
 \begin{figure}[H]
     \centering
@@ -34,7 +34,7 @@ A próxima etapa  envolve a elaboração da curva trapezoidal de velocidade. Est
 
 Nesta equação, \(v_1\) e \(v_2\) representam as velocidades iniciais e finais, \(a\) denota a aceleração definida na impressora, e \(d\) corresponde ao deslocamento.
 
-A comparação entre a velocidade de pico e a velocidade desejada, esta última estabelecida pelo feedrate no Gcode, é crucial para definir se a trajetória do movimento adotará um perfil trapezoidal ou triangular de velocidade. A configuração do perfil depende da relação entre a velocidade de pico e a velocidade desejada: caso a primeira seja superior, o movimento será estruturado em três segmentos distintos, conforme ilustrado na Figura \ref{fig:trap_curv}.
+A comparação entre a velocidade de pico e a velocidade desejada, esta última estabelecida pelo \textit{feedrate} no Gcode, é crucial para definir se a trajetória do movimento adotará um perfil trapezoidal ou triangular de velocidade. A configuração do perfil depende da relação entre a velocidade de pico e a velocidade desejada: caso a primeira seja superior, o movimento será estruturado em três segmentos distintos, conforme ilustrado na Figura \ref{fig:trap_curv}.
 
 \begin{figure}[H]
     \centering
@@ -150,7 +150,7 @@ A modelagem do sistema mecânico da impressora 3D é um passo crucial para a imp
 
 \begin{itemize}
     \item Influência da Correia: A correia é o componente chave responsável por introduzir desvios nas trajetórias de impressão. Ela age como uma combinação de mola e amortecedor, afetando a dinâmica do movimento.
-    \item Modelagem do Conjunto Bico Injetor e Extrusora: Este conjunto é tratado como um corpo rígido uniforme, simplificando sua representação geométrica. Sua massa é considerada como 200g, o que influencia a dinâmica do movimento.
+    \item Modelagem do Conjunto Bico Injetor e Extrusora: Este conjunto é tratado como um corpo rígido uniforme, simplificando sua representação geométrica.
     \item Dimensões da Mesa de Impressão: A área útil da mesa de impressão é de 200 mm x 200 mm, definindo o espaço de trabalho disponível.
     \item Configuração Cartesiana: A impressora opera em um sistema cartesiano, com eixos ortogonais, o que simplifica a análise de movimento.
     \item Independência dos Eixos: Cada eixo da impressora opera independentemente dos outros, permitindo uma análise mais simplificada das dinâmicas individuais.
@@ -163,6 +163,7 @@ A modelagem do sistema mecânico da impressora 3D é um passo crucial para a imp
     \includegraphics[scale=0.58]{simple_model}
     \label{fig:simple_model}
 \end{figure}
+
 Com base nesses parâmetros, definimos duas posições-chave para análise em cada eixo. A primeira é a posição ideal (\(x_b\)) ou posição da base, que representa o ponto desejado pelo usuário, assumindo um sistema sem flexibilidade ou perdas. A segunda é a posição real (\(x_p\)) ou a posição da ponta, que leva em conta as forças inerciais e a flexibilidade introduzida pela correia. Este modelo é ilustrado na figura \ref{fig:model_1_axis}.
 
 \begin{figure}[H]
@@ -173,15 +174,39 @@ Com base nesses parâmetros, definimos duas posições-chave para análise em ca
     \label{fig:model_1_axis}
 \end{figure}
 
-As equações de movimento para a impressora são descritas a seguir:
-\begin{multline}
-    \label{eq:mov_impressora}
-    \\
-    m \ddot{x_p} + c(\dot{x_p} - \dot{x_b}) + k(x_p-x_b) = 0 \\
-    \ddot{x_p} = - \frac{c}{m} \dot{x_p} - \frac{k}{m} x_p + \frac{c}{m} \dot{x_b} + \frac{k}{m} x_b \\
-\end{multline}
+As equações de movimento para a impressora são descritas a seguir (Equações \ref{eq:mov_impressora_1} e \ref{eq:mov_impressora_2}):
 
-Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é a constante de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação das Equação \ref{eq:mov_impressora} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subindices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
+\begin{equation}
+    \label{eq:mov_impressora_1}
+    m \ddot{x_p} + c(\dot{x_p} - \dot{x_b}) + k(x_p-x_b) = 0 
+\end{equation}
+
+\begin{equation}
+    \label{eq:mov_impressora_2}
+    \ddot{x_p} = \frac{c}{m}(\dot{x_b} - \dot{x_p}) + \frac{k}{m}(x_b - x_p) 
+\end{equation}
+
+Nestas equações, \(m\) representa a massa do conjunto bico injetor e extrusora, \(c\) é a constante de amortecimento da correia, e \(k\) é a constante da mola equivalente da correia. As variáveis \(x_p\) e \(x_b\) correspondem, respectivamente, às posições da ponta e da base do componente em movimento. 
+
+Este modelo dinâmico pode ser representado por dois parâmetros, a frequência natural e o coeficiente de amortecimento, que se relacionam através das Equações \ref{eq:freq_nat}.
+
+
+\begin{equation}
+    \label{eq:freq_nat}
+    \omega = \sqrt{\frac{k}{m}}
+\end{equation}
+
+\begin{equation}
+    \label{eq:amort}
+    \zeta = \frac{c}{2mk}
+\end{equation}
+
+\begin{equation}
+    \label{eq:equation_simpl}
+    \ddot{x_p} = 2 \zeta \omega(\dot{x_b} - \dot{x_p}) + \omega ^2(x_b - x_p)
+\end{equation}
+
+Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação das Equação \ref{eq:mov_impressora} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subíndices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
 
 \begin{figure}[H]
     \centering
@@ -209,42 +234,42 @@ Baseado na equação de movimento \ref{eq:mov_impressora}, análogos ao eixo y, 
     \label{eq:espaco_de_estados_din_model}
     \begin{bmatrix}
         \dot{x_p} \\
-        \ddot{x_p} \\
         \dot{y_p} \\
+        \ddot{x_p} \\
         \ddot{y_p}
     \end{bmatrix}
     =
     \begin{bmatrix}
-        0 & 1 & 0 & 0 \\
-        -\frac{k_x}{m_x} & -\frac{c_x}{m_x} & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
         0 & 0 & 0 & 1 \\
-        0 & 0 & -\frac{k_x}{m_x} & -\frac{c_x}{m_x}
+        -\omega _x ^2 & 0 & -2 \zeta _x \omega _x & 0 \\
+        0 & -\omega _y ^2 & 0 & -2 \zeta _y \omega _y
     \end{bmatrix}
     \begin{bmatrix}
-        x_p \\
-        \dot{x_p} \\        
+        x_p \\    
         y_p \\
+        \dot{x_p} \\    
         \dot{y_p} \\
     \end{bmatrix}
     +
     \begin{bmatrix}
         0 & 0 & 0 & 0 \\
-        \frac{k_x}{m_x} & \frac{c_x}{m_x} & 0 & 0 \\
         0 & 0 & 0 & 0 \\
-        0 & 0 & \frac{k_x}{m_x} & \frac{c_x}{m_x}
+        \omega _x ^2 & 0 & 2 \zeta _x \omega _x & 0 \\
+        0 & \omega _y ^2 & 0 & 2 \zeta _y \omega _y
     \end{bmatrix}
     \begin{bmatrix}
         x_b \\
-        \dot{x_b}  \\
         y_b \\
+        \dot{x_b}  \\
         \dot{y_b} 
     \end{bmatrix}
 \end{equation}
 
-Nesta equação, \(x_p\) e \(y_p\) são as posições reais (da ponta) nos eixos X e Y, respectivamente, enquanto \(x_b\) e \(y_b\) são as posições ideais (da base). As variáveis \(\dot{x_p}\) e \(\dot{y_p}\) representam a primeira derivada do tempo das posições nos eixos X e Y, indicando a velocidade e aceleração. \(k_x\) e \(k_y\) denotam as constantes elásticas das correias nos eixos X e Y, enquanto \(c_x\) e \(c_y\) representam as constantes de amortecimento dessas correias. \(m_x\) e \(m_y\) são as massas associadas aos conjuntos de bico injetor e extrusora nos respectivos eixos.
+Nesta equação, \(x_p\) e \(y_p\) são as posições reais (da ponta) nos eixos X e Y, respectivamente, enquanto \(x_b\) e \(y_b\) são as posições ideais (da base). As variáveis \(\dot{x_p}\) e \(\dot{y_p}\) representam a primeira derivada do tempo das posições nos eixos X e Y, indicando a velocidade e aceleração. \(\omega _x\) e \(\omega _y\) denotam as frequências naturais do sistema nos eixos X e Y respectivamente, enquanto \(\zeta _x\) e \(\zeta _y\) representam os coeficientes de amortecimento dos mesmos.
 
 \section{Controle de Trajetória}
-O Controle de Trajetória desempenha um papel essencial em aperfeiçoar a precisão dos movimentos na impressora 3D. A escolha das estratégias de controle é crucial para maximizar a eficiência operacional. No escopo deste estudo, a técnica de controle adotada se baseia no modelo estabelecido anteriormente, onde aplicamos uma abordagem feedforward à trajetória gerada na fase de construção da trajetória.
+O Controle de Trajetória desempenha um papel essencial em aperfeiçoar a precisão dos movimentos na impressora 3D. A escolha das estratégias de controle é crucial para maximizar a eficiência operacional. No escopo deste estudo, a técnica de controle adotada se baseia no modelo estabelecido anteriormente, onde aplicamos uma abordagem \textit{feedforward} à trajetória gerada na fase de construção da trajetória.
 
 A metodologia de controle em foco procura resolver as equações de movimento e atender às condições de contorno estipuladas pela modelagem da impressora. O ajuste é feito na trajetória da base do sistema, ajustando-a de forma que a saída do vetor de estados corresponda à trajetória da ponta projetada.
 
@@ -264,7 +289,7 @@ Este método assegura uma resposta proativa às dinâmicas da impressora, alinha
 
 A formulação do conjunto de restrições é um componente crucial do método, pois é através dele que as equações de movimento são implementadas. A função de otimização adota um algoritmo para minimizar essas restrições, ou seja, para que se aproximem tanto quanto possível de zero.
 
-As condições de contorno são aplicadas estabelecendo que tanto a posição quanto a velocidade sejam zero no instante inicial e que a velocidade também seja zero ao final do percurso. As equações de movimento são incorporadas nas restrições através da técnica de segmentação cúbica, baseada no modelo em espaço de estados especificado na Seção \ref{sec:modelagem}. Utilizamos as Equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:input_value_center_segment} e \ref{eq:defect_calc} para criar um vetor de defeitos, como descrito no Capítulo \ref{sec:hargraves}. A minimização destas diferenças faz com que os polinômios cúbicos dos segmentos da curva se aproximem das soluções das equações de movimento, que são então integradas ao vetor de restrições.
+As condições de contorno são aplicadas estabelecendo que tanto a posição quanto a velocidade sejam zero no instante inicial e que a velocidade também seja zero ao final do percurso. As equações de movimento são incorporadas nas restrições através do método de programação não linear descrito na Seção \ref{sec:hargraves}. Com base no modelo em espaço de estados especificado na Seção \ref{sec:modelagem}. Utilizamos as Equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:input_value_center_segment} e \ref{eq:defect_calc} para criar um vetor de defeitos, como descrito no Capítulo \ref{sec:hargraves}. A minimização destas diferenças faz com que os polinômios cúbicos dos segmentos da curva se aproximem das soluções das equações de movimento, que são então integradas ao vetor de restrições.
 
 \subsection{Função de Otimização}
 
@@ -281,78 +306,4 @@ A função de otimização adota o algoritmo interior-point, eficaz em resolver 
         Máximo de Iterações & 100000 \\
         Diferença Mínima entre Iterações & 0.0001 \\ \hline
     \end{tabular}
-\end{table}
-
-\section{Simulação Computacional e Análise de Dados}
-
-Nesta seção, descrevemos o processo de simulação para testar o método proposto. Iniciamos com a simulação de dois movimentos lineares: um deslocamento de 10 milímetros no eixo x seguido de um movimento similar no eixo y, partindo da posição inicial (0,0) e em estado de repouso. A Figura \ref{fig:base_mov} ilustra estes movimentos.
-
-\begin{figure}[H]
-    \centering
-    \caption{Movimento base}
-    \includegraphics[scale=0.6]{base_mov}
-
-    \label{fig:base_mov}
-\end{figure}
-
-Selecionamos parâmetros chave para o controle da simulação, apresentados na Figura \ref{fig:fluxo_geral_var}, e seus respectivos valores são listados na Tabela \ref{tab:base_params}.
-
-\begin{figure}[H]
-    \centering
-    \caption{Fluxograma geral com os parâmetros.}
-    \includegraphics[scale=0.5]{fluxo_geral_var}
-
-    \label{fig:fluxo_geral_var}
-\end{figure}
-
-\begin{table}
-    \begin{center}
-    \caption{Valores dos parâmetros utilizados na simulação.}
-    \label{tab:base_params}
-    \begin{tabular}{c c c}
-        Parâmetro & Valor & Unidade\\ \hline
-        Frequência & 100 & $rad/s$\\
-        Coeficiente de amortecimento & 0,5 & - \\
-        Aceleração base & 5000 & $mm/s^2$ \\
-        Passo de tempo & 0,005 & $s$ \\ 
-        Velocidade desejada & 100 & $mm/s$ \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
-
-Avaliamos a trajetória resultante focando em três aspectos: a viabilidade, o número de iterações e a dimensão do vetor de variáveis de interesse. A viabilidade é medida pelo maior desvio em relação às restrições do modelo, o que nos ajuda a compreender a capacidade da simulação de atingir uma solução que respeite todas as restrições estabelecidas, além de indicar o padrão de convergência ao observar a evolução da viabilidade ao longo das iterações. O tamanho do vetor de variáveis também é considerado, dada a sua relevância para o desempenho computacional da simulação.
-
-\subsection{Análise de Sensibilidade}
-
-Realizamos uma análise de sensibilidade para examinar o comportamento do método frente a variações nos parâmetros listados na Tabela \ref{tab:base_params}. Alteramos cada parâmetro individualmente em 2 ou 3 simulações distintas, conforme detalhado na Tabela \ref{tab:sim_params}. Cada simulação é identificada por um número e uma letra, indicando o parâmetro modificado e o valor aplicado.
-
-\begin{table}
-    \begin{center}
-    \caption{Parâmetros utilizados na análise de sensibilidade.}
-    \label{tab:sim_params}
-    \begin{tabular}{c c c c c c}
-        Caso & Parâmetro & Valor A & Valor B & Valor C & Unidade\\ \hline
-        1 & Frequência & 50 & 200 & 500 & $rad/s$\\
-        2 & Coeficiente de amortecimento & 0 & 0,75 & 1 & - \\
-        3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
-        4 & Passo de tempo & 0,01 & 0,001 & 0,0002 & $s$ \\
-        5 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
-
-As simulações foram executadas em um computador com as especificações listadas na Tabela \ref{tab:note_config}.
-
-\begin{table}
-    \begin{center}
-    \caption{Especificações do computador}
-    \label{tab:note_config}
-    \begin{tabular}{c c}
-        \hline
-        Processador & Intel I7-5500U 2.40GHz \\
-        Memoria & 8,00 GB \\
-        Placa de vídeo & Nvidia Geforce 920M \\
-        Sistema & 64 bits \\ \hline
-    \end{tabular}
-    \end{center}
 \end{table}

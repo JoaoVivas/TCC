@@ -1,13 +1,13 @@
 % -------------------------------- Input Gcode from Gcode file --------------------------------
-[filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
-
-CommandArray = InputGcode(filename,PathName);
+% [filename,PathName] = uigetfile('*.gcode','Select the G-CODE file');
+% 
+% CommandArray = InputGcode(filename,PathName);
 
 % ------------------------------------ Command Generation -------------------------------------
 global t_base s_base u_base
-gcode_x = [0,CommandArray(1,:)];
-gcode_y = [0,CommandArray(2,:)];
-gcode_v = [CommandArray(5,:)./60,0];
+% gcode_x = [0,CommandArray(1,:)]
+% gcode_y = [0,CommandArray(2,:)]
+% gcode_v = [CommandArray(5,:)./60,0]
 
 [des,vel,acc,dir,dt] = CommandGenerator(gcode_x,gcode_y,gcode_v);
 

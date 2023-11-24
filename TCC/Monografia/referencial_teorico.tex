@@ -1,7 +1,7 @@
 \chapter{REFERENCIAL TEÓRICO}
 
 \section{Manufatura Aditiva}
-O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual. Este processo começa com um modelo tridimensional digital, frequentemente desenvolvido via Computer Aided Design (CAD), cujas especificações são interpretadas por um software fatiador. Este software ajusta parâmetros e gera instruções essenciais para a máquina de manufatura aditiva fabricar o modelo físico. Estas instruções, variando conforme a tecnologia e o modelo específico da impressora, são comumente transmitidas através do Gcode. O Gcode é uma linguagem de programação que direciona a impressora 3D sobre como construir o objeto, incluindo informações sobre movimentos, velocidades e temperaturas. Além do Gcode, informações adicionais como arquivos de imagens podem ser utilizadas para complementar o processo.
+O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual. Este processo começa com um modelo tridimensional digital, frequentemente desenvolvido via \textit{Computer Aided Design} (CAD), cujas especificações são interpretadas por um software fatiador. Este software ajusta parâmetros e gera instruções essenciais para a máquina de manufatura aditiva fabricar o modelo físico. Estas instruções, variando conforme a tecnologia e o modelo específico da impressora, são comumente transmitidas através do Gcode. O Gcode é uma linguagem de programação que direciona a impressora 3D sobre como construir o objeto, incluindo informações sobre movimentos, velocidades e temperaturas. Além do Gcode, informações adicionais como arquivos de imagens podem ser utilizadas para complementar o processo.
 
 Uma das características principais da MA é a rapidez na qual é possível criar protótipos diretamente de modelos digitais, por conta disso, em um contexto de desenvolvimento de produto, o termo prototipagem rápida era utilizado. Entretanto, conforme a MA foi se aperfeiçoando era perceptível a capacidade dessas tecnologias não só se aterem à produção de protótipos, mas também de peças utilizadas em produtos finais. Além disso, o termo prototipagem rápida não considerava o princípio básico que unia essas tecnologias e assim o termo manufatura aditiva foi apresentado e adotado pela \textit{American Society for Testing and Materials} (ASTM) \cite{gibson15}.
 
@@ -150,7 +150,7 @@ Contudo, a implementação do controle \textit{feedforward} em impressoras 3D ap
 \subsubsection{\textit{Input Shaper}}
 Ao entender a trajetória pretendida e as peculiaridades do sistema, podemos deduzir uma sequência de comandos que ajustam o comando de referência com base nessas características. O objetivo é alinhar a trajetória final o máximo possível ao comando de referência. No entanto, em vez de processar todo o comando inicial, podemos adaptá-lo em tempo real usando um filtro especializado. O \textit{Input Shaper} é uma abordagem exemplar desse tipo de filtro, onde diversos \textit{Shapers} são formulados considerando variados propósitos e limitações.
 
-O \textit{Input Shaping} é uma metodologia de controle criada para atenuar ou anular vibrações indesejadas em sistemas mecânicos ou estruturas manipuladas por atuadores, como em robôs, veículos e equipamentos industriais. Essa estratégia aprimora a sequência de pulsos de entrada, concebendo-os de modo a suprimir a ativação das frequências naturais de ressonância do sistema. Assim, o Input Shaping desempenha um papel crucial na diminuição da resposta vibratória, conferindo maior precisão e estabilidade ao sistema durante a realização de movimentos ou operações.
+O \textit{Input Shaping} é uma metodologia de controle criada para atenuar ou anular vibrações indesejadas em sistemas mecânicos ou estruturas manipuladas por atuadores, como em robôs, veículos e equipamentos industriais. Essa estratégia aprimora a sequência de pulsos de entrada, concebendo-os de modo a suprimir a ativação das frequências naturais de ressonância do sistema. Assim, o \textit{Input Shaping} desempenha um papel crucial na diminuição da resposta vibratória, conferindo maior precisão e estabilidade ao sistema durante a realização de movimentos ou operações.
 
 O valor do \textit{Input Shaping} é evidente em sistemas de controle de alta exatidão, como na robótica, onde a supressão de vibrações é fundamental para a excelência operacional e o posicionamento acurado. Utilizando o entendimento das especificidades do sistema e da trajetória almejada, essa técnica ajusta os comandos de entrada para evitar a ativação das frequências vibratórias intrínsecas, originando sistemas de controle mais robustos e eficientes. \cite{singhose97}. A Figura \ref{fig:degr_vs_esc} ilustra uma comparação entre as respostas ao estímulo de degrau e a função escalonada aplicada pelo \textit{shaper}.
 
@@ -162,38 +162,6 @@ O valor do \textit{Input Shaping} é evidente em sistemas de controle de alta ex
 
     {\footnotesize Fonte: \citeauthor{singhose97}, \citeyear{singhose97}}
     \label{fig:degr_vs_esc}
-\end{figure}
-
-\subsubsection{\textit{Filtered basis function (FBF)}}
-O método FBF necessita que a trajetória a ser rastreada seja totalmente conhecida e que a trajetória controlada possa ser expressa como uma combinação linear de funções base possuindo coeficientes desconhecidos. As funções base são utilizadas em um controle \textit{feedforward} utilizando o modelo dinâmico do sistema e selecionando os coeficientes de maneira a minimizar os erros dada uma trajetória desejada (figura \ref{fig:flowchart_fbf}).
-\cite{ramani17}
-
-\begin{figure}[H]
-    \centering
-    \caption{Fluxograma FBF}
-    \includegraphics[scale=0.5]{ramani17blockfbf}
-
-    {\footnotesize Fonte: \citeauthor{ramani17}, \citeyear{ramani17}}
-    \label{fig:flowchart_fbf}
-\end{figure}
-
-Uma das maiores dificuldades que os métodos avançados para o controle \textit{feedforward} de trajetórias é a necessidade de se conhecer completamente a trajetória desejada, o que implica em um grande custo computacional, principalmente em situações onde são necessárias uma grande quantidade de amostras da trajetória, por exemplo em casos de alta resolução e casos de longa duração. O \textit{limited-preview filtered B-splines} adapta a solução do FBF de forma a dividir a trajetória desejada em subgrupos com um número menor de amostras e utiliza um algoritmo de \textit{receiding horizon} para calcular recursivamente os coeficientes da função B-spline que minimizam os erros de trajetória \cite{duan18}.
-
-A partir dessa otimização da divisão da trajetória em subgrupos, esse método conseguiu ser testado utilizando uma impressora 3D de verdade com modelos simples.
-
-Com base nos desenvolvimentos nos trabalhos de \cite{ramani17} e \cite{duan18}, comentados anteriormente, \cite{ramani20} busca atacar um segundo desafio pratico na implementação da FBF, sendo o primeiro desafio prático o custo computacional que foi endereçado pelo trabalho de \cite{duan18} através da LBFBF, permitindo a aplicação do algoritmo no mundo real.
-
-Este segundo desafio se trata da degradação de precisão de rastreamento da abordagem FBF, causada por imprecisões no modelo ou incertezas na dinâmica da planta atrelado a característica do método de se utilizar puramente uma abordagem de \textit{feedforward}. A não participação de \textit{feedbacks} sensoriais do mundo real abre espaço para uma crescente divergência entre o modelo e a realidade.
-
-Considerando o requisito de manter a performance computacional alcançada com o método LPFBF, \cite{ramani20} propõe, também, a utilização de um filtro robusto em substituição à dinâmica nominal da planta para filtrar as funções de base. Esse filtro robusto é construído com base no inverso de um controlador \textit{feedforward}ótimo, que minimiza uma função de custo de erro para lidar com a incerteza conhecida da planta como um filtro robusto. O esquema do método é apresentado na figura \ref{fig:flowchart_rfbf}.
-
-\begin{figure}[H]
-    \centering
-    \caption{Fluxograma RFBF}
-    \includegraphics[scale=0.5]{ramani20blockfbf}
-
-    {\footnotesize Fonte: \citeauthor{ramani20}, \citeyear{ramani20}}
-    \label{fig:flowchart_rfbf}
 \end{figure}
 
 \section{Espaço de Estados}
@@ -228,7 +196,7 @@ Os sistemas dinâmicos podem ser descritos através de uma formulação chamada 
     f(t)
 \end{equation}
 
-\section{Segmentação Cúbica e Programação Não Linear}
+\section{Programação Não Linear}
 \label{sec:hargraves}
 
 \citeauthor{hargraves87} (\citeyear{hargraves87}) descreve um algoritmo para a solução numérica direta de problemas de controle ótimo. Este algoritmo emprega uma abordagem que utiliza polinômios cúbicos para representar as variáveis de estado. Adicionalmente, recorre à interpolação linear para tratar as variáveis de controle. Esse enfoque converte efetivamente o problema de controle ótimo em um problema de programação matemática.

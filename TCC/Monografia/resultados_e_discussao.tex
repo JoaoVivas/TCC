@@ -1,303 +1,342 @@
 \chapter{RESULTADOS E DISCUSSÃO}
-\section{Resultados}
-\subsection{Caso Base}
+% Version passo 0.005
+% 'Sim ref'	'2.94'	49
+% 'Sim 1A'	'2.95'	49
+% 'Sim 1B'	'0.74'	49
+% 'Sim 2A'	'5.43'	49
+% 'Sim 2B'	'0.88'	49
+% 'Sim 3A'	'4.30'	81
+% 'Sim 3B'	'1.52'	45
+% 'Sim 4A'	'0.22'	25
+% 'Sim 4B'	'93.02'	241
+% 'Sim 5A'	'4.98'	85
+% 'Sim 5B'	'1.50'	37
+Este capítulo detalha os resultados alcançados por meio da simulação computacional do método de controle de trajetória proposto pelo presente trabalho. É apresentado a sequência de movimentos a serem simulados, assim como os parâmetros da simulação. Além disso, são realizadas as simulações com variações dos valores destes parâmetros para uma análise da influência dos mesmos nos resultados. É utilizado também o algoritmo Runge-Kutta para simular a trajetória percorrida pela ponta da impressora dada a trajetória da base, fornecendo dados para se comparar a influência do método de controle de trajetória proposto.
 
-A Figura \ref{fig:t_padr_vels} apresenta o perfil de velocidades para o caso base, no qual evidencia-se o comportamento compensador do sistema e uma oscilação de alta frequência, artefato da resposta da FMINCON. A amplitude das oscilações tende a ser menor conforme exista uma maior resolução na interpolação do tempo, ou seja, apresente $dt$ menor. Ademais, conforme mencionado na seção anterior, o arranque foi restringido afim de controlar a amplitude dessas oscilações. %%COMPLEMENTAR
+\section{Simulação Computacional e Análise de Dados}
 
-% Podemos observar os resultados das curvas geradas pelo Caso utilizando os parâmetros referência nas figuras
-% \ref{fig:t_padr_vels}, \ref{fig:t_padr_des} e \ref{fig:t_padr_pos}. Nelas temos o comportamento compensador,
-% especialmente nas curvas que tem o tempo como abicissa.
-% Notamos também, principalmente na figura \ref{fig:t_padr_vels} uma ocilação de alta frequência que é um artefato
-% da resposta da FMINCON, essa ocilação se encontrava em amplitude muito maior e foi controlada através de restrições quanto ao 
-% arranque, ou seja, a mudança da aceleração no tempo.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso referência - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste Padrao vels}
-    \label{fig:t_padr_vels}
-    \end{center}
-\end{figure}
-
-A Figura \ref{fig:t_padr_des} ...
+As simulações são realizadas a partir de dois movimentos lineares: um deslocamento de 10 milímetros no eixo x seguido de um movimento similar no eixo y, partindo da posição inicial (0,0) e em estado de repouso. A Figura \ref{fig:base_mov} ilustra estes movimentos.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso referência - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste Padrao des}
-    \label{fig:t_padr_des}
-    \end{center}
+    \centering
+    \caption{Movimento base}
+    \includegraphics[scale=0.6]{base_mov}
+
+    \label{fig:base_mov}
 \end{figure}
+
+Os parâmetros da simulação incluem a frequência natural e o coeficiente de amortecimento, responsáveis pela definição do modelo dinâmico da impressora. Adicionalmente, a aceleração e o passo de tempo são parâmetros que influenciam diretamente a trajetória, sendo estes definidos na fase de geração da mesma. Por fim, a velocidade estipulada no comando, que é parte integrante do Gcode, também é determinada. A origem e aplicação desses parâmetros são detalhadas na Figura \ref{fig:fluxo_geral_var}.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso referência - Caminho percorrido x vs y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste Padrao pos}
-    \label{fig:t_padr_pos}
-    \end{center}
+    \centering
+    \caption{Fluxograma geral com os parâmetros.}
+    \includegraphics[scale=0.5]{fluxo_geral_var}
+
+    \label{fig:fluxo_geral_var}
 \end{figure}
 
-No gráfico da figura \ref{fig:t_padr_viab} nos indica a progressção das iterações da FMINCON, sendo cada
-ponto uma iteração diferente, possuindo um valor correspondete ao número de vezes em que a função objetivo e as restrições foi avaliada
-no eixo x e o valor da viabilidade, que como comentado na seção de metodologia, indica o maior valor de restrição não cumprido.
-Podemos perceber o processo de convergência no decorrer das iterações, o que costuma indicar uma rodada de sucessos.
-Percebe-se também que os níveis inicias da viabilidade ficam próximos de $7,5x10^3$, que foram niveis próximos na maioria dos Casos.
-Por fim, temos que o tempo elapsado de simulação para este Caso foi de $89,8$ segundos, com os vetores de posição possuindo
-um tamanho de 241 elementos.
+As simulações foram executadas em um computador com as especificações listadas na Tabela \ref{tab:note_config}.
+
+\begin{table}
+    \begin{center}
+    \caption{Especificações do computador}
+    \label{tab:note_config}
+    \begin{tabular}{c c}
+        \hline
+        Processador & Intel I7-5500U 2.40GHz \\
+        Memoria & 8,00 GB \\
+        Placa de vídeo & Nvidia Geforce 920M \\
+        Sistema & 64 bits \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{Simulação de Referência}
+Nesta etapa, conduz-se uma simulação de referência empregando valores medianos dos parâmetros-chave. Esta simulação serve como base para avaliar o impacto de variações nos parâmetros em simulações subsequentes. Os valores referência utilizados são listados na Tabela \ref{tab:base_params}.
+
+\begin{table}
+    \begin{center}
+    \caption{Valores dos parâmetros utilizados na simulação referência.}
+    \label{tab:base_params}
+    \begin{tabular}{c c c}
+        Parâmetro & Valor & Unidade\\ \hline
+        Frequência & 100 & $rad/s$\\
+        Coeficiente de amortecimento & 0,5 & - \\
+        Aceleração base & 5000 & $mm/s^2$ \\
+        Passo de tempo & 0,005 & $s$ \\ 
+        Velocidade desejada & 100 & $mm/s$ \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{Simulações com Parâmetros Variados}
+Para explorar o efeito de diferentes configurações, realizam-se simulações adicionais onde cada parâmetro - frequência natural, coeficiente de amortecimento, aceleração de entrada, passo de tempo e velocidade desejada - é variado individualmente. Estas variações incluem valores tanto inferiores quanto superiores aos da simulação de referência. No total, são 11 simulações: 10 delas dedicadas a testar os limites inferiores e superiores de cada parâmetro e uma utilizando os valores de referência. Os detalhes de cada simulação, incluindo a identificação numérica e a letra indicativa do parâmetro modificado (A para inferiores, B para superiores), são apresentados na Tabela \ref{tab:sim_params}.
+
+\begin{table}
+    \begin{center}
+    \caption{Parâmetros utilizados nas simulações.}
+    \label{tab:sim_params}
+    \begin{tabular}{c c c c c}
+        Caso & Parâmetro & Valor A & Valor B & Unidade\\ \hline
+        1 & Frequência & 50 & 200 & $rad/s$\\
+        2 & Coeficiente de amortecimento & 0 & 1 & - \\
+        3 & Aceleração base & 1000 & 10000 & $mm/s^2$ \\
+        4 & Passo de tempo & 0,1 & 0,001 & $s$ \\
+        5 & Velocidade desejada & 50 & 200 & $mm/s$ \\ \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{Aplicação do método Runge-Kutta}
+O controle de trajetória desenvolvido neste estudo, se da através da modificação da trajetória da base, com objetivo de diminuir o desvio do caminho da ponta em relação ao caminho desejado. Para poder avaliar se este objetivo está sendo cumprido se faz necessário a trajetória da ponta, considerando as características dinâmicas da impressora. Para isso foi aplicado o método Runge-Kutta na trajetória da base obtida pelo controle de trajetória, aplicou-se este método também na trajetória não modificada pelo controle de trajetória, representando o comportamento da impressora que não implementa esta etapa. Além disso, fez-se necessário a interpolação dos pontos da trajetória por conta de baixa precisão e até mesmo a incapacidade do método Runge-Kutta de gerar resultados confiáveis. Entretanto, a partir do momento em que aplicou-se a interpolação de um passo de tempo de 0.0001 segundos, os resultados se mostraram consistentes.
+
+\section{Resultados das Simulações}
+A análise dos resultados começa com a avaliação da simulação de referência, estabelecendo um ponto de partida para comparações. Posteriormente, a análise foca no impacto e nas consequências das alterações nos parâmetros. Este estudo inclui a variação dos elementos do modelo dinâmico da impressora, como frequência natural e coeficiente de amortecimento, seguido pela investigação das mudanças nos parâmetros relacionados à geração de trajetória, especificamente aceleração e passo de tempo. Além disso, examina-se a influência das variações no parâmetro de velocidade desejada do Gcode.
+
+\subsection{Resultados da Simulação de Referência}
+Esta seção apresenta uma análise detalhada dos resultados obtidos pela simulação de referência dispostos nos gráficos a seguir.
+
+O primeiro gráfico (Figura \ref{fig:ref_cam_b}) ilustra o caminho da base no plano XY. Observa-se um movimento na direção X, inicialmente sobreposto ao caminho desejado. Entretanto, próximo a região de transição do movimento em X para o movimento em Y existe um arredondamento da curva ou uma antecipação do movimento em Y.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso referência - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste Padrao Viabilidade}
-    \label{fig:t_padr_viab}
-    \end{center}
+    \centering
+    \caption{Caminho da base Referência.}
+    \includegraphics[width=0.47\textwidth]{Sim ref_cam_b.png}
+
+    \label{fig:ref_cam_b}
 \end{figure}
 
-\subsection{Caso 1 - Variação da frequência}
-Os resultados da variação da variavel de entrada frequência natural, que varia basicamente o comportamento da planta do
-modelo dinâmico, exemplifica as diferenças nas amplitudes dos desvios entre a ponta e a referência e uma menor necessidade de compensação, assim como previsto
-de um sistema de rigidez maior.
-As diferenças podem ser observadas de forma clara se compadas as figuras \ref{fig:t_1a_vels}, \ref{fig:t_1b_vels} e \ref{fig:t_1c_vels},
-comparando também as diferenças entre o comportamento do deslocamento e do caminho tomado entre os dois estremos do Caso (A e C) nas figuras
-\ref{fig:t_1a_des}, \ref{fig:t_1c_des}, \ref{fig:t_1a_pos} e \ref{fig:t_1c_pos}.
+Os efeitos deste comportamento podem ser melhor avaliados na Figura \ref{fig:ref_cam_p_s}, onde é apresentado os caminhos da ponta simulados para os caminhos da base com controle de trajetória e sem, assim como o caminho desejado.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 A vels}
-    \label{fig:t_1a_vels}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_p.png}
+        \label{fig:ref_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_p_zoom.png}
+        \label{fig:ref_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Referência.}
+    \label{fig:ref_cam_p_s}
 \end{figure}
+
+A partir deste gráfico, é possível identificar que o comportamento do arredondamento da curva do caminho da base está relacionado à compensação do sobre-sinal resultante do comportamento dinâmico da impressora, visível no caminho da ponta sem o controle de trajetória, ou seja, a trajetória da base é igual à trajetória de entrada na etapa do controle de trajetória.
+
+Já na Figura \ref{fig:ref_des} é visível alguns comportamentos dinâmicos das curvas de deslocamento. No início do movimento, a curva da base se desloca mais rapidamente, também sendo possível observar algumas oscilações. Enquanto a curva da ponta sem controle apresenta um deslocamento mais lento, característica essa evitada pelo controle de trajetória, resultando em uma curva mais suave para o deslocamento com controle.
+
+Além disso, no fim do movimento em X podemos observar um sobre-sinal considerável na curva de deslocamento da ponta sem controle. Em contrapartida, a curva de deslocamento da base conseguiu compensar consideravelmente a característica elástica do sistema, apresentando um sobre-sinal muito menor na curva de deslocamento da ponta com controle.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \label{fig:t_1b_vels}
-    \end{center}
+    \centering
+    \caption{Deslocamentos da base e da ponta Referência.}
+    \includegraphics[width=1\textwidth]{Sim ref_des.png}
+
+    \label{fig:ref_des}
 \end{figure}
+
+Nestas curvas de deslocamento, são apresentados somente as curvas do eixo X com o intuito de melhorar a visibilidade dos gráficos. O comportamento do eixo Y se da de maneira defasada, mas análoga, característica essa definida no modelo dinâmico da impressora, onde foi considerado que os eixos são completamente independentes e que possuem as mesmas características dinâmicas, além de sua trajetória inicial ser construída com os mesmos parâmetros.
+
+É possível avaliar esta característica entre os eixos X e Y na Figura \ref{fig:ref_vel_b}, onde é exibido no mesmo gráfico as curvas de velocidade respectivos aos eixos X e Y. Nota-se que o perfil da curva de velocidade da base em Y é o mesmo que o perfil de velocidade de X, entretanto apresenta-se defasado o que dificulta avaliar por essa curva as oscilações após o movimento.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 C vels}
-    \label{fig:t_1c_vels}
-    \end{center}
+    \centering
+    \caption{Velocidades da base Referência.}
+    \includegraphics[scale=0.5]{Sim ref_vel_b.png}
+
+    \label{fig:ref_vel_b}
 \end{figure}
+
+Outra característica notável neste gráfico (Figura \ref{fig:ref_vel_b}) é a oscilação aguda, dado o passo de tempo relativamente grande considerando a frequência das oscilações. Esse efeito é minimizado na Figura \ref{fig:ref_vel_p} por causa da interpolação necessária para se aplicar o método Runge-Kutta com sucesso, como discutido anteriormente, além disso a própria dinâmica da impressora pode amenizar essas oscilações, sendo este efeito uma combinação de fatores. Pelos mesmos motivos descritos no gráfico de deslocamento, o gráfico a seguir também apresenta somente as curvas do eixo X. 
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 A des}
-    \label{fig:t_1a_des}
-    \end{center}
+    \centering
+    \caption{Velocidades da ponta Referência.}
+    \includegraphics[scale=0.5]{Sim ref_vel_p.png}
+
+    \label{fig:ref_vel_p}
 \end{figure}
+
+Observa-se também na Figura \ref{fig:ref_vel_p} que a curva de velocidade da ponta com controle se aproxima mais fielmente à trajetória de entrada do controle de trajetória, enquanto a curva de velocidade sem controle apresenta sobre-sinais mais acentuados, que corrobora com as características das curvas de deslocamento e de caminho discutidas anteriormente.
+A análise das velocidades X e Y da base, conforme mostrado no quinto gráfico, revela um perfil de velocidade que varia de acordo com as exigências da trajetória. A resposta do sistema em ambas as direções permanece dentro de um envelope controlado, indicativo de um comportamento robusto do sistema de controle frente às demandas dinâmicas do movimento.
+
+\subsection{Caso 1 - Variação da frequência natural}
+A partir desta seção são avaliados os resultados das simulações com a variação dos parâmetros, com seus valores inferiores (A) e superiores (B), comparando com os resultados da simulação referência, estes apresentados na seção anterior.
+
+Neste primeiro gráfico (Figura \ref{fig:1A_cam_b}) é apresentado o caminho da base da simulação com o parâmetro da frequência natural em seu nível inferior, definido como \(50 rad/s\). Nota-se algumas características em comum com a Figura \ref{fig:ref_cam_b} da simulação referência, mas peculiarmente é possível observar um ponto onde o caminho da base se sobrepõe no eixo X.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 C des}
-    \label{fig:t_1c_des}
-    \end{center}
+    \centering
+    \caption{Caminho da base Caso 1A.}
+    \includegraphics[width=0.47\textwidth]{Sim 1A_cam_b.png}
+
+    \label{fig:1A_cam_b}
 \end{figure}
+
+Este comportamento é justificado quando se analisa a Figura \ref{fig:1A_cam_p_s}, que exibe um sobre-sinal mais forte do que antes visto na simulação de referência, necessitando uma compensação maior para se atenuar este efeito. Entretanto, o caminho da ponta com controle ainda se mantém próximo ao caminho desejado, demonstrando êxito na atenuação do sobre-sinal e da oscilação em sua sequência.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1A - Caminho percorrido x vs y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 A pos}
-    \label{fig:t_1a_pos}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_p.png}
+        \label{fig:1A_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_p_zoom.png}
+        \label{fig:1A_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 1A.}
+    \label{fig:1A_cam_p_s}
 \end{figure}
+
+Fisicamente este resultado está condizente com a redução da frequência natural, que caracteriza em um aumento da elasticidade e por consequência no aumento da amplitude nessas condições. Na Figura \ref{fig:1B_cam_p_s} também podemos observar o resultado da simulação do valor superior da frequência natural, \(200 rad/s\). 
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1C - Caminho percorrido x vs y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 1 C pos}
-    \label{fig:t_1c_pos}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_p.png}
+        \label{fig:1B_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_p_zoom.png}
+        \label{fig:1B_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 1B.}
+    \label{fig:1B_cam_p_s}
 \end{figure}
 
-Já na figura \ref{fig:t_1_viab} é possivel notar um comportamento semelhante de convergência, mas nota-se que
-nos Casos de maior rigidez a viabilidade alcançada foi menor, ou seja, menores vioções das restrições impostas, dados
-primordialmente pelos menores desvios e menor necessidade de compensação.
-Essa característica pode ser observada também nos tempos de simulação que foram reduzindo de $96,76 s$ (Caso A) até
-$80,77 s$ (Caso C), com o Caso B ficando entre os dois com $89,04 s$, todos esses com vetores de posição de 241 elementos.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 1 Viabilidade}
-    \label{fig:t_1_viab}
-    \end{center}
-\end{figure}
+Nota-se que com o aumento da frequência natural existe uma amenização no sobre-sinal e nas amplitudes das oscilações nessas condições. Esta característica corrobora com os resultados anteriores, agora promovendo uma rigidez no sistema e diminuindo a discrepância entre os caminhos da ponta com controle e sem controle. Entretanto, a precisão do caminho da ponta com controle foi afetada, dada essas condições.
 
 \subsection{Caso 2 - Variação do coeficiente de amortecimento}
-No Caso 2, que varia o coeficiente de amortecimento, podemos avaliar de forma mais clara as diferenças através das figuras
-\ref{fig:t_2b_pos} e \ref{fig:t_2c_pos} que mostram as curvas dos caminhos do Caso b e c respectivamente, podemos comparar também
-com a figura \ref{fig:t_padr_pos} que possui um coeficiente intermediario entre os Casos A e B.
-Sendo o Caso A não apresentado, por não ter convergido, apresentando praticamente o mesmos valores de entrada, esse comportamento
-é identificado na figura \ref{fig:t_2_viab}, onde podemos observar também um padrão convergência para valores de viabilidade menor conforme
-coeficiente de amortecimento também aumenta, ou seja, uma maior facilidade de compensar os desvios.
-Todos se mantiveram com 241 elementos nos vetores de posição e tempos de simulação de $69, 89 e 52 s$ para os Casos 2A, 2B e 2C respectivamente.
+O principal efeito resultante da variação do coeficiente de amortecimento se dá através da característica de dissipação de energia. Nota-se na Figura \ref{fig:2A_des} a permanência das oscilações na curva de deslocamento sem controle causado pela ausência de amortecimento (valor A coeficiente de amortecimento \(0\)).
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 2B - Caminho percorrido x vs y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 2 B pos}
-    \label{fig:t_2b_pos}
-    \end{center}
+    \centering
+    \caption{Deslocamentos da base e da ponta Caso 2A.}
+    \includegraphics[width=1\textwidth]{Sim 2A_des.png}
+
+    \label{fig:2A_des}
 \end{figure}
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 2C - Caminho percorrido x vs y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 2 C pos}
-    \label{fig:t_2c_pos}
-    \end{center}
-\end{figure}
+Apesar das grandes oscilações, a curva de deslocamento da ponta com controle não apresenta muitas dificuldades de conter essas oscilações. Em contrapartida, observa-se na Figura \ref{fig:2B_cam_p_s} que apesar do caminho da ponta sem controle se estabilizar mais rápido, o caminho da ponta com controle apresenta desvios maiores para o coeficiente de amortecimento de \(1\) (valor B).
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 2 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 2 Viabilidade}
-    \label{fig:t_2_viab}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_p.png}
+        \label{fig:2B_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_p_zoom.png}
+        \label{fig:2B_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 2B.}
+    \label{fig:2B_cam_p_s}
 \end{figure}
 
 \subsection{Caso 3 - Variação na aceleração}
-Podemos observar na figura \ref{fig:t_3a_vels} uma curva de velocidade diferente, dado que reduzimos a aceleração
-na geração de comando, a velocidade não conseguiu alcançar o nível de velocidade desejada e assim toma-se a forma de um triangulo.
-Já pela figura \ref{fig:t_3_viab}, podemos observar que a função teve dificuldades para solucionar o Caso A, enquanto para o Caso B
-teve um comportamento semelhante aos Casos anteriores, com um aumento nos valores de viabilidade.
-Um dos motivos possíveis para essa dificuldade se da no tamanho dos vetores trabalhados, no Caso A o vetor de posições
-possuía 401 elementos, e levou $195 s$ para realizar a simulação, enquanto para o Caso B o vetor de posição possuia 221 elementos
-e levou $78 s$, valores bem mais próximos aos Casos referência assim como suas curvas.
+A variação da aceleração tem seu efeito primordial no perfil de velocidade criado na fase de geração de trajetória. É este parâmetro que dita as inclinações da curva de velocidade. Esse efeito pode ser observado nas Figuras \ref{fig:3A_vel_p} e \ref{fig:3B_vel_p}, onde é visível os ângulos menores e maiores entre os valores A (\(1000 mm/s^2\)) e B (\(10000 mm/s^2\)) respectivamente.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 3A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 3 A vels}
-    \label{fig:t_3a_vels}
-    \end{center}
+    \centering
+    \caption{Velocidades da ponta Caso 3A.}
+    \includegraphics[scale=0.5]{Sim 3A_vel_p.png}
+
+    \label{fig:3A_vel_p}
 \end{figure}
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 3 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 3 Viabilidade}
-    \label{fig:t_3_viab}
-    \end{center}
+    \centering
+    \caption{Velocidades da ponta Caso 3B.}
+    \includegraphics[scale=0.5]{Sim 3B_vel_p.png}
+
+    \label{fig:3B_vel_p}
 \end{figure}
 
-\subsection{Caso 4 - Variação da velocidade}
-Variando a velocidade desejada, através do Gcode de entrada, analisamos os impactos de velocidades desajadas mais baixas e mais altas.
-As mais baixas (Caso A) tem seu maior impacto no tamanho dos vetores e no tempo de simulção, já que percorre o percurso em mais tempo,
-gerando uma malha com mais pontos, dada a resolução de $dt$ como fixa. Ficando assim com um tempo de simulação de $219 s$ e 421 elementos nos vetores de posição.
-Enquanto para o Caso B, o tempo de simulação ficou em $60 s$ e com 181 elementos, mas dada a velocidade desejada maior e uma mesma aceleração máxima
-na geração de comando, a curva de velocidade se assemelha a do Caso 3A exposta na figura \ref{fig:t_4b_vels} e com a curva de deslocamentos apresentada na figura \ref{fig:t_4b_des}.
-Podemos comparar também o padrão de convergência na figura \ref{fig:t_4_viab}
+Além disso, os efeitos deste parâmetro também afetam o sobre-sinal e velocidade média, de maneira que maiores acelerações proporcionam menores tempos de impressão, em contrapartida maiores oscilações e maior sobre-sinal. Assim como menores acelerações, maior tempo de impressão e menores oscilações. Em contrapartida, observa-se a atuação do controle de trajetória em minimizar os desvios de caminho da curva de maior aceleração, melhorando a balança entre velocidade e desvios se comparado à curva de menor aceleração. Estes efeitos são ilustrados nas Figuras \ref{fig:3A_cam_p_s} e \ref{fig:3B_cam_p_s}, para os valores A e B respectivamente.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 4 B vels}
-    \label{fig:t_4b_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 4 B des}
-    \label{fig:t_4b_des}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_p.png}
+        \label{fig:3A_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_p_zoom.png}
+        \label{fig:3A_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 3A.}
+    \label{fig:3A_cam_p_s}
 \end{figure}
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 4 Viabilidade}
-    \label{fig:t_4_viab}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_p.png}
+        \label{fig:3B_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_p_zoom.png}
+        \label{fig:3B_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 3B.}
+    \label{fig:3B_cam_p_s}
 \end{figure}
 
-\subsection{Caso 5 - Variação do passo de tempo}
-Por fim, evidenciamos as diferenças nos resultados com resoluções diferentes para a malha de tempo e seu impacto nas respostas.
-As figuras \ref{fig:t_5a_vels}, \ref{fig:t_5b_vels} e \ref{fig:t_5c_vels} revelam principalmente a influência desse parâmetro
-nas oscilações nos gráficos de velocidade, entretanto a diferença é menos nítida se avaliados os gráficos de deslocamento das figuras
-\ref{fig:t_5a_des}, \ref{fig:t_5b_des} e \ref{fig:t_5c_des}.
+\subsection{Caso 4 - Variação dos passos de tempo}
+A variação dos passos de tempo utilizados na interpolação da trajetória criada na etapa de geração de trajetória possui o maior efeito na característica numérica do método de controle de trajetória. Este efeito pode ser observado na diferença de precisão entre as Figuras \ref{fig:4A_cam_p_s} e \ref{fig:4B_cam_p_s}, com seus respectivos passos de tempo \(0,01\) e \(0,0001\). Além disso, outro grande efeito é no tempo de simulação, que se comparado às outras simulações realizadas, com uma média de 3 segundos, enquanto a execução da etapa de controle de trajetória com o passo de tempo mais fino este tempo chega a 93 segundos e o tempo do maior passo fica abaixo dos 0.5 segundos.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5A - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 A vels}
-    \label{fig:t_5a_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5B - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 B vels}
-    \label{fig:t_5b_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5C - Comportamento no tempo das velocidades em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 C vels}
-    \label{fig:t_5c_vels}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_p.png}
+        \label{fig:4A_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_p_zoom.png}
+        \label{fig:4A_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 4A.}
+    \label{fig:4A_cam_p_s}
 \end{figure}
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5A - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 A des}
-    \label{fig:t_5a_des}
-    \end{center}
+    \centering
+    \subfigure[Visão geral.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_p.png}
+        \label{fig:4B_cam_p}
+    }
+    \hfill
+    \subfigure[Detalhamento.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_p_zoom.png}
+        \label{fig:4B_cam_p_zoom}
+    }
+    \caption{Caminhos da ponta Caso 3B.}
+    \label{fig:4B_cam_p_s}
 \end{figure}
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 B des}
-    \label{fig:t_5b_des}
-    \end{center}
-\end{figure}
+\subsection{Caso 5 - Variação da velocidade}
+Os resultados da variação da velocidade desejada, definida junto aos movimentos do Gcode, possuem características muito semelhantes às variações no parâmetro da aceleração. De maneira que maiores velocidades desejadas resulta em menores tempo de impressão e maiores desvios do caminho, enquanto que para menores velocidades o oposto é verdade. Além disso, o controle de trajetória oferece analogamente à discussão da variação da aceleração, uma balança mais favorável à maiores velocidades desejadas, por meio de uma redução maior nos desvios de caminho.
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5C - Comportamento no tempo dos deslocamentos em x e y da ponta e da referência}
-    \includegraphics[scale=0.44]{Teste 5 C des}
-    \label{fig:t_5c_des}
-    \end{center}
-\end{figure}
+\section{Discussão Integrada dos Resultados}
+Realizadas as simulações com a variação dos parâmetros do método proposto no presente trabalho, ressalta-se a relação entre a frequência natural e o passo de tempo. Tal relação é muitas vezes discutida na literatura, se tratando de amostragem de sinais. É observado nestes resultados também, a relação entre a precisão alcançada e a proporcionalidade entre o passo de tempo e a frequência natural. Essa característica vem a tona ao se analisar o intervalo de tempo entre as oscilações e o passo de tempo. Onde um passo de tempo maior do que o período de oscilação, resulta em uma perda grande de informação e compromete a representatividade da curva discretizada. Sendo ideal um ajuste do passo de tempo dada a frequência natural conhecida do sistema.
 
-Podemos notar também o impacto na velocidade e facilidade de se convergir, podendo ser observado na figura \ref{fig:t_5_viab}, assim
-como os tempos de simulação $0,7 s$, $3 s$ e $279 s$ para os Casos A, B e C respectivamente. Além do tamanho dos vetores que extá diretamente relacionado,
-respectivamente em 25, 49 e 481 para os Casos A, B e C.
+A respeito dos demais parâmetros, estes se demonstraram mais independentes. Sendo os parâmetros de aceleração e velocidade desejada com efeitos finais similares.
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5 - Num de fun x Viabilidade}
-    \includegraphics[scale=0.44]{Teste 5 Viabilidade}
-    \label{fig:t_5_viab}
-    \end{center}
-\end{figure}
+\subsection{Considerações futuras}
+Como comentado anteriormente, nota-se um grande aumento do tempo de execução da etapa de controle de trajetória para vetores maiores e por consequência para passos de tempo mais finos. Entretanto, muitas vezes os passos de tempo mais finos são necessários para se manter um nível de precisão do método aceitável. Uma abordagem a ser explorada para minimizar os tempos de simulação é a realização do controle de trajetória em etapas. Utilizando os resultados da trajetória da base de execuções com passos de tempo mais grosseiros como chute inicial para execuções com passos de tempo mais finos. Possivelmente reduzindo o tempo de execução final.
 
-\section{Considerações futuras}
-\subsection{Combinação com outros algoritmos}
-Uma possível abordagem a ser explorada utilizando a ideia do método deste trabalho é a sobreposição de algoritmos, onde
-um método referenciado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
-com a participação de um método como \textit{InputShaping} para atacar as vibrações remanescentes.
+Outra ideia a ser explorada é a sobreposição de algoritmos. Onde
+a dinâmica de um sistema, utilizando um primeiro método de controle de trajetória, ser aferida para fornecer parâmetros para um segundo método. Por exemplo, a aplicação da metodologia proposta neste trabalho, junto da aferição das características dinâmicas deste conjunto, impressora 3D e algoritmo de controle, através de um acelerômetro para assim aplicar em um segundo método como \textit{Input Shaping}.
 
-\subsection{\textit{Tuning}}
-Uma possibilidade que o tipo de método abordado neste trabalho oferece é a capacidade de otimizar, de maneira
-semelhante aos mapas de injeção eletrônica para carros, os parâmetros da planta para uma determinada posição.
-Assim, oferecendo a capacidade de se ajustar em grande nível de detalhe as peculiaridades do sistema, podendo até
-construir a malha utilizando sensores, semelhantemente a rotinas de configuração de \textit{InputShaping} que amostram
-o comportamento em frequência no ponto central da impressora. Considerando também que a utilização desse tipo de malha,
-teria pouco impacto computacional.
+Além disso, um ajuste do modelo dinâmico da impressora de forma espacial, pode favorecer métodos iterativos, também característico na metodologia aqui desenvolvida. Através da habilidade de descrever um sistema dinâmico mais complexo, a partir de um conjunto de sistemas dinâmicos mais simples sem que exista um comprometimento grande do custo computacional.
 
 

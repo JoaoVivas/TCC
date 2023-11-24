@@ -4,7 +4,7 @@ path = 'C:\Users\Augusto\TCC\TCC\MatLab\results\';
 dir_array = dir (fullfile(path,'*'));
 numel(dir_array)
 %%
-for ii = 3:4 %numel(dir_array) % loop over subfolders.
+for ii = numel(dir_array)-1:numel(dir_array) % loop over subfolders.
     file_array = dir(fullfile(path,dir_array(ii).name,'*.fig'));
     
     for i = 1:numel(file_array)
@@ -62,7 +62,7 @@ for ii = 3:4 %numel(dir_array) % loop over subfolders.
        lgd = legend('Location', 'southoutside', 'Orientation', 'horizontal');
        lgd.FontSize = 16;
        new_file_path = strrep(file_path, '.fig', '.png');
-       % saveas(gcf, new_file_path)
+       saveas(gcf, new_file_path)
     end
 end
 
