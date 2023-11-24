@@ -1,272 +1,97 @@
 \chapter{RESULTADOS E DISCUSSÃO}
+Este capítulo detalha os resultados alcançados por meio da simulação computacional do método de controle de trajetória proposto pelo presente trabalho. É apresentado a sequência de movimentos a serem simulados, assim como os valores das variáveis do método. Além disso, são realizadas simulações com variações dos parâmetros do método para uma análise da influência dos mesmos nos resultados. É utilizado também o algoritmo Runge-Kutta para simular a trajetória percorrida pela ponta da impressora dada a trajetória da base, fornecendo dados para se comparar a influência do método de controle de trajetória proposto.
 
-(PUXAR AS PARTES MAIS CONCRETAS DA METODOLOGIA -> A PARTIR DA TABELA DOS VALORES DOS PARÂMETROS)
+\section{Simulação Computacional e Análise de Dados}
 
-
-
-
-Este capítulo detalha os resultados alcançados por meio da análise de sensibilidade
-
-% ACHAR OUTRO NOME PARA ANALISE DE SENSIBILIDADE (menos detalhado)
-
-aplicada às simulações no estudo do controle de trajetória em impressoras 3D. Essa análise é essencial para avaliar a 
-
-
-% eficiência 
-% TROCAR PARA ROBUSTEZ POSSIVELMENTE
-
-
-do método de controle proposto, considerando sua resposta diante de diferentes 
-
-% VARIAÇÕES DOS parâmetros operacionais, COMO POR EXEMPLO ....
-
-
-Prosseguindo, a análise dos resultados inicia-se com a avaliação da simulação de referência (ENCONTRAR UMA JUSTIFICATIVA PARA A SIMULAÇÃO DE REFERÊNCIA), estabelecendo um ponto de comparação para as demais simulações. Em seguida, detalhamos (DETALHA-SE -> ESCRITA IMPESSOAL) o impacto e as implicações de cada um dos cinco parâmetros escolhidos (FALAR OS PARÂMETROS) na análise de sensibilidade.  
-
-% A investigação destes parâmetros oferece uma visão abrangente sobre como cada elemento influencia o desempenho geral do sistema, permitindo uma compreensão mais profunda e um refinamento do método proposto. (REPENSAR ESSA AQUI -> PRECISA SER CLARO POR QUE A COMPREENSÃO SERIA MAIS PROFUNDA FAZENDO ISSO)
-
-\section{Resultados da Simulação Referência}
-Esta seção aborda os resultados obtidos na simulação de referência, e estabelece a referência para a análise de sensibilidade. 
-
-
-% As análises são (DIVIDAS EM DIFERENTES GRÁFICOS) quebradas em diferentes focos dado os diferentes gráficos dos resultados. Os seguintes focos de análise são estabelecidos:
-
-% (CONVERTER TUDO EM TEXTO CORRIDO)
-% \begin{itemize}
-%     \item Análise de Velocidades (Figura \ref{fig:t_padr_vels}): Este gráfico exibe as variações das velocidades ao longo do tempo nos eixos X e Y. Ele demonstra a resposta dinâmica tanto da ponta do manipulador quanto da base, conforme a metodologia proposta.
-
-%     \begin{figure}[H]
-%         \begin{center}
-%         \caption{Caso referência - Comportamento no tempo das velocidades em x e y da ponta e da base}
-%         \includegraphics[scale=0.44]{Teste Padrao vels}
-%         \label{fig:t_padr_vels}
-%         \end{center}
-%     \end{figure}
-    
-%     Com os parâmetros de referência a trajetória obtida é trapezoidal e é definida pelos parâmetros de velocidade desejada, aceleração e pelas distâncias dos movimentos, como comentado no trabalho.
-    
-%     As linhas amarela e roxa apresentam as curvas de velocidade da base dos eixos x e y respectivamente, estas foram obtidas através da aplicação do método proposto como solução das restrições para a trajetória desejada da ponta, representada pelas linhas azul e laranja.
-
-%     \item Deslocamentos Temporais (Figura \ref{fig:t_padr_des}): Aqui, os deslocamentos nos eixos X e Y são plotados contra o tempo. Esses resultados refletem diretamente a precisão e eficiência do sistema simulado, conforme os critérios estabelecidos na metodologia.
-
-%     \begin{figure}[H]
-%         \begin{center}
-%         \caption{Caso referência - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-%         \includegraphics[scale=0.44]{Teste Padrao des}
-%         \label{fig:t_padr_des}
-%         \end{center}
-%     \end{figure}    
-
-%     \item Trajetória Espacial (Figura \ref{fig:t_padr_pos}): Este gráfico ilustra o caminho percorrido nos planos X e Y, comparando a trajetória da ponta com a trajetória de referência. A aderência ao caminho planejado, conforme descrito na metodologia, é fundamental para avaliar a acurácia do sistema.
-
-%     \begin{figure}[H]
-%         \begin{center}
-%         \caption{Caso referência - Caminho percorrido x vs y da ponta e da base}
-%         \includegraphics[scale=0.44]{Teste Padrao pos}
-%         \label{fig:t_padr_pos}
-%         \end{center}
-%     \end{figure}
-
-    
-%     Além disso, o tempo total de simulação para esta análise foi de aproximadamente 89,8 segundos. Os vetores de posição empregados na simulação contavam com 241 elementos.
-%     Este gráfico é fundamental para entender a eficácia da simulação em atender às restrições estabelecidas e a capacidade do sistema de convergir para uma solução viável em um tempo eficiente.
-% \end{itemize}
-
-(MUDAR A ORDEM DAS EXPLICAÇÕES -> DESLOCAMENTO PRIMEIRO DPS VELOCIDADE)
-
-\section{Análise de Sensibilidade dos Resultados}
-\subsection{Caso 1 - Variação da frequência}
-Este caso investiga como a variação da frequência natural afeta o modelo dinâmico do sistema. A frequência natural, sendo um parâmetro crítico, influencia diretamente o comportamento da planta do modelo, com implicações notáveis nas amplitudes dos desvios e na necessidade de compensação.
-
-Observamos que sistemas com maior rigidez, caracterizados por frequências naturais mais altas, exibem menores amplitudes de desvio e uma reduzida necessidade de compensação. Esta tendência é claramente ilustrada ao comparar as Figuras \ref{fig:t_1a_vels}, \ref{fig:t_1b_vels} e \ref{fig:t_1c_vels}, que mostram o comportamento das velocidades em x e y para diferentes configurações de frequência.
+As simulações são realizadas a partir de dois movimentos lineares: um deslocamento de 10 milímetros no eixo x seguido de um movimento similar no eixo y, partindo da posição inicial (0,0) e em estado de repouso. A Figura \ref{fig:base_mov} ilustra estes movimentos.
 
 \begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1A - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 A vels}
-    \label{fig:t_1a_vels}
-    \end{center}
+    \centering
+    \caption{Movimento base}
+    \includegraphics[scale=0.6]{base_mov}
+
+    \label{fig:base_mov}
 \end{figure}
 
-\begin{figure}[H]
+\subsection{Simulação de Referência} 
+É realizado uma simulação de referência com valores intermediários para servir de base de comparação para as simulações que variam os valores dos parâmetros. Os valores de referência dos parâmetros são apresentados na Tabela \ref{tab:base_params}.
+
+\begin{table}
     \begin{center}
-    \caption{Caso 1B - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 B vels}
-    \label{fig:t_1b_vels}
+    \caption{Valores dos parâmetros utilizados na simulação referência.}
+    \label{tab:base_params}
+    \begin{tabular}{c c c}
+        Parâmetro & Valor & Unidade\\ \hline
+        Frequência & 100 & $rad/s$\\
+        Coeficiente de amortecimento & 0,5 & - \\
+        Aceleração base & 5000 & $mm/s^2$ \\
+        Passo de tempo & 0,01 & $s$ \\ 
+        Velocidade desejada & 100 & $mm/s$ \\ \hline
+    \end{tabular}
     \end{center}
-\end{figure}
+\end{table}
 
-\begin{figure}[H]
+\subsection{Simulações com Parâmetros Variados}
+A sequência de simulações das variações da frequência natural, do coeficiente de amortecimento, da aceleração de entrada, do passo de tempo e da velocidade desejada é construída a partir de valores inferiores e superiores aos valores da simulação de referência, alterando um parâmetro de cada vez, totalizando 11 simulações, sendo 10 destas simulações dos valores inferiores e superiores de cada um dos parâmetros e 1 simulação de referência utilizando os valores intermediários. %¨rodar o GPT aqui
+
+Os valores das simulações é apresentado na Tabela \ref{tab:sim_params}. Onde cada simulação é identificada por um número, que indica qual parâmetro está sendo alterado, e uma letra, que indica o parâmetro modificado, sendo A para os valores inferiores e B para os valores superiores. %GPT aqui também
+
+(ALTERAR OS VALORES DA TABELA)%deve estar ok
+
+\begin{table}
     \begin{center}
-    \caption{Caso 1C - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 C vels}
-    \label{fig:t_1c_vels}
+    \caption{Parâmetros utilizados nas simulações.}
+    \label{tab:sim_params}
+    \begin{tabular}{c c c c c}
+        Caso & Parâmetro & Valor A & Valor B & Unidade\\ \hline
+        1 & Frequência & 50 & 200 & $rad/s$\\
+        2 & Coeficiente de amortecimento & 0 & 1 & - \\
+        3 & Aceleração base & 1000 & 10000 & $mm/s^2$ \\
+        4 & Passo de tempo & 0,1 & 0,001 & $s$ \\
+        5 & Velocidade desejada & 50 & 200 & $mm/s$ \\ \hline
+    \end{tabular}
     \end{center}
-\end{figure}
+\end{table}
 
-A análise é aprofundada ao examinar as Figuras \ref{fig:t_1a_des}, \ref{fig:t_1c_des}, \ref{fig:t_1a_pos} e \ref{fig:t_1c_pos}, que revelam as diferenças no comportamento do deslocamento e no caminho percorrido pela ponta do sistema nos extremos do caso (A e C). Estes resultados indicam que variações na frequência natural não apenas afetam as propriedades dinâmicas, mas também têm implicações diretas no controle e precisão do sistema.
+As simulações foram executadas em um computador com as especificações listadas na Tabela \ref{tab:note_config}.
 
-\begin{figure}[H]
+\begin{table}
     \begin{center}
-    \caption{Caso 1A - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 A des}
-    \label{fig:t_1a_des}
+    \caption{Especificações do computador}
+    \label{tab:note_config}
+    \begin{tabular}{c c}
+        \hline
+        Processador & Intel I7-5500U 2.40GHz \\
+        Memoria & 8,00 GB \\
+        Placa de vídeo & Nvidia Geforce 920M \\
+        Sistema & 64 bits \\ \hline
+    \end{tabular}
     \end{center}
-\end{figure}
+\end{table}
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1C - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 C des}
-    \label{fig:t_1c_des}
-    \end{center}
-\end{figure}
+\subsection{Aplicação do método Runge-Kutta}
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1A - Caminho percorrido x vs y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 A pos}
-    \label{fig:t_1a_pos}
-    \end{center}
-\end{figure}
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 1C - Caminho percorrido x vs y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 1 C pos}
-    \label{fig:t_1c_pos}
-    \end{center}
-\end{figure}
+\section{Resultados das Simulações}
+Prosseguindo, a análise dos resultados inicia-se com a avaliação da simulação de referência. Em seguida, detalha-se o impacto e as implicações da variação dos parâmetros do modelo dinâmico da impressora, frequência natural e coeficiente de amortecimento, dos parâmetros da geração de trajetória, aceleração e passo de tempo e do parâmetro do Gcode de velocidade desejada.
 
-Importante também é o impacto dessas variações na frequência natural no tempo de simulação. Observamos que os tempos de simulação variaram de 96,76 segundos no Caso A até 80,77 segundos no Caso C, com o Caso B intermediário, em 89,04 segundos. Esta tendência sugere que sistemas com maior rigidez (frequências naturais mais altas) não apenas melhoram a eficácia em termos de cumprimento das restrições, mas também podem levar a uma simulação mais rápida, apesar de todos os casos utilizarem vetores de posição com 241 elementos. Esta observação é crítica para aplicações práticas, onde a eficiência computacional e a rapidez na resposta são essenciais.
+\subsection{Resultados da Simulação de Referência}
+
+\subsection{Caso 1 - Variação da frequência natural}
 
 \subsection{Caso 2 - Variação do coeficiente de amortecimento}
-Neste caso, investigamos o impacto de diferentes coeficientes de amortecimento no comportamento do sistema. As Figuras \ref{fig:t_2b_pos} e \ref{fig:t_2c_pos} são cruciais para esta análise, pois ilustram as trajetórias espaciais para as variações B e C do coeficiente de amortecimento. Estes resultados são contrastados com a Figura \ref{fig:t_padr_pos}, que representa um coeficiente intermediário, oferecendo uma comparação direta entre os extremos e o caso base.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 2B - Caminho percorrido x vs y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 2 B pos}
-    \label{fig:t_2b_pos}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 2C - Caminho percorrido x vs y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 2 C pos}
-    \label{fig:t_2c_pos}
-    \end{center}
-\end{figure}
-
-Em termos de desempenho computacional, todos os casos mantiveram uma consistência, com 241 elementos nos vetores de posição. Os tempos de simulação foram de 69, 89 e 52 segundos para os Casos 2A, 2B e 2C, respectivamente. Estes resultados indicam que, apesar das variações no coeficiente de amortecimento, a simulação manteve uma eficiência computacional comparável entre os diferentes casos.
 
 \subsection{Caso 3 - Variação na aceleração}
-Neste caso, focamos na influência da variação da aceleração na geração de comandos do sistema. A Figura \ref{fig:t_3a_vels} é central nesta análise, pois ela revela uma forma distinta na curva de velocidade. Com a redução da aceleração, a velocidade não atingiu o patamar desejado, resultando em uma curva com formato triangular. Este comportamento destaca a sensibilidade do sistema às mudanças na aceleração e como isso afeta a capacidade de atingir velocidades alvo.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 3A - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 3 A vels}
-    \label{fig:t_3a_vels}
-    \end{center}
-\end{figure}
-
-Uma possível explicação para as dificuldades observadas no Caso A pode ser encontrada no tamanho dos vetores de posição utilizados. No Caso A, o vetor de posições tinha 401 elementos e a simulação levou 195 segundos para ser concluída. Em contraste, o Caso B utilizou um vetor de 221 elementos e completou a simulação em 78 segundos. Estes resultados indicam que ajustes na aceleração podem ter implicações significativas não apenas no desempenho do sistema, mas também na eficiência computacional da simulação.
 
 \subsection{Caso 4 - Variação dos passos de tempo}
-Este caso destaca como diferentes resoluções na malha de tempo afetam o comportamento do sistema. As Figuras \ref{fig:t_5a_vels}, \ref{fig:t_5b_vels} e \ref{fig:t_5c_vels} são fundamentais para entender a influência deste parâmetro nas oscilações observadas nos gráficos de velocidade. Cada uma destas figuras representa um cenário distinto, evidenciando como a resolução da malha de tempo pode alterar as dinâmicas de velocidade do sistema.
 
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4A - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 A vels}
-    \label{fig:t_5a_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 B vels}
-    \label{fig:t_5b_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4C - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 C vels}
-    \label{fig:t_5c_vels}
-    \end{center}
-\end{figure}
-
-Por outro lado, ao examinar os gráficos de deslocamento nas Figuras \ref{fig:t_5a_des}, \ref{fig:t_5b_des} e \ref{fig:t_5c_des}, notamos que as diferenças são menos pronunciadas. Isso sugere que, embora a resolução da malha de tempo tenha um impacto significativo na velocidade, seu efeito nos deslocamentos é mais sutil.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4A - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 A des}
-    \label{fig:t_5a_des}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4B - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 B des}
-    \label{fig:t_5b_des}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 4C - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 5 C des}
-    \label{fig:t_5c_des}
-    \end{center}
-\end{figure}
-
-Podemos notar também o impacto na velocidade e facilidade de se convergir, podendo ser observado na Figura \ref{fig:t_5_viab}, assim
-como os tempos de simulação $0,7 s$, $3 s$ e $279 s$ para os Casos A, B e C respectivamente. Além do tamanho dos vetores que está diretamente relacionado,
-respectivamente em 25, 49 e 481 para os Casos A, B e C.
 \subsection{Caso 5 - Variação da velocidade}
-Este caso foca na análise dos impactos causados por diferentes velocidades desejadas, ajustadas através do Gcode de entrada. Investigamos como as velocidades mais baixas e mais altas influenciam a dinâmica do sistema, tanto em termos de desempenho quanto de eficiência computacional.
-
-No Caso A, onde a velocidade desejada é mais baixa, notamos um impacto significativo no tamanho dos vetores e no tempo de simulação. Devido à menor velocidade, o sistema leva mais tempo para completar o percurso, resultando em uma malha mais densa de pontos, dada a resolução de \(dt\) constante. Isso se traduz em um tempo de simulação mais longo de 219 segundos e 421 elementos nos vetores de posição.
-
-Em contraste, o Caso B, com uma velocidade desejada mais alta, apresentou um tempo de simulação substancialmente menor de 60 segundos e 181 elementos nos vetores de posição. Interessante notar que, apesar da maior velocidade desejada e da manutenção da mesma aceleração máxima na geração de comando, a curva de velocidade neste caso assemelha-se à observada no Caso 3A, como mostrado na Figura \ref{fig:t_4b_vels}. A correspondente curva de deslocamento é ilustrada na Figura \ref{fig:t_4b_des}, destacando as diferenças no comportamento do sistema sob essas condições.
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5B - Comportamento no tempo das velocidades em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 4 B vels}
-    \label{fig:t_4b_vels}
-    \end{center}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Caso 5B - Comportamento no tempo dos deslocamentos em x e y da ponta e da base}
-    \includegraphics[scale=0.44]{Teste 4 B des}
-    \label{fig:t_4b_des}
-    \end{center}
-\end{figure}
 
 \section{Discussão Integrada dos Resultados}
-Esta seção oferece uma análise integrada dos resultados obtidos nos diferentes casos de estudo, considerando as variáveis-chave e suas influências no comportamento do sistema simulado. A discussão foca em identificar padrões comuns, divergências e as implicações práticas dos resultados obtidos.
-
-\subsection{Influência dos Parâmetros Variáveis}
-A análise de sensibilidade realizada nos Casos 1 a 5 revelou que variações em parâmetros específicos, como frequência natural, coeficiente de amortecimento, aceleração, resolução de malha de tempo e velocidade desejada, têm impactos significativos e distintos no comportamento do sistema. 
-
-No Caso 1, observou-se que a variação da frequência natural afeta diretamente a amplitude dos desvios e a necessidade de compensação. No Caso 3, a alteração da aceleração demonstrou como esse parâmetro pode influenciar a forma da curva de velocidade e a eficiência da simulação. O Caso 4 destacou a importância da resolução da malha de tempo, especialmente em relação às oscilações de velocidade. Por fim, o Caso 5 ilustrou como a velocidade desejada afeta tanto o tempo de simulação quanto o tamanho dos vetores de posição.
-
-\subsection{Comportamento e Convergência do Sistema}
-Em todos os casos, observou-se uma tendência de convergência para soluções viáveis, embora com variações na velocidade e facilidade desta convergência. 
-
-% Isso sugere que, enquanto o sistema é robusto e adaptável a uma ampla gama de condições, existem limites críticos além dos quais a eficácia do sistema começa a diminuir.
 
 \subsection{Considerações futuras}
+(chute inicial) passo de tempo maior seguido de interpolação para utilizar como chute inicial e conseguir uma precisão mais alta com menos tempo de simulação.
+
 Uma possível abordagem a ser explorada utilizando a ideia do método deste trabalho é a sobreposição de algoritmos, onde
 um método referenciado em uma planta do sistema poderia buscar remover uma parcela das vibrações, atuando de forma estagiada,
 com a participação de um método como \textit{InputShaping} para atacar as vibrações remanescentes.

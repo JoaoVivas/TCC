@@ -1,5 +1,5 @@
 \chapter{METODOLOGIA}
-Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em duas etapas fundamentais. A primeira etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle, empregando uma análise de sensibilidade em relação a uma gama de variáveis significativas.
+Neste trabalho, a abordagem metodológica para o estudo do controle de trajetória em impressoras 3D, aplicando algoritmos iterativos e técnicas de programação não linear, é estruturada em duas etapas fundamentais. A primeira etapa envolve a elaboração de um modelo computacional que representa o comportamento mecânico da impressora 3D, integrando o método avançado de controle de trajetória baseado em programação não linear proposto neste estudo. A última fase é dedicada à realização de simulações computacionais, as quais são utilizadas para avaliar o desempenho do método de controle.
 
 O processo metodológico é visualizado de forma esquemática no fluxograma abaixo (Figura \ref{fig:fluxo_geral}), o qual esclarece as etapas consecutivas desde a geração do comando até a geração dos sinais de controle, enfatizando a aplicação do modelo desenvolvido na fase de controle de trajetória.
 
@@ -163,6 +163,7 @@ A modelagem do sistema mecânico da impressora 3D é um passo crucial para a imp
     \includegraphics[scale=0.58]{simple_model}
     \label{fig:simple_model}
 \end{figure}
+
 Com base nesses parâmetros, definimos duas posições-chave para análise em cada eixo. A primeira é a posição ideal (\(x_b\)) ou posição da base, que representa o ponto desejado pelo usuário, assumindo um sistema sem flexibilidade ou perdas. A segunda é a posição real (\(x_p\)) ou a posição da ponta, que leva em conta as forças inerciais e a flexibilidade introduzida pela correia. Este modelo é ilustrado na figura \ref{fig:model_1_axis}.
 
 \begin{figure}[H]
@@ -302,19 +303,7 @@ A função de otimização adota o algoritmo interior-point, eficaz em resolver 
         Diferença Mínima entre Iterações & 0.0001 \\ \hline
     \end{tabular}
 \end{table}
-
-\section{Simulação Computacional e Análise de Dados}
-
-Nesta seção, descrevemos o processo de simulação para testar o método proposto. Iniciamos com a simulação de dois movimentos lineares: um deslocamento de 10 milímetros no eixo x seguido de um movimento similar no eixo y, partindo da posição inicial (0,0) e em estado de repouso. A Figura \ref{fig:base_mov} ilustra estes movimentos.
-
-\begin{figure}[H]
-    \centering
-    \caption{Movimento base}
-    \includegraphics[scale=0.6]{base_mov}
-
-    \label{fig:base_mov}
-\end{figure}
-
+\section{Parâmetros Variáveis}
 Selecionamos parâmetros chave para o controle da simulação, apresentados na Figura \ref{fig:fluxo_geral_var}, e seus respectivos valores são listados na Tabela \ref{tab:base_params}.
 
 \begin{figure}[H]
@@ -324,53 +313,3 @@ Selecionamos parâmetros chave para o controle da simulação, apresentados na F
 
     \label{fig:fluxo_geral_var}
 \end{figure}
-
-\begin{table}
-    \begin{center}
-    \caption{Valores dos parâmetros utilizados na simulação.}
-    \label{tab:base_params}
-    \begin{tabular}{c c c}
-        Parâmetro & Valor & Unidade\\ \hline
-        Frequência & 100 & $rad/s$\\
-        Coeficiente de amortecimento & 0,5 & - \\
-        Aceleração base & 5000 & $mm/s^2$ \\
-        Passo de tempo & 0,005 & $s$ \\ 
-        Velocidade desejada & 100 & $mm/s$ \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
-
-\subsection{Análise de Sensibilidade}
-
-Realizamos uma análise de sensibilidade para examinar o comportamento do método frente a variações nos parâmetros listados na Tabela \ref{tab:base_params}. Alteramos cada parâmetro individualmente em 2 ou 3 simulações distintas, conforme detalhado na Tabela \ref{tab:sim_params}. Cada simulação é identificada por um número e uma letra, indicando o parâmetro modificado e o valor aplicado.
-
-\begin{table}
-    \begin{center}
-    \caption{Parâmetros utilizados na análise de sensibilidade.}
-    \label{tab:sim_params}
-    \begin{tabular}{c c c c c c}
-        Caso & Parâmetro & Valor A & Valor B & Valor C & Unidade\\ \hline
-        1 & Frequência & 50 & 200 & 500 & $rad/s$\\
-        2 & Coeficiente de amortecimento & 0 & 0,25 & 1 & - \\
-        3 & Aceleração base & 1000 & 10000 & - & $mm/s^2$ \\
-        4 & Passo de tempo & 0,01 & 0,001 & 0,0002 & $s$ \\
-        5 & Velocidade desejada & 50 & 200 & - & $mm/s$ \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
-
-As simulações foram executadas em um computador com as especificações listadas na Tabela \ref{tab:note_config}.
-
-\begin{table}
-    \begin{center}
-    \caption{Especificações do computador}
-    \label{tab:note_config}
-    \begin{tabular}{c c}
-        \hline
-        Processador & Intel I7-5500U 2.40GHz \\
-        Memoria & 8,00 GB \\
-        Placa de vídeo & Nvidia Geforce 920M \\
-        Sistema & 64 bits \\ \hline
-    \end{tabular}
-    \end{center}
-\end{table}
