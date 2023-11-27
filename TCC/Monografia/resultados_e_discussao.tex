@@ -96,234 +96,755 @@ A análise dos resultados começa com a avaliação da simulação de referênci
 \subsection{Resultados da Simulação de Referência}
 Esta seção apresenta uma análise detalhada dos resultados obtidos pela simulação de referência dispostos nos gráficos a seguir.
 
-O primeiro gráfico (Figura \ref{fig:ref_cam_b}) ilustra o caminho da base no plano XY. Observa-se um movimento na direção X, inicialmente sobreposto ao caminho desejado. Entretanto, próximo a região de transição do movimento em X para o movimento em Y existe um arredondamento da curva ou uma antecipação do movimento em Y.
+% ------------------ Caminho ----------------
+O primeiro gráfico (Figura \ref{fig:}) ilustra o caminho da base no plano XY. Observa-se um movimento na direção X, inicialmente sobreposto ao caminho desejado. Entretanto, próximo a região de transição do movimento em X para o movimento em Y existe um arredondamento da curva ou uma antecipação do movimento em Y.
+Os efeitos deste comportamento podem ser melhor avaliados na Figura \ref{fig:}, onde é apresentado os caminhos da ponta simulados para os caminhos da base com controle de trajetória e sem, assim como o caminho desejado.
 
+% fig:cam
 \begin{figure}[H]
     \centering
-    \caption{Caminho da base Referência.}
-    \includegraphics[width=0.47\textwidth]{Sim ref_cam_b.png}
-
-    \label{fig:ref_cam_b}
-\end{figure}
-
-Os efeitos deste comportamento podem ser melhor avaliados na Figura \ref{fig:ref_cam_p_s}, onde é apresentado os caminhos da ponta simulados para os caminhos da base com controle de trajetória e sem, assim como o caminho desejado.
-
-\begin{figure}[H]
-    \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim ref_cam_p.png}
-        \label{fig:ref_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_s.png}
+        \label{fig:ref_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim ref_cam_p_zoom.png}
-        \label{fig:ref_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_c.png}
+        \label{fig:ref_cam_c}
     }
-    \caption{Caminhos da ponta Referência.}
-    \label{fig:ref_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_s_zoom.png}
+        \label{fig:ref_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_cam_c_zoom.png}
+        \label{fig:ref_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Referência.}
+    \label{fig:ref_cam}
 \end{figure}
 
 A partir deste gráfico, é possível identificar que o comportamento do arredondamento da curva do caminho da base está relacionado à compensação do sobre-sinal resultante do comportamento dinâmico da impressora, visível no caminho da ponta sem o controle de trajetória, ou seja, a trajetória da base é igual à trajetória de entrada na etapa do controle de trajetória.
 
+% ------------------ Deslocamento ----------------
 Já na Figura \ref{fig:ref_des} é visível alguns comportamentos dinâmicos das curvas de deslocamento. No início do movimento, a curva da base se desloca mais rapidamente, também sendo possível observar algumas oscilações. Enquanto a curva da ponta sem controle apresenta um deslocamento mais lento, característica essa evitada pelo controle de trajetória, resultando em uma curva mais suave para o deslocamento com controle.
 
-Além disso, no fim do movimento em X podemos observar um sobre-sinal considerável na curva de deslocamento da ponta sem controle. Em contrapartida, a curva de deslocamento da base conseguiu compensar consideravelmente a característica elástica do sistema, apresentando um sobre-sinal muito menor na curva de deslocamento da ponta com controle.
-
+% fig:des
 \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da base e da ponta Referência.}
-    \includegraphics[width=1\textwidth]{Sim ref_des.png}
-
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_des_s.png}
+        \label{fig:ref_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_des_c.png}
+        \label{fig:ref_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Referência.}
     \label{fig:ref_des}
 \end{figure}
 
-Nestas curvas de deslocamento, são apresentados somente as curvas do eixo X com o intuito de melhorar a visibilidade dos gráficos. O comportamento do eixo Y se da de maneira defasada, mas análoga, característica essa definida no modelo dinâmico da impressora, onde foi considerado que os eixos são completamente independentes e que possuem as mesmas características dinâmicas, além de sua trajetória inicial ser construída com os mesmos parâmetros.
+Além disso, no fim do movimento em X podemos observar um sobre-sinal considerável na curva de deslocamento da ponta sem controle. Em contrapartida, a curva de deslocamento da base conseguiu compensar consideravelmente a característica elástica do sistema, apresentando um sobre-sinal muito menor na curva de deslocamento da ponta com controle.
 
-É possível avaliar esta característica entre os eixos X e Y na Figura \ref{fig:ref_vel_b}, onde é exibido no mesmo gráfico as curvas de velocidade respectivos aos eixos X e Y. Nota-se que o perfil da curva de velocidade da base em Y é o mesmo que o perfil de velocidade de X, entretanto apresenta-se defasado o que dificulta avaliar por essa curva as oscilações após o movimento.
+% ------------------ Velocidades ----------------
+Outra característica notável neste gráfico (Figura \ref{fig:ref_vel_b}) é a oscilação aguda, dado o passo de tempo relativamente grande considerando a frequência das oscilações. Esse efeito é minimizado na Figura \ref{fig:ref_vel_p} por causa da interpolação necessária para se aplicar o método Runge-Kutta com sucesso, como discutido anteriormente, além disso a própria dinâmica da impressora pode amenizar essas oscilações, sendo este efeito uma combinação de fatores.
 
+% fig:vel
 \begin{figure}[H]
     \centering
-    \caption{Velocidades da base Referência.}
-    \includegraphics[scale=0.5]{Sim ref_vel_b.png}
-
-    \label{fig:ref_vel_b}
-\end{figure}
-
-Outra característica notável neste gráfico (Figura \ref{fig:ref_vel_b}) é a oscilação aguda, dado o passo de tempo relativamente grande considerando a frequência das oscilações. Esse efeito é minimizado na Figura \ref{fig:ref_vel_p} por causa da interpolação necessária para se aplicar o método Runge-Kutta com sucesso, como discutido anteriormente, além disso a própria dinâmica da impressora pode amenizar essas oscilações, sendo este efeito uma combinação de fatores. Pelos mesmos motivos descritos no gráfico de deslocamento, o gráfico a seguir também apresenta somente as curvas do eixo X. 
-
-\begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta Referência.}
-    \includegraphics[scale=0.5]{Sim ref_vel_p.png}
-
-    \label{fig:ref_vel_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_vel_s.png}
+        \label{fig:ref_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim ref_vel_c.png}
+        \label{fig:ref_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Referência.}
+    \label{fig:ref_vel}
 \end{figure}
 
 Observa-se também na Figura \ref{fig:ref_vel_p} que a curva de velocidade da ponta com controle se aproxima mais fielmente à trajetória de entrada do controle de trajetória, enquanto a curva de velocidade sem controle apresenta sobre-sinais mais acentuados, que corrobora com as características das curvas de deslocamento e de caminho discutidas anteriormente.
 A análise das velocidades X e Y da base, conforme mostrado no quinto gráfico, revela um perfil de velocidade que varia de acordo com as exigências da trajetória. A resposta do sistema em ambas as direções permanece dentro de um envelope controlado, indicativo de um comportamento robusto do sistema de controle frente às demandas dinâmicas do movimento.
+% ------------------ end ----------------
 
 \subsection{Caso 1 - Variação da frequência natural}
 A partir desta seção são avaliados os resultados das simulações com a variação dos parâmetros, com seus valores inferiores (A) e superiores (B), comparando com os resultados da simulação referência, estes apresentados na seção anterior.
 
+% ------------------ Caminho A ----------------
+
 Neste primeiro gráfico (Figura \ref{fig:1A_cam_b}) é apresentado o caminho da base da simulação com o parâmetro da frequência natural em seu nível inferior, definido como \(50 rad/s\). Nota-se algumas características em comum com a Figura \ref{fig:ref_cam_b} da simulação referência, mas peculiarmente é possível observar um ponto onde o caminho da base se sobrepõe no eixo X.
 
+% fig:cam
 \begin{figure}[H]
     \centering
-    \caption{Caminho da base Caso 1A.}
-    \includegraphics[width=0.47\textwidth]{Sim 1A_cam_b.png}
-
-    \label{fig:1A_cam_b}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_s.png}
+        \label{fig:1A_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_c.png}
+        \label{fig:1A_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_s_zoom.png}
+        \label{fig:1A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_c_zoom.png}
+        \label{fig:1A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 1A.}
+    \label{fig:1A_cam}
 \end{figure}
 
 Este comportamento é justificado quando se analisa a Figura \ref{fig:1A_cam_p_s}, que exibe um sobre-sinal mais forte do que antes visto na simulação de referência, necessitando uma compensação maior para se atenuar este efeito. Entretanto, o caminho da ponta com controle ainda se mantém próximo ao caminho desejado, demonstrando êxito na atenuação do sobre-sinal e da oscilação em sua sequência.
 
-\begin{figure}[H]
-    \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_p.png}
-        \label{fig:1A_cam_p}
-    }
-    \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 1A_cam_p_zoom.png}
-        \label{fig:1A_cam_p_zoom}
-    }
-    \caption{Caminhos da ponta Caso 1A.}
-    \label{fig:1A_cam_p_s}
-\end{figure}
+% ------------------ Caminho B ----------------
 
 Fisicamente este resultado está condizente com a redução da frequência natural, que caracteriza em um aumento da elasticidade e por consequência no aumento da amplitude nessas condições. Na Figura \ref{fig:1B_cam_p_s} também podemos observar o resultado da simulação do valor superior da frequência natural, \(200 rad/s\). 
 
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_p.png}
-        \label{fig:1B_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_s.png}
+        \label{fig:1B_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_p_zoom.png}
-        \label{fig:1B_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_c.png}
+        \label{fig:1B_cam_c}
     }
-    \caption{Caminhos da ponta Caso 1B.}
-    \label{fig:1B_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_s_zoom.png}
+        \label{fig:1B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_cam_c_zoom.png}
+        \label{fig:1B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 1B.}
+    \label{fig:1B_cam}
 \end{figure}
 
 Nota-se que com o aumento da frequência natural existe uma amenização no sobre-sinal e nas amplitudes das oscilações nessas condições. Esta característica corrobora com os resultados anteriores, agora promovendo uma rigidez no sistema e diminuindo a discrepância entre os caminhos da ponta com controle e sem controle. Entretanto, a precisão do caminho da ponta com controle foi afetada, dada essas condições.
 
-\subsection{Caso 2 - Variação do coeficiente de amortecimento}
-O principal efeito resultante da variação do coeficiente de amortecimento se dá através da característica de dissipação de energia. Nota-se na Figura \ref{fig:2A_des} a permanência das oscilações na curva de deslocamento sem controle causado pela ausência de amortecimento (valor A coeficiente de amortecimento \(0\)).
+% ------------------ Deslocamento A----------------
 
+% fig:des
 \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da base e da ponta Caso 2A.}
-    \includegraphics[width=1\textwidth]{Sim 2A_des.png}
-
-    \label{fig:2A_des}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_des_s.png}
+        \label{fig:1A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_des_c.png}
+        \label{fig:1A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 1A.}
+    \label{fig:1A_des}
 \end{figure}
+
+% ------------------ Deslocamento B----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_des_s.png}
+        \label{fig:1B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_des_c.png}
+        \label{fig:1B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 1B.}
+    \label{fig:1B_des}
+\end{figure}
+
+% ------------------ Velocidades A ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_vel_s.png}
+        \label{fig:1A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1A_vel_c.png}
+        \label{fig:1A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 1A.}
+    \label{fig:1A_vel}
+\end{figure}
+
+% ------------------ Velocidades B ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_vel_s.png}
+        \label{fig:1B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 1B_vel_c.png}
+        \label{fig:1B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 1B.}
+    \label{fig:1B_vel}
+\end{figure}
+
+% ------------------ end ----------------
+
+\subsection{Caso 2 - Variação do coeficiente de amortecimento}
+
+% ------------------ Caminho A ----------------
 
 Apesar das grandes oscilações, a curva de deslocamento da ponta com controle não apresenta muitas dificuldades de conter essas oscilações. Em contrapartida, observa-se na Figura \ref{fig:2B_cam_p_s} que apesar do caminho da ponta sem controle se estabilizar mais rápido, o caminho da ponta com controle apresenta desvios maiores para o coeficiente de amortecimento de \(1\) (valor B).
 
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_p.png}
-        \label{fig:2B_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_cam_s.png}
+        \label{fig:2A_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_p_zoom.png}
-        \label{fig:2B_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_cam_c.png}
+        \label{fig:2A_cam_c}
     }
-    \caption{Caminhos da ponta Caso 2B.}
-    \label{fig:2B_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_cam_s_zoom.png}
+        \label{fig:2A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_cam_c_zoom.png}
+        \label{fig:2A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 2A.}
+    \label{fig:2A_cam}
 \end{figure}
+
+% ------------------ Caminho B ----------------
+
+% fig:cam
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_s.png}
+        \label{fig:2B_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_c.png}
+        \label{fig:2B_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_s_zoom.png}
+        \label{fig:2B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_cam_c_zoom.png}
+        \label{fig:2B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 2B.}
+    \label{fig:2B_cam}
+\end{figure}
+
+% ------------------ Deslocamento A----------------
+O principal efeito resultante da variação do coeficiente de amortecimento se dá através da característica de dissipação de energia. Nota-se na Figura \ref{fig:2A_des} a permanência das oscilações na curva de deslocamento sem controle causado pela ausência de amortecimento (valor A coeficiente de amortecimento \(0\)).
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_des_s.png}
+        \label{fig:2A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_des_c.png}
+        \label{fig:2A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 2A.}
+    \label{fig:2A_des}
+\end{figure}
+
+% ------------------ Deslocamento B----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_des_s.png}
+        \label{fig:2B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_des_c.png}
+        \label{fig:2B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 2B.}
+    \label{fig:2B_des}
+\end{figure}
+
+% ------------------ Velocidades A ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_vel_s.png}
+        \label{fig:2A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2A_vel_c.png}
+        \label{fig:2A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 2A.}
+    \label{fig:2A_vel}
+\end{figure}
+
+% ------------------ Velocidades B ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_vel_s.png}
+        \label{fig:2B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 2B_vel_c.png}
+        \label{fig:2B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 2B.}
+    \label{fig:2B_vel}
+\end{figure}
+
+% ------------------ end ----------------
+
 
 \subsection{Caso 3 - Variação na aceleração}
-A variação da aceleração tem seu efeito primordial no perfil de velocidade criado na fase de geração de trajetória. É este parâmetro que dita as inclinações da curva de velocidade. Esse efeito pode ser observado nas Figuras \ref{fig:3A_vel_p} e \ref{fig:3B_vel_p}, onde é visível os ângulos menores e maiores entre os valores A (\(1000 mm/s^2\)) e B (\(10000 mm/s^2\)) respectivamente.
 
-\begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta Caso 3A.}
-    \includegraphics[scale=0.5]{Sim 3A_vel_p.png}
-
-    \label{fig:3A_vel_p}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta Caso 3B.}
-    \includegraphics[scale=0.5]{Sim 3B_vel_p.png}
-
-    \label{fig:3B_vel_p}
-\end{figure}
+% ------------------ Caminho A ----------------
 
 Além disso, os efeitos deste parâmetro também afetam o sobre-sinal e velocidade média, de maneira que maiores acelerações proporcionam menores tempos de impressão, em contrapartida maiores oscilações e maior sobre-sinal. Assim como menores acelerações, maior tempo de impressão e menores oscilações. Em contrapartida, observa-se a atuação do controle de trajetória em minimizar os desvios de caminho da curva de maior aceleração, melhorando a balança entre velocidade e desvios se comparado à curva de menor aceleração. Estes efeitos são ilustrados nas Figuras \ref{fig:3A_cam_p_s} e \ref{fig:3B_cam_p_s}, para os valores A e B respectivamente.
 
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_p.png}
-        \label{fig:3A_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_s.png}
+        \label{fig:3A_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_p_zoom.png}
-        \label{fig:3A_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_c.png}
+        \label{fig:3A_cam_c}
     }
-    \caption{Caminhos da ponta Caso 3A.}
-    \label{fig:3A_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_s_zoom.png}
+        \label{fig:3A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_cam_c_zoom.png}
+        \label{fig:3A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 3A.}
+    \label{fig:3A_cam}
 \end{figure}
 
+% ------------------ Caminho B ----------------
+
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_p.png}
-        \label{fig:3B_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_s.png}
+        \label{fig:3B_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_p_zoom.png}
-        \label{fig:3B_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_c.png}
+        \label{fig:3B_cam_c}
     }
-    \caption{Caminhos da ponta Caso 3B.}
-    \label{fig:3B_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_s_zoom.png}
+        \label{fig:3B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_cam_c_zoom.png}
+        \label{fig:3B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 3B.}
+    \label{fig:3B_cam}
 \end{figure}
+
+% ------------------ Deslocamento A----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_des_s.png}
+        \label{fig:3A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_des_c.png}
+        \label{fig:3A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 3A.}
+    \label{fig:3A_des}
+\end{figure}
+
+% ------------------ Deslocamento B----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_des_s.png}
+        \label{fig:3B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_des_c.png}
+        \label{fig:3B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 3B.}
+    \label{fig:3B_des}
+\end{figure}
+
+% ------------------ Velocidades A ----------------
+A variação da aceleração tem seu efeito primordial no perfil de velocidade criado na fase de geração de trajetória. É este parâmetro que dita as inclinações da curva de velocidade. Esse efeito pode ser observado nas Figuras \ref{fig:3A_vel_p} e \ref{fig:3B_vel_p}, onde é visível os ângulos menores e maiores entre os valores A (\(1000 mm/s^2\)) e B (\(10000 mm/s^2\)) respectivamente.
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_vel_s.png}
+        \label{fig:3A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3A_vel_c.png}
+        \label{fig:3A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 3A.}
+    \label{fig:3A_vel}
+\end{figure}
+
+% ------------------ Velocidades B ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_vel_s.png}
+        \label{fig:3B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 3B_vel_c.png}
+        \label{fig:3B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 3B.}
+    \label{fig:3B_vel}
+\end{figure}
+
+% ------------------ end ----------------
+
+
 
 \subsection{Caso 4 - Variação dos passos de tempo}
-A variação dos passos de tempo utilizados na interpolação da trajetória criada na etapa de geração de trajetória possui o maior efeito na característica numérica do método de controle de trajetória. Este efeito pode ser observado na diferença de precisão entre as Figuras \ref{fig:4A_cam_p_s} e \ref{fig:4B_cam_p_s}, com seus respectivos passos de tempo \(0,01\) e \(0,0001\). Além disso, outro grande efeito é no tempo de simulação, que se comparado às outras simulações realizadas, com uma média de 3 segundos, enquanto a execução da etapa de controle de trajetória com o passo de tempo mais fino este tempo chega a 93 segundos e o tempo do maior passo fica abaixo dos 0.5 segundos.
 
+% ------------------ Caminho A ----------------
+A variação dos passos de tempo utilizados na interpolação da trajetória criada na etapa de geração de trajetória possui o maior efeito na característica numérica do método de controle de trajetória. Este efeito pode ser observado na diferença de precisão entre as Figuras \ref{fig:4A_cam_p_s} e \ref{fig:4B_cam_p_s}, com seus respectivos passos de tempo \(0,01\) e \(0,0001\).
+
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_p.png}
-        \label{fig:4A_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s.png}
+        \label{fig:4A_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_p_zoom.png}
-        \label{fig:4A_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c.png}
+        \label{fig:4A_cam_c}
     }
-    \caption{Caminhos da ponta Caso 4A.}
-    \label{fig:4A_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s_zoom.png}
+        \label{fig:4A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c_zoom.png}
+        \label{fig:4A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 4A.}
+    \label{fig:4A_cam}
 \end{figure}
 
+
+% ------------------ Caminho B ----------------
+
+% fig:cam
 \begin{figure}[H]
     \centering
-    \subfigure[Visão geral.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_p.png}
-        \label{fig:4B_cam_p}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s.png}
+        \label{fig:4B_cam_s}
     }
     \hfill
-    \subfigure[Detalhamento.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_p_zoom.png}
-        \label{fig:4B_cam_p_zoom}
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c.png}
+        \label{fig:4B_cam_c}
     }
-    \caption{Caminhos da ponta Caso 3B.}
-    \label{fig:4B_cam_p_s}
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s_zoom.png}
+        \label{fig:4B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c_zoom.png}
+        \label{fig:4B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 4B.}
+    \label{fig:4B_cam}
 \end{figure}
+
+Além disso, outro grande efeito é no tempo de simulação, que se comparado às outras simulações realizadas, com uma média de 3 segundos, enquanto a execução da etapa de controle de trajetória com o passo de tempo mais fino este tempo chega a 93 segundos e o tempo do maior passo fica abaixo dos 0.5 segundos.
+
+% ------------------ Deslocamento A----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_des_s.png}
+        \label{fig:4A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_des_c.png}
+        \label{fig:4A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 4A.}
+    \label{fig:4A_des}
+\end{figure}
+% ------------------ Deslocamento B----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_des_s.png}
+        \label{fig:4B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_des_c.png}
+        \label{fig:4B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 4B.}
+    \label{fig:4B_des}
+\end{figure}
+% ------------------ Velocidades A ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_s.png}
+        \label{fig:4A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_c.png}
+        \label{fig:4A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 4A.}
+    \label{fig:4A_vel}
+\end{figure}
+% ------------------ Velocidades B ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_s.png}
+        \label{fig:4B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_c.png}
+        \label{fig:4B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 4B.}
+    \label{fig:4B_vel}
+\end{figure}
+% ------------------ end ----------------
 
 \subsection{Caso 5 - Variação da velocidade}
+
+% ------------------ Caminho A ----------------
+
+% fig:cam
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_cam_s.png}
+        \label{fig:5A_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_cam_c.png}
+        \label{fig:5A_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_cam_s_zoom.png}
+        \label{fig:5A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_cam_c_zoom.png}
+        \label{fig:5A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 5A.}
+    \label{fig:5A_cam}
+\end{figure}
+
+% ------------------ Caminho B ----------------
+
+% fig:cam
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_cam_s.png}
+        \label{fig:5B_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_cam_c.png}
+        \label{fig:5B_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_cam_s_zoom.png}
+        \label{fig:5B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_cam_c_zoom.png}
+        \label{fig:5B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 5B.}
+    \label{fig:5B_cam}
+\end{figure}
+% ------------------ Deslocamento A----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_des_s.png}
+        \label{fig:5A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_des_c.png}
+        \label{fig:5A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 5A.}
+    \label{fig:5A_des}
+\end{figure}
+% ------------------ Deslocamento B----------------
+
+% fig:des
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_des_s.png}
+        \label{fig:5B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_des_c.png}
+        \label{fig:5B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 5B.}
+    \label{fig:5B_des}
+\end{figure}
+% ------------------ Velocidades A ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_vel_s.png}
+        \label{fig:5A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5A_vel_c.png}
+        \label{fig:5A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 5A.}
+    \label{fig:5A_vel}
+\end{figure}
+% ------------------ Velocidades B ----------------
+
+% fig:vel
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_vel_s.png}
+        \label{fig:5B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 5B_vel_c.png}
+        \label{fig:5B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 5B.}
+    \label{fig:5B_vel}
+\end{figure}
+% ------------------ end ----------------
+
 Os resultados da variação da velocidade desejada, definida junto aos movimentos do Gcode, possuem características muito semelhantes às variações no parâmetro da aceleração. De maneira que maiores velocidades desejadas resulta em menores tempo de impressão e maiores desvios do caminho, enquanto que para menores velocidades o oposto é verdade. Além disso, o controle de trajetória oferece analogamente à discussão da variação da aceleração, uma balança mais favorável à maiores velocidades desejadas, por meio de uma redução maior nos desvios de caminho.
 
 \section{Discussão Integrada dos Resultados}
