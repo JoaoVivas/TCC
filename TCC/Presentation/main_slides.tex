@@ -1,0 +1,56 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{tikz}
+\newcommand{\backgroundlogo}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[opacity=0.1,anchor=center] at (current page.center) {%
+      \includegraphics[width=10cm]{logoufla.jpg} % Ajuste o tamanho e o caminho da logo
+    };
+  \end{tikzpicture}%
+}
+
+\usetheme{default} % Você pode escolher outros temas conforme preferir
+
+\title[Presente Trabalho]{CONTROLE DE TRAJETÓRIA DE IMPRESSORAS 3D UTILIZANDO ALGORITMO ITERATIVO E PROGRAMAÇÃO NÃO LINEAR
+}
+\author[Joao]{João Vivas Cisalpino}
+\institute[UFLA]{Universidade Federal de Lavras}
+\date{08/12/2023} % Data da apresentação
+
+\begin{document}
+
+% Slide de Título
+\begin{frame}
+  \backgroundlogo
+  % \includegraphics[width=1\textwidth]{logoufla.jpg} % Ajuste o tamanho conforme necessário
+  \titlepage
+\end{frame}
+
+\logo{\includegraphics[width=2cm]{logoufla.jpg}} % Ajuste o tamanho conforme necessário
+
+% Slide de Introdução
+\begin{frame}
+  \frametitle{Introdução}
+  % Conteúdo do slide aqui
+\end{frame}
+
+% Slide de Revisão de Literatura
+\begin{frame}
+  \frametitle{Revisão de Literatura}
+  % Conteúdo do slide aqui
+\end{frame}
+
+% Você pode adicionar mais slides aqui seguindo o mesmo padrão
+
+% Slide de Conclusão
+\begin{frame}
+  \frametitle{Conclusões}
+  % Conteúdo do slide aqui
+\end{frame}
+
+% Slide de Agradecimentos/Referências
+\begin{frame}
+  \frametitle{Agradecimentos/Referências}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\end{document}
