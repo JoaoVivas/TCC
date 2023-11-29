@@ -4,7 +4,7 @@ g_code_y = [0     0    10];
 g_code_v = [1   1     0] * vel_d;
 
 % config
-% Sistema Din�mico
+% Sistema Dinamico
 % x,u mm mm/s
 
 mx =.200; % Kg
@@ -60,7 +60,7 @@ B_model = [
     0       ky/my   0       by/my
     ];
 
-% Otimiza��o
+% Otimizacao
 global options lcon objective_fun
 options = optimoptions(@fmincon, 'TolFun', 0.00001, 'MaxIter', 100000, ...
                        'MaxFunEvals', 6000, 'Display', 'iter', ...

@@ -63,14 +63,14 @@ Nesta etapa, conduz-se uma simulação de referência empregando valores mediano
         Frequência & 100 & $rad/s$\\
         Coeficiente de amortecimento & 0,5 & - \\
         Aceleração base & 5000 & $mm/s^2$ \\
-        Passo de tempo & 0,005 & $s$ \\ 
-        Velocidade desejada & 100 & $mm/s$ \\ \hline
+        Velocidade desejada & 100 & $mm/s$ \\
+        Passo de tempo & 0,005 & $s$ \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
 
 \subsection{Simulações com Parâmetros Variados}
-Para explorar o efeito de diferentes configurações, realizam-se simulações adicionais onde cada parâmetro - frequência natural, coeficiente de amortecimento, aceleração de entrada, passo de tempo e velocidade desejada - é variado individualmente. Estas variações incluem valores tanto inferiores quanto superiores aos da simulação de referência. No total, são 11 simulações: 10 delas dedicadas a testar os limites inferiores e superiores de cada parâmetro e uma utilizando os valores de referência. Os detalhes de cada simulação, incluindo a identificação numérica e a letra indicativa do parâmetro modificado (A para inferiores, B para superiores), são apresentados na Tabela \ref{tab:sim_params}.
+Para explorar o efeito de diferentes configurações, realizam-se simulações adicionais onde cada parâmetro - frequência natural, coeficiente de amortecimento, aceleração de entrada, velocidade desejada e  passo de tempo - é variado individualmente. Estas variações incluem valores tanto inferiores quanto superiores aos da simulação de referência. No total, são 11 simulações: 10 delas dedicadas a testar os limites inferiores e superiores de cada parâmetro e uma utilizando os valores de referência. Os detalhes de cada simulação, incluindo a identificação numérica e a letra indicativa do parâmetro modificado (A para inferiores, B para superiores), são apresentados na Tabela \ref{tab:sim_params}.
 
 \begin{table}
     \begin{center}
@@ -81,24 +81,24 @@ Para explorar o efeito de diferentes configurações, realizam-se simulações a
         1 & Frequência & 50 & 200 & $rad/s$\\
         2 & Coeficiente de amortecimento & 0 & 1 & - \\
         3 & Aceleração base & 1000 & 10000 & $mm/s^2$ \\
-        4 & Passo de tempo & 0,1 & 0,001 & $s$ \\
-        5 & Velocidade desejada & 50 & 200 & $mm/s$ \\ \hline
+        4 & Velocidade desejada & 50 & 200 & $mm/s$ \\
+        5 & Passo de tempo & 0,1 & 0,001 & $s$ \\ \hline
     \end{tabular}
     \end{center}
 \end{table}
 
 \subsection{Aplicação do método Runge-Kutta}
-O controle de trajetória desenvolvido neste estudo, se da através da modificação da trajetória da base, com objetivo de diminuir o desvio do caminho da ponta em relação ao caminho desejado. Para poder avaliar se este objetivo está sendo cumprido se faz necessário a trajetória da ponta, considerando as características dinâmicas da impressora. Para isso foi aplicado o método Runge-Kutta na trajetória da base obtida pelo controle de trajetória, aplicou-se este método também na trajetória não modificada pelo controle de trajetória, representando o comportamento da impressora que não implementa esta etapa. Além disso, fez-se necessário a interpolação dos pontos da trajetória por conta de baixa precisão e até mesmo a incapacidade do método Runge-Kutta de gerar resultados confiáveis. Entretanto, a partir do momento em que aplicou-se a interpolação de um passo de tempo de 0.0001 segundos, os resultados se mostraram consistentes.
+O controle de trajetória desenvolvido neste estudo, se da através da modificação da trajetória da base, com objetivo de diminuir o desvio do caminho da ponta em relação ao caminho desejado. Para poder avaliar se este objetivo está sendo cumprido se faz necessário a trajetória da ponta, considerando as características dinâmicas da impressora. Para isso foi aplicado o método Runge-Kutta na trajetória da base obtida pelo controle de trajetória, aplicou-se este método também na trajetória não modificada extraída diretamente da etapa de geração de trajetória, representando o comportamento da impressora sem a atuação do controle de trajetória. Além disso, fez-se necessário a interpolação dos pontos da trajetória por conta do método Runge-Kutta não convergir para passos de tempo grandes. Entretanto, a partir do momento em que aplicou-se a interpolação de um passo de tempo de 0.0001 segundos, os resultados se mostraram consistentes.
 
 \section{Resultados das Simulações}
-A análise dos resultados começa com a avaliação da simulação de referência, estabelecendo um ponto de partida para comparações. Posteriormente, a análise foca no impacto e nas consequências das alterações nos parâmetros. Este estudo inclui a variação dos elementos do modelo dinâmico da impressora, como frequência natural e coeficiente de amortecimento, seguido pela investigação das mudanças nos parâmetros relacionados à geração de trajetória, especificamente aceleração e passo de tempo. Além disso, examina-se a influência das variações no parâmetro de velocidade desejada do Gcode.
+A análise dos resultados começa com a avaliação da simulação de referência, estabelecendo um ponto de partida para comparações. Posteriormente, a análise foca no impacto e nas consequências das alterações nos parâmetros. Este estudo inclui a variação dos elementos do modelo dinâmico da impressora, como frequência natural e coeficiente de amortecimento, seguido pela investigação das mudanças nos parâmetros relacionados à geração de trajetória, especificamente aceleração e velocidade desejada. Além disso, examina-se a influência das variações no parâmetro de passo de tempo da interpolação para geração da trajetória.
 
 \subsection{Resultados da Simulação de Referência}
 Esta seção apresenta uma análise detalhada dos resultados obtidos pela simulação de referência dispostos nos gráficos a seguir.
 
 % ------------------ Caminho ----------------
-O primeiro gráfico (Figura \ref{fig:ref_cam}) ilustra os caminhos no plano XY da base e da ponta sem controle (Figuras \ref{fig:ref_cam_s} e \ref{fig:ref_cam_s_zoom}), além disso os caminhos da base e da ponta com controle (Figuras \ref{fig:ref_cam_c} e \ref{fig:ref_cam_c_zoom}). Observa-se próximo a região de transição do movimento em X para o movimento em Y um arredondamento da curva ou uma antecipação do movimento em Y.
-Este arredondamento da curva do caminho da base está relacionado à compensação do sobre-sinal resultante do comportamento dinâmico da impressora e que se comparado os caminhos da ponta sem controle e com controle, nota-se o menor desvio do caminho desejado no caminho da ponta com controle.
+O primeiro gráfico (Figura \ref{fig:ref_cam}) ilustra os caminhos no plano XY da base e da ponta sem controle (Figuras \ref{fig:ref_cam_s} e \ref{fig:ref_cam_s_zoom}), além disso os caminhos da base e da ponta com controle (Figuras \ref{fig:ref_cam_c} e \ref{fig:ref_cam_c_zoom}). Observa-se próximo a região de transição do movimento em X para o movimento em Y uma suavização da curva ou uma antecipação do movimento em Y.
+Essa suavização da curva do caminho da base está relacionado à compensação do sobre-sinal resultante do comportamento dinâmico da impressora e que se comparado os caminhos da ponta sem controle e com controle, nota-se o menor desvio do caminho desejado no caminho da ponta com controle.
 
 % fig:cam
 \begin{figure}[H]
@@ -127,7 +127,7 @@ Este arredondamento da curva do caminho da base está relacionado à compensaç�
 \end{figure}
 
 % ------------------ Deslocamento ----------------
-Já na Figura \ref{fig:ref_des} é visível alguns comportamentos dinâmicos das curvas de deslocamento. No início do movimento, a curva da base com controle se desloca mais rapidamente, também sendo possível observar algumas oscilações. Enquanto a curva da ponta sem controle apresenta um deslocamento mais lento, característica essa evitada pelo controle de trajetória, resultando em uma curva mais suave e com um sobre-sinal reduzido para o deslocamento da ponta com controle.
+Na Figura \ref{fig:ref_des}, gráfico de deslocamento por tempo das curvas da base e da ponta com e sem controle dos eixos X e Y, é visível alguns comportamentos dinâmicos das curvas de deslocamento. No início do movimento, a curva da base com controle se desloca mais rapidamente, também sendo possível observar algumas oscilações. Enquanto a curva da ponta sem controle apresenta uma velocidade menor, identificada pela inclinação da curva de deslocamento, característica essa evitada pelo controle de trajetória, resultando em uma curva mais suave e com um sobre-sinal reduzido para o deslocamento da ponta com controle.
 
 % fig:des
 \begin{figure}[H]
@@ -146,8 +146,8 @@ Já na Figura \ref{fig:ref_des} é visível alguns comportamentos dinâmicos das
 \end{figure}
 
 % ------------------ Velocidades ----------------
-No gráfico de velocidades (Figura \ref{fig:ref_vel}) observa-se um atraso da curva da ponta sem controle, quando comparado com a curva da base sem controle. Além disso, nota-se um sobre-sinal da velocidade, ambas características da elasticidade do sistema.
-Já nas curvas com controle, a curva da base possui um comportamento oscilatório que vai decaindo após a perturbação, que está em fase oposta às oscilações da curva da ponta com controle. Tal comportamento tem como resultado uma diminuição do sobre sinal. Um outro fator presente no gráfico com controle é o serrilhamento da curva da base, essa característica pode ser causada por uma amostragem reduzida na etapa de geração de trajetória, fornecendo uma menor quantidade de pontos para a etapa de controle.
+No gráfico de velocidades da base e da ponta, com e sem controle nos eixos X e Y (Figura \ref{fig:ref_vel}), observa-se um atraso da curva da ponta sem controle, quando comparado com a curva da base sem controle. Além disso, nota-se um sobre-sinal da velocidade, ambas características da elasticidade do sistema.
+Já nas curvas com controle, a curva da base possui um comportamento oscilatório que vai decaindo após a perturbação, que está em fase oposta às oscilações da curva da ponta com controle. Tal comportamento tem como resultado uma diminuição do sobre sinal. Um outro fator presente no gráfico com controle é a oscilação abrupta da curva da base de velocidade, essa característica é causada por uma amostragem reduzida na etapa de geração de trajetória, fornecendo uma menor quantidade de pontos para a etapa de controle.
 
 % fig:vel
 \begin{figure}[H]
@@ -172,7 +172,7 @@ A partir desta seção são avaliados os resultados das simulações com a varia
 
 % ------------------ Caminho A ----------------
 
-Neste primeiro gráfico (Figura \ref{fig:1A_cam}) é apresentado os caminhos da base e da ponta sem controle e os caminhos da base e da ponta com controle da simulação com o parâmetro da frequência natural em seu nível inferior, definido como \(50 rad/s\). Nota-se algumas características em comum com a Figura \ref{fig:ref_cam} da simulação referência, mas o caminho da ponta sem controle apresenta um desvio bem maior se comparado ao caminho da ponta sem controle de referência. Além disso, nota-se que foi necessário, por conta da maior elasticidade, uma compensação mais agressiva do caminho da base com controle. Sendo que, em um momento o movimento no eixo X da base com controle precisou mudar de direção. Apesar deste maior desvio na curva sem controle, o caminho da ponta com controle apresenta um desvio bem simular à simulação de referência.
+Neste primeiro gráfico (Figura \ref{fig:1A_cam}) é apresentado os caminhos da base e da ponta, com e sem controle no plano XY com o parâmetro da frequência natural em seu nível inferior, definido como \(50 rad/s\). Nota-se algumas características em comum com a Figura \ref{fig:ref_cam} dos caminhos da simulação referência, mas o caminho da ponta sem controle apresenta um desvio maior se comparado ao caminho da ponta sem controle de referência, efeito esse causado pela menor rigidez do sistema. Por consequência, nota-se que foi necessário uma compensação mais agressiva do caminho da base com controle, derivado dessa menor rigidez e maior desvio. Sendo que, em um momento o movimento no eixo X da base com controle precisou mudar de direção. Apesar deste maior desvio na curva sem controle, o caminho da ponta com controle apresenta um desvio similar à simulação de referência.
 
 % fig:cam
 \begin{figure}[H]
@@ -238,7 +238,7 @@ Já nos gráficos de velocidade, apresentados na Figura \ref{fig:1A_vel}, observ
 \end{figure}
 % ------------------ Caminho B ----------------
 
-Agora, avaliando a simulação da variação do parâmetro de frequência natural com o valor B (\(200 rad/s\)) é notável a redução do desvio no caminho da ponta sem controle (Figura \ref{fig:1B_cam}), característica coerente com o aumento da rigidez do sistema. Entretanto, o desvio do caminho da ponta com controle aparenta ter aumentado se comparado à simulação de referência. Este efeito pode ser causado por conta da interação entre o passo de tempo de interpolação, ou seja a amostragem dos pontos, e o aumento da frequência natural, que exige uma maior densidade de pontos para representar seu comportamento. 
+Agora, avaliando a simulação da variação do parâmetro de frequência natural com o valor B (\(200 rad/s\)) é notável a redução do desvio no caminho da ponta sem controle (Figura \ref{fig:1B_cam}), característica coerente com o aumento da rigidez do sistema. Entretanto, o desvio do caminho da ponta com controle aumentou se comparado à simulação de referência. Este efeito pode ser causado por conta da interação entre o passo de tempo de interpolação, ou seja a amostragem dos pontos, e o aumento da frequência natural, que exige uma maior densidade de pontos para representar seu comportamento. 
 
 % fig:cam
 \begin{figure}[H]
@@ -581,138 +581,7 @@ Interessantemente, esta análise demonstra que o controle efetivamente minimiza 
 
 % ------------------ end ----------------
 
-\subsection{Caso 4 - Variação dos passos de tempo}
-
-A variação dos passos de tempo utilizados na interpolação da trajetória gerada na etapa de controle de trajetória possui um impacto significativo nas características numéricas do método de controle. Este efeito é evidenciado pela comparação dos resultados entre o Caso 4A e o Caso 4B, com seus respectivos passos de tempo \(0,01\) e \(0,0001\).
-
-No Caso 4B, observamos um tempo de simulação consideravelmente mais longo, chegando a 93 segundos. Este aumento substancial no tempo de simulação contrasta fortemente com o Caso 4A, onde o tempo de simulação foi inferior a 0,5 segundos. Esta diferença é atribuída ao passo de tempo mais fino utilizado no Caso 4B, que, embora aumente o tempo de processamento, oferece uma precisão notavelmente maior nos resultados da simulação.
-
-% ------------------ Caminhos ----------------
-A precisão aprimorada é particularmente notável no caminho da ponta com controle no Caso 4B (Figura \ref{fig:4B_cam}), onde se observa uma aderência significativamente mais próxima ao caminho desejado quando comparado com o Caso 4A (Figura \ref{fig:4A_cam}). Esta melhoria na precisão indica a eficácia de um passo de tempo mais detalhado na representação mais fiel das dinâmicas do sistema controlado.
-
-% fig:cama
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s.png}
-        \label{fig:4A_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c.png}
-        \label{fig:4A_cam_c}
-    }
-    \hfill
-    \subfigure[Detalhamento - Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s_zoom.png}
-        \label{fig:4A_cam_s_zoom}
-    }
-    \hfill
-    \subfigure[Detalhamento - Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c_zoom.png}
-        \label{fig:4A_cam_c_zoom}
-    }
-    \caption{Caminhos da ponta e da base - Caso 4A.}
-    \label{fig:4A_cam}
-\end{figure}
-
-% fig:camb
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s.png}
-        \label{fig:4B_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c.png}
-        \label{fig:4B_cam_c}
-    }
-    \hfill
-    \subfigure[Detalhamento - Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s_zoom.png}
-        \label{fig:4B_cam_s_zoom}
-    }
-    \hfill
-    \subfigure[Detalhamento - Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c_zoom.png}
-        \label{fig:4B_cam_c_zoom}
-    }
-    \caption{Caminhos da ponta e da base - Caso 4B.}
-    \label{fig:4B_cam}
-\end{figure}
-
-% ------------------ Deslocamentos ----------------
-Já nos gráficos que representam as curvas de deslocamento no tempo, Figuras \ref{fig:4A_des} e \ref{fig:4B_des}, é difícil identificar diferenças significativas.
-
-% fig:desa
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_des_s.png}
-        \label{fig:4A_des_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_des_c.png}
-        \label{fig:4A_des_c}
-    }
-    \caption{Deslocamentos da ponta e da base - Caso 4A.}
-    \label{fig:4A_des}
-\end{figure}
-
-% fig:desb
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_des_s.png}
-        \label{fig:4B_des_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_des_c.png}
-        \label{fig:4B_des_c}
-    }
-    \caption{Deslocamentos da ponta e da base - Caso 4B.}
-    \label{fig:4B_des}
-\end{figure}
-% ------------------ Velocidades A ----------------
-Além disso, o perfil de velocidade no Caso 4B (Figura \ref{fig:4B_vel}) destaca-se por sua clareza e definição, em contraste com o perfil serrilhado observado no Caso 4A (Figura \ref{fig:4A_vel}) e na simulação de referência (Figura \ref{fig:ref_vel}). Esta característica do perfil de velocidade no Caso 4B reflete uma representação mais precisa da dinâmica do sistema, evidenciando o valor de um passo de tempo mais refinado para a precisão geral da simulação.
-
-% fig:vela
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_s.png}
-        \label{fig:4A_vel_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_c.png}
-        \label{fig:4A_vel_c}
-    }
-    \caption{Velocidades da ponta e da base - Caso 4A.}
-    \label{fig:4A_vel}
-\end{figure}
-
-% fig:velb
-\begin{figure}[H]
-    \centering
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_s.png}
-        \label{fig:4B_vel_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_c.png}
-        \label{fig:4B_vel_c}
-    }
-    \caption{Velocidades da ponta e da base - Caso 4B.}
-    \label{fig:4B_vel}
-\end{figure}
-% ------------------ end ----------------
-
-\subsection{Caso 5 - Variação da velocidade desejada}
+\subsection{Caso 4 - Variação da velocidade desejada}
 A variação da velocidade desejada possui efeitos similares à variação da aceleração. Onde observa-se um menor desvio no caminho da ponta sem controle (Figura \ref{fig:5A_cam}) e um maior tempo de impressão, assim como uma alteração no formato do perfil de velocidade (Figuras \ref{fig:5A_des} e \ref{fig:5A_vel})
 
 % ------------------ Caminho A ----------------
@@ -738,7 +607,7 @@ A variação da velocidade desejada possui efeitos similares à variação da ac
         \includegraphics[width=0.47\textwidth]{Sim 5A_cam_c_zoom.png}
         \label{fig:5A_cam_c_zoom}
     }
-    \caption{Caminhos da ponta e da base - Caso 5A.}
+    \caption{Caminhos da ponta e da base - Caso 4A.}
     \label{fig:5A_cam}
 \end{figure}
 
@@ -755,7 +624,7 @@ A variação da velocidade desejada possui efeitos similares à variação da ac
         \includegraphics[width=0.47\textwidth]{Sim 5A_des_c.png}
         \label{fig:5A_des_c}
     }
-    \caption{Deslocamentos da ponta e da base - Caso 5A.}
+    \caption{Deslocamentos da ponta e da base - Caso 4A.}
     \label{fig:5A_des}
 \end{figure}
 
@@ -772,7 +641,7 @@ A variação da velocidade desejada possui efeitos similares à variação da ac
         \includegraphics[width=0.47\textwidth]{Sim 5A_vel_c.png}
         \label{fig:5A_vel_c}
     }
-    \caption{Velocidades da ponta e da base - Caso 5A.}
+    \caption{Velocidades da ponta e da base - Caso 4A.}
     \label{fig:5A_vel}
 \end{figure}
 
@@ -802,11 +671,11 @@ Este comportamento é ilustrado na Figura \ref{fig:5B_cam}.
         \includegraphics[width=0.47\textwidth]{Sim 5B_cam_c_zoom.png}
         \label{fig:5B_cam_c_zoom}
     }
-    \caption{Caminhos da ponta e da base - Caso 5B.}
+    \caption{Caminhos da ponta e da base - Caso 4B.}
     \label{fig:5B_cam}
 \end{figure}
 % ------------------ Deslocamento B----------------
-Além disso, nota-se o menor tempo de impressão através das Figuras \ref{fig:5B_des} e \ref{fig:5B_vel}, assim como na mudança do perfil de velocidades. Mudanças essas também similares às mudanças vistas na variação da aceleração.
+Além disso, nota-se o menor tempo de impressão através dos eixos de tempo das Figuras \ref{fig:5B_des} e \ref{fig:5B_vel} quando comparados às simulações de referência e a simulação do Caso 4A, assim como na mudança do perfil de velocidades. Mudanças essas também similares às mudanças vistas na variação da aceleração.
 
 % fig:des
 \begin{figure}[H]
@@ -820,7 +689,7 @@ Além disso, nota-se o menor tempo de impressão através das Figuras \ref{fig:5
         \includegraphics[width=0.47\textwidth]{Sim 5B_des_c.png}
         \label{fig:5B_des_c}
     }
-    \caption{Deslocamentos da ponta e da base - Caso 5B.}
+    \caption{Deslocamentos da ponta e da base - Caso 4B.}
     \label{fig:5B_des}
 \end{figure}
 
@@ -838,8 +707,139 @@ Além disso, nota-se o menor tempo de impressão através das Figuras \ref{fig:5
         \includegraphics[width=0.47\textwidth]{Sim 5B_vel_c.png}
         \label{fig:5B_vel_c}
     }
-    \caption{Velocidades da ponta e da base - Caso 5B.}
+    \caption{Velocidades da ponta e da base - Caso 4B.}
     \label{fig:5B_vel}
+\end{figure}
+% ------------------ end ----------------
+
+\subsection{Caso 5 - Variação dos passos de tempo}
+
+A variação dos passos de tempo utilizados na interpolação da trajetória gerada na etapa de controle de trajetória possui um impacto significativo nas características numéricas do método de controle. Este efeito é evidenciado pela comparação dos resultados entre o Caso 5A e o Caso 5B, com seus respectivos passos de tempo \(0,01\) e \(0,0001\).
+
+No Caso 5B, observamos um tempo de simulação consideravelmente mais longo, chegando a 93 segundos. Este aumento substancial no tempo de simulação contrasta fortemente com o Caso 5A, onde o tempo de simulação foi inferior a 0,5 segundos. Esta diferença é atribuída ao passo de tempo mais fino utilizado no Caso 5B, que, embora aumente o tempo de processamento, oferece uma precisão notavelmente maior nos resultados da simulação.
+
+% ------------------ Caminhos ----------------
+A precisão aprimorada é particularmente notável no caminho da ponta com controle no Caso 5B (Figura \ref{fig:4B_cam}), onde se observa uma aderência significativamente mais próxima ao caminho desejado quando comparado com o Caso 5A (Figura \ref{fig:4A_cam}). Esta melhoria na precisão indica a eficácia de um passo de tempo mais detalhado na representação mais fiel das dinâmicas do sistema controlado.
+
+% fig:cama
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s.png}
+        \label{fig:4A_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c.png}
+        \label{fig:4A_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_s_zoom.png}
+        \label{fig:4A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_cam_c_zoom.png}
+        \label{fig:4A_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 5A.}
+    \label{fig:4A_cam}
+\end{figure}
+
+% fig:camb
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s.png}
+        \label{fig:4B_cam_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c.png}
+        \label{fig:4B_cam_c}
+    }
+    \hfill
+    \subfigure[Detalhamento - Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_s_zoom.png}
+        \label{fig:4B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Detalhamento - Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_cam_c_zoom.png}
+        \label{fig:4B_cam_c_zoom}
+    }
+    \caption{Caminhos da ponta e da base - Caso 5B.}
+    \label{fig:4B_cam}
+\end{figure}
+
+% ------------------ Deslocamentos ----------------
+Já nos gráficos que representam as curvas de deslocamento no tempo, Figuras \ref{fig:4A_des} e \ref{fig:4B_des}, é difícil identificar diferenças significativas.
+
+% fig:desa
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_des_s.png}
+        \label{fig:4A_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_des_c.png}
+        \label{fig:4A_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 5A.}
+    \label{fig:4A_des}
+\end{figure}
+
+% fig:desb
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_des_s.png}
+        \label{fig:4B_des_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_des_c.png}
+        \label{fig:4B_des_c}
+    }
+    \caption{Deslocamentos da ponta e da base - Caso 5B.}
+    \label{fig:4B_des}
+\end{figure}
+% ------------------ Velocidades A ----------------
+Além disso, o perfil de velocidade no Caso 5B (Figura \ref{fig:4B_vel}) destaca-se por sua clareza e definição, em contraste com o perfil serrilhado observado no Caso 5A (Figura \ref{fig:4A_vel}) e na simulação de referência (Figura \ref{fig:ref_vel}). Esta característica do perfil de velocidade no Caso 5B reflete uma representação mais precisa da dinâmica do sistema, evidenciando o valor de um passo de tempo mais refinado para a precisão geral da simulação.
+
+% fig:vela
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_s.png}
+        \label{fig:4A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4A_vel_c.png}
+        \label{fig:4A_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 5A.}
+    \label{fig:4A_vel}
+\end{figure}
+
+% fig:velb
+\begin{figure}[H]
+    \centering
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_s.png}
+        \label{fig:4B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.47\textwidth]{Sim 4B_vel_c.png}
+        \label{fig:4B_vel_c}
+    }
+    \caption{Velocidades da ponta e da base - Caso 5B.}
+    \label{fig:4B_vel}
 \end{figure}
 % ------------------ end ----------------
 

@@ -16,8 +16,8 @@ cam_p_c_ln.LineWidth = 3;
 lgd = legend({'Caminho da base com controle', 'Caminho da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
-xlabel('Posição x [mm]')
-ylabel('Posição y [mm]')
+xlabel('Posicao x [mm]')
+ylabel('Posicao y [mm]')
 xlim([0 11.5]);
 ylim([-1 10.5]);
 ax = gca;
@@ -45,8 +45,8 @@ cam_p_n_ln.LineWidth = 3;
 lgd = legend({'Caminho da base sem controle', 'Caminho da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
-xlabel('Posição x [mm]')
-ylabel('Posição y [mm]')
+xlabel('Posicao x [mm]')
+ylabel('Posicao y [mm]')
 xlim([0 11.5]);
 ylim([-1 10.5]);
 ax = gca;
@@ -73,8 +73,8 @@ cam_p_c_ln.LineWidth = 3;
 lgd = legend({'Caminho da base com controle', 'Caminho da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
-xlabel('Posição x [mm]')
-ylabel('Posição y [mm]')
+xlabel('Posicao x [mm]')
+ylabel('Posicao y [mm]')
 xlim([8.5 11.5]);
 ylim([-0.5 2.5]);
 ax = gca;
@@ -101,8 +101,8 @@ cam_p_n_ln.LineWidth = 3;
 lgd = legend({'Caminho da base sem controle', 'Caminho da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
-xlabel('Posição x [mm]')
-ylabel('Posição y [mm]')
+xlabel('Posicao x [mm]')
+ylabel('Posicao y [mm]')
 xlim([8.5 11.5]);
 ylim([-0.5 2.5]);
 ax = gca;
