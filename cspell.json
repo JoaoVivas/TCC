@@ -1,0 +1,15 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "feedforward",
+        "Gcode",
+        "hotend",
+        "Klipper"
+    ],
+    "ignoreWords": [],
+    "import": [],
+    "language": "en,pt-BR,en-US,en-GB"
+}
