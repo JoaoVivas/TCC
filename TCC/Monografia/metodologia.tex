@@ -206,7 +206,7 @@ Este modelo dinâmico pode ser representado por dois parâmetros, a frequência 
     \ddot{x_p} = 2 \zeta \omega(\dot{x_b} - \dot{x_p}) + \omega ^2(x_b - x_p)
 \end{equation}
 
-Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação das Equação \ref{eq:mov_impressora} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subíndices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
+Essas equações fundamentam o modelo dinâmico que empregamos para simular e otimizar a trajetória de impressão na impressora 3D. Na Figura \ref{fig:model_2_axis} é representada a composição dos eixos x e y utilizado neste estudo, sendo considerada a aplicação da Equação \ref{eq:equation_simpl} para cada um dos eixos de maneira análoga, podendo identificar o eixo através dos subíndices \(x\) e \(y\), ou no caso das posições o eixo y é identificado por \(y_p\) e \(y_b\) (posição da ponta do eixo y e posição da base do eixo y respectivamente).
 
 \begin{figure}[H]
     \centering
@@ -228,7 +228,7 @@ O modelo dinâmico no espaço de estados é representado na seguinte forma (Equa
 
 Nesta equação, \(\dot x\) representa o vetor de estados derivados, \(x\) é o vetor de estados, \(A\) é a matriz do sistema que define a relação entre os estados atuais e suas taxas de mudança, \(u\) é o vetor de entradas externas, e \(B\) é a matriz de controle que relaciona as entradas com os estados.
 
-Baseado na equação de movimento \ref{eq:mov_impressora}, análogos ao eixo y, expandimos as matrizes e vetores para representar com precisão a dinâmica do sistema no espaço de estados, conforme apresentado na equação \ref{eq:espaco_de_estados_din_model}:
+Baseado na equação de movimento \ref{eq:equation_simpl}, análogos ao eixo y, expandimos as matrizes e vetores para representar com precisão a dinâmica do sistema no espaço de estados, conforme apresentado na equação \ref{eq:espaco_de_estados_din_model}:
 
 \begin{equation}
     \label{eq:espaco_de_estados_din_model}
