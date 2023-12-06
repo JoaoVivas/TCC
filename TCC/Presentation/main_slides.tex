@@ -1,56 +1,150 @@
 \documentclass[aspectratio=169]{beamer}
 \usepackage{tikz}
-\newcommand{\backgroundlogo}{%
+\newcommand{\backgroundlogo}{
   \begin{tikzpicture}[remember picture,overlay]
     \node[opacity=0.1,anchor=center] at (current page.center) {%
-      \includegraphics[width=10cm]{logoufla.jpg} % Ajuste o tamanho e o caminho da logo
+      \includegraphics[width=10cm]{logoufla.jpg}
     };
-  \end{tikzpicture}%
+  \end{tikzpicture}
 }
 
-\usetheme{default} % Você pode escolher outros temas conforme preferir
+\usetheme{default}
 
-\title[Presente Trabalho]{CONTROLE DE TRAJETÓRIA DE IMPRESSORAS 3D UTILIZANDO ALGORITMO ITERATIVO E PROGRAMAÇÃO NÃO LINEAR
+\definecolor{UFLAblue}{HTML}{224271}
+
+\definecolor{UFLAgreen}{HTML}{00793c}
+
+\setbeamercolor{title}{fg=UFLAblue}
+\setbeamercolor{frametitle}{fg=UFLAblue}
+
+\setbeamercolor{titlelike}{fg=UFLAblue}
+\setbeamercolor{section in toc}{fg=UFLAblue}
+
+\setbeamercolor{secondary}{fg=black}
+
+\setbeamercolor{normal text}{fg=black}
+
+\setbeamertemplate{section page}
+{
+    \begin{centering}
+    \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+    \end{centering}
+}
+
+\AtBeginSection{\frame{\sectionpage}}
+
+\title[Presente Trabalho]{\textbf{CONTROLE DE TRAJETÓRIA DE IMPRESSORAS 3D UTILIZANDO ALGORITMO ITERATIVO E PROGRAMAÇÃO NÃO LINEAR}
 }
 \author[Joao]{João Vivas Cisalpino}
-\institute[UFLA]{Universidade Federal de Lavras}
+
+\institute[UFLA]{Orientador: Wander Gustavo Rocha Vieira \\ Universidade Federal de Lavras}
+
 \date{08/12/2023} % Data da apresentação
 
 \begin{document}
 
-% Slide de Título
 \begin{frame}
   \backgroundlogo
-  % \includegraphics[width=1\textwidth]{logoufla.jpg} % Ajuste o tamanho conforme necessário
   \titlepage
 \end{frame}
 
-\logo{\includegraphics[width=2cm]{logoufla.jpg}} % Ajuste o tamanho conforme necessário
+\logo{\includegraphics[width=2cm]{logoufla.jpg}}
 
-% Slide de Introdução
 \begin{frame}
-  \frametitle{Introdução}
+  \frametitle{Sumário}
+  \tableofcontents
   % Conteúdo do slide aqui
 \end{frame}
 
-% Slide de Revisão de Literatura
+\section{\insertsectionnumber . Introdução}
+
 \begin{frame}
-  \frametitle{Revisão de Literatura}
+  \frametitle{\insertsection}
   % Conteúdo do slide aqui
 \end{frame}
 
-% Você pode adicionar mais slides aqui seguindo o mesmo padrão
-
-% Slide de Conclusão
+\section{\insertsectionnumber . Referencial Teórico}
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Manufatura Aditiva}
 \begin{frame}
-  \frametitle{Conclusões}
+  \frametitle{\insertsubsection}
   % Conteúdo do slide aqui
 \end{frame}
 
-% Slide de Agradecimentos/Referências
+\subsection{\insertsectionnumber .\insertsubsectionnumber . \textit{Fused Deposition Modeling} (FDM)}
 \begin{frame}
-  \frametitle{Agradecimentos/Referências}
+  \frametitle{\insertsubsection}
   % Conteúdo do slide aqui
+\end{frame}
+
+\section{\insertsectionnumber . Metodologia}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Geração de Trajetória}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Controle de Trajetória}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\section{\insertsectionnumber . Resultados}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação de Referencia}
+\begin{frame}
+  \frametitle{\insertsubsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+\section{\insertsectionnumber . Conclusão}
+
+\begin{frame}
+  \frametitle{\insertsection}
+  % Conteúdo do slide aqui
+\end{frame}
+
+% Remove a logo para o próximo slide
+\setbeamertemplate{logo}{}
+\begin{frame}
+  
+\backgroundlogo
+\begin{center}
+  \huge{Obrigado!}
+\end{center}
 \end{frame}
 
 \end{document}
