@@ -20,6 +20,7 @@ xlabel('Posicao x [mm]')
 ylabel('Posicao y [mm]')
 xlim([0 11.5]);
 ylim([-1 10.5]);
+
 ax = gca;
 ax.XTick = [0 2 4 6 8 10];
 ax.YTick = [0 2 4 6 8 10];
@@ -49,6 +50,7 @@ xlabel('Posicao x [mm]')
 ylabel('Posicao y [mm]')
 xlim([0 11.5]);
 ylim([-1 10.5]);
+
 ax = gca;
 ax.XTick = [0 2 4 6 8 10];
 ax.YTick = [0 2 4 6 8 10];
@@ -105,6 +107,7 @@ xlabel('Posicao x [mm]')
 ylabel('Posicao y [mm]')
 xlim([8.5 11.5]);
 ylim([-0.5 2.5]);
+
 ax = gca;
 % ax.XTick = [0 2 4 6 8 10];
 % ax.YTick = [0 2 4 6 8 10];
