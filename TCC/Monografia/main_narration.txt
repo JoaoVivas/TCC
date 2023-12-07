@@ -1,0 +1,77 @@
+Slide de Capa
+
+    "Esta apresentação aborda o controle de trajetória de impressoras 3D utilizando algoritmo iterativo e programação não linear. O estudo foi realizado por João Vivas Cisalpino sob orientação de Wander Gustavo Rocha Vieira na Universidade Federal de Lavras."
+
+Slide de Introdução
+
+    "Inicia-se a apresentação destacando a relevância da manufatura aditiva, em particular a impressão 3D e o método Fused Deposition Modeling, que se destaca como uma tecnologia promissora para a produção de peças complexas em quantidades reduzidas. A importância deste estudo reside na busca por métodos que aprimorem a precisão e eficiência das impressoras 3D, considerando a dinâmica da impressora e os desafios associados ao controle de trajetória. Este aspecto é crucial para a qualidade final dos produtos impressos e tem aplicações em diversos setores, como engenharia, medicina e indústria aeroespacial."
+
+Slide de Objetivos
+
+    "O objetivo geral deste trabalho é investigar e desenvolver uma metodologia para o controle na geração de comandos em impressoras 3D FDM, buscando aumentar as velocidades de impressão enquanto se garante a precisão dimensional das peças. Especificamente, o estudo foca no desenvolvimento de um algoritmo iterativo que minimiza desvios entre o trajeto desejado e o efetivamente percorrido, levando em conta a dinâmica da impressora. Além disso, propõe-se a simulação do comportamento da impressora com o novo algoritmo para avaliar o comportamento do método em relação aos parâmetros controlados."
+
+Slide 6: Manufatura Aditiva
+
+    "Neste slide, aborda-se a manufatura aditiva, uma tecnologia chave na produção de peças complexas e customizadas. Ela permite a fabricação de componentes com geometrias complexas, viabilizando a iterabilidade e a produção descentralizada sob demanda. Sua aplicabilidade estende-se por diversos setores, incluindo engenharia, medicina e a indústria aeroespacial."
+
+Slide 7: Fused Deposition Modeling (FDM)
+
+    "Fused Deposition Modeling, ou FDM, representa um método específico dentro da manufatura aditiva, onde um material termoplástico é depositado camada por camada para construir um objeto tridimensional. Este método destaca-se pela sua acessibilidade e ampla utilização em prototipagem rápida e fabricação de peças funcionais."
+
+Slide 8: Geração de Comando
+
+    "Na geração de comando para impressoras 3D FDM, o foco é na transformação de modelos digitais em instruções executáveis pela máquina. Utiliza-se software de fatiamento, que converte os modelos CAD em Gcode, um formato de código que instrui a impressora sobre os movimentos e ações necessárias durante a impressão."
+
+Slide 9: Geração de Trajetória
+
+    "A geração de trajetória é crucial para o controle preciso do movimento da impressora. Envolve a definição de caminhos que os atuadores da impressora seguirão, garantindo a reprodução fiel do modelo digital. Este processo é fundamental para a precisão e qualidade das peças impressas."
+
+Slide 10: Técnicas de Controle
+
+    "Este slide explora diversas técnicas de controle aplicadas à impressão 3D. Elas são essenciais para garantir a precisão e a eficácia do processo de impressão, abordando métodos como controle de feedforward e estratégias de compensação para minimizar erros e desvios."
+
+Slide 11: Feedforward e Input Shaper
+
+    "No contexto de impressão 3D, o Feedforward refere-se à antecipação de comandos para melhorar a resposta do sistema. O Input Shaper, por sua vez, é uma técnica que modula os sinais de entrada para reduzir vibrações e melhorar a precisão da trajetória. Ambas as técnicas são fundamentais para otimizar o desempenho da impressora."
+
+Slide de Metodologia: Geração de Trajetória
+
+    "A metodologia inicia com a geração de trajetória. Este processo envolve a criação de perfis de velocidade trapezoidais e a interpolação de movimentos, assegurando que a trajetória seguida pela impressora seja otimizada tanto em termos de eficiência quanto de precisão. Este passo é crucial para garantir que os movimentos da impressora correspondam exatamente aos comandos gerados pelo software."
+
+Slide de Modelagem Dinâmica de uma Impressora 3D
+
+    "Prosseguindo, a modelagem dinâmica de uma impressora 3D é abordada. Aqui, utiliza-se o conceito de espaço de estados para representar a dinâmica da impressora, permitindo a análise e simulação do comportamento do sistema em resposta aos comandos de controle. Este modelo é essencial para entender como as variáveis do sistema interagem e influenciam a qualidade da impressão."
+
+Slide de Controle de Trajetória
+
+    "Por fim, a metodologia inclui o controle de trajetória. Este segmento foca no desenvolvimento de um algoritmo iterativo para a otimização da trajetória, considerando restrições específicas e uma função de otimização. O objetivo é minimizar os desvios entre o percurso planejado e o executado, levando em consideração as limitações físicas e dinâmicas da impressora. Este algoritmo é vital para alcançar um equilíbrio entre velocidade e precisão na impressão 3D."
+
+Slide de Resultados: Simulação de Referência
+
+    "Nos resultados, inicia-se com a análise da simulação de referência. Esta simulação estabelece um padrão de comparação, demonstrando o comportamento da impressora sob condições controladas. Os dados obtidos servem como base para avaliar a eficácia do algoritmo desenvolvido, comparando o desempenho antes e depois de sua implementação."
+
+Slide de Resultados: Simulação com Parâmetros Variados
+
+    "Em seguida, apresentam-se os resultados das simulações com parâmetros variados. Estas simulações testam a robustez e adaptabilidade do algoritmo em diferentes cenários, alterando variáveis como frequência natural, coeficiente de amortecimento, e aceleração. A análise desses resultados permite avaliar a flexibilidade e eficiência do algoritmo sob diversas condições."
+
+Slide de Resultados: Aplicação do Método Runge-Kutta
+
+    "A aplicação do método Runge-Kutta é discutida, destacando como este método numérico foi utilizado para resolver as equações diferenciais que modelam a dinâmica da impressora. Esta técnica é crucial para garantir precisão na simulação do comportamento da impressora e na avaliação do controle de trajetória."
+
+Slide de Resultado da Simulação - Variação da Frequência Natural
+
+Slide de Resultado da Simulação - Variação do Coeficiente de Amortecimento
+
+Slide de Resultado da Simulação - Variação na Aceleração
+
+Slide de Resultado da Simulação - Variação da Velocidade desejada
+
+Slide de Resultado da Simulação - Variação do Passo de tempo
+
+Slide de Resultado Discussão Integrada
+
+    "Por fim, realiza-se uma discussão integrada dos resultados. Esta seção sintetiza as descobertas das simulações, destacando como o algoritmo proposto contribui para a precisão e eficiência das impressoras 3D. Discute-se também o potencial para futuras aplicações e melhorias, baseando-se nas observações e dados coletados ao longo da pesquisa."
+
+Slide de Conclusão
+
+    "Neste slide de conclusão, sintetizamos as principais descobertas do estudo. Conclui-se que o algoritmo iterativo desenvolvido para controle de trajetória em impressoras 3D FDM demonstrou eficácia em melhorar a precisão e a velocidade de impressão. Os resultados das simulações indicam que o algoritmo minimiza de forma efetiva os desvios entre o trajeto planejado e o executado, levando em conta as limitações físicas e dinâmicas da impressora. Além disso, a pesquisa ressalta o potencial de expansão do método para diferentes configurações de impressão, abrindo caminho para futuras inovações na área de manufatura aditiva. As contribuições deste trabalho não se limitam ao aprimoramento da tecnologia existente, mas também incluem insights valiosos para futuras pesquisas e aplicações industriais."
