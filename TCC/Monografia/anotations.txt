@@ -1,0 +1,35 @@
+> A manufatura aditiva emerge como uma tecnologia altamente promissora para a produ-
+ção de peças e componentes em diversas área.
+> A impressão 3D, em particular o método de
+Fused Deposition Modeling (FDM), ganha destaque crescente, encontrando aplicações variada
+nos setores aeroespacial, automobilístico e prototipagem rápida
+> Existe uma procura por maneiras de se imprimir mais rapidamente, sem comprometer a
+qualidade, flexibilizando a tecnologia e ampliando sua aplicação
+comercial viável.
+
+
+objetivo geral: investigar e desenvolver uma metodologia para
+atuação de controle na geração de comandos em impressoras 3D utilizando o método FDM de
+forma a possibilitar maiores velocidades e garantindo a precisão dimensional das peças produ-
+zidas. 
+
+objetivos específicos:
+• Desenvolver um algoritmo iterativo que possa ser integrado ao sistema de controle de
+impressoras 3D para minimizar os desvios entre o percurso desejado e o efetivamente
+percorrido, levando em consideração a dinâmica da impressora.
+• Simular o comportamento da impressora 3D com o novo algoritmo para avaliar o com-
+portamento do método em relação aos parâmetros controlados.
+
+
+
+% \begin{frame}
+%   \frametitle{\insertsubsection}
+%   \begin{columns}
+%     \begin{column}{.45\textwidth}
+      
+%     \end{column}
+%     \begin{column}{.45\textwidth}
+      
+%     \end{column}
+%   \end{columns}
+% \end{frame}
