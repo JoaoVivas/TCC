@@ -81,27 +81,59 @@
 
 \begin{frame}
   \frametitle{\insertsection}
-  % Conteúdo do slide aqui
+  Manufatura aditiva
+  \begin{itemize}
+    \item Alta iterabilidade
+    \item Produção em pequena escala
+    \item Reprodutibilidade
+    \item Facilidade de lidar com geometrias complexas
+  \end{itemize}
+  
+  \textit{Fused Deposition Modeling} (FDM):
+    \begin{itemize}
+      \item Acessibilidade crescente.
+      \item Aplicabilidade em diversas áreas como no setor automobilístico.
+    \end{itemize}
+
+  Tempo de impressão como principal limitação:
+    \begin{itemize}
+      \item Restringe a aplicabilidade para peças maiores.
+      \item Limita a aplicabilidade como planta produtiva.
+    \end{itemize}
 \end{frame}
 
 
 \subsection{\insertsectionnumber .\insertsubsectionnumber . Objetivos}
 \begin{frame}
   \frametitle{\insertsubsection}
-  % Conteúdo do slide aqui
+  Objetivo geral:
+  \begin{itemize}
+    \item Investigar e desenvolver uma metodologia para atuação de controle na geração de
+    comandos em impressoras 3D utilizando o método FDM de forma a possibilitar maiores velocidades e garantindo a precisão dimensional das peças produzidas.
+  \end{itemize}
+  Objetivos específicos:
+  \begin{itemize}
+    \item Desenvolver um algoritmo iterativo que possa ser integrado ao sistema de controle de impressoras 3D para minimizar os desvios entre o percurso desejado e o efetivamente percorrido, levando em consideração a dinâmica da impressora.
+    \item Simular o comportamento da impressora 3D com o novo algoritmo para avaliar o comportamento do método em relação aos parâmetros controlados.
+  \end{itemize}
+
 \end{frame}
 
 \section{\insertsectionnumber . Referencial Teórico}
 
 \subsection{\insertsectionnumber .\insertsubsectionnumber . Manufatura Aditiva}
 \begin{frame}
-  \frametitle{\insertsection}
+  \frametitle{\insertsubsection}
+  Definido por:
   \begin{itemize}
-    \item Alta iterabilidade
-    \item Manufatura sob demanda
-    \item Redução de desperdícios materiais
-    \item Complexidade de peças facilitado
-    \item Descentralização da manufatura através da acessibilidade e reprodução dos modelos digitais
+    \item Construir o modelo de forma aditiva, como implica o nome.
+    \item Dispensar a necessidade de planejar as operações de maneira individual para fabricar um modelo tridimensional.
+  \end{itemize}
+  Pode utilizar diversos processos como:
+  \begin{itemize}
+    \item Extrusão (fusão e solidificação)
+    \item Sinterização a laser (aglutinação)
+    \item Estereolitografia (cura por luz)
   \end{itemize}
 \end{frame}
 
@@ -154,10 +186,12 @@
   \frametitle{\insertsubsection}
   Exemplos de comandos Gcode
   \begin{itemize}
-    \item G090
-    \item G1 Y10 F1300
-    \item G1 X10 Y5 Z0.2 E1.5 F3000
-    \item 
+    \item M104 S200           | Define a temperatura da extrusora
+    \item G21                 | Define a unidade como milímetro
+    \item G1 X10 Y10 F5000    | Realiza um movimento nos eixos do comando
+    \item G1 F1000            | Define a velocidade desejada para os movimentos subsequentes
+    \item G1 X10.5 Y9.5 E1.5  | Realiza um movimento nos eixos do comando
+    \item G1 X0 Y0 Z0.2 E0    | Realiza um movimento nos eixos do comando 
   \end{itemize}
 \end{frame}
 
@@ -175,10 +209,11 @@
 \subsection{\insertsectionnumber .\insertsubsectionnumber . Controle Feedforward}
 \begin{frame}
   \frametitle{\insertsubsection}
+  O controle \textit{Feedforward} é uma abordagem utilizada em sistemas automáticos, destinada a antecipar e corrigir possíveis perturbações que possam interferir em um sistema a partir de um modelo da planta.
   \begin{itemize}
-    \item Não se faz necessário adcionar sensores e componentes caros
-    \item Possui uma característica preditiva ao inves de corretiva
-    \item Bons resultados para modelos representativos do sistema real
+    \item Possui característica preditiva ao invés de corretiva.
+    \item Não necessita de sensores e outros componentes adicionais.
+    \item Impressão 3D possui poucas interferências externas à própria impressora.
   \end{itemize}
 \end{frame}
 
@@ -392,12 +427,11 @@
 \begin{frame}
   \frametitle{\insertsubsection}
   \begin{itemize}
-    \item Influência da Correia: A correia é o componente chave responsável por introduzir desvios nas trajetórias de impressão. Ela age como uma combinação de mola e amortecedor, afetando a dinâmica do movimento.
-    \item Modelagem do Conjunto Bico Injetor e Extrusora: Este conjunto é tratado como um corpo rígido uniforme, simplificando sua representação geométrica.
-    \item Dimensões da Mesa de Impressão: A área útil da mesa de impressão é de 200 mm x 200 mm, definindo o espaço de trabalho disponível.
-    \item Configuração Cartesiana: A impressora opera em um sistema cartesiano, com eixos ortogonais, o que simplifica a análise de movimento.
-    \item Independência dos Eixos: Cada eixo da impressora opera independentemente dos outros, permitindo uma análise mais simplificada das dinâmicas individuais.
-    \item Condições Iniciais de Movimento: Assume-se que todos os movimentos da impressora iniciam a partir do estado de repouso.
+    \item Correias definidas como uma combinação de mola e amortecedor.
+    \item Simplificação da extrusora como corpo rígido e uniforme.
+    \item Limites de movimento de 0 a 200 mm para os eixos X e Y.
+    \item Impressora cartesiana, eixos ortogonais e independentes.
+    \item O estado inicial dos pontos relevantes parte do repouso.
 \end{itemize}
 \end{frame}
 
@@ -517,7 +551,10 @@
 \begin{frame}
   \frametitle{\insertsubsection}
   \begin{itemize}
-    \item 
+    \item Aplica o modelo dinâmico através da programação não linear, minimizando o desvio calculado pela mesma.
+    \item Define o estado inicial e final.
+    \item Aplica os limites de movimento.
+    \item Define o caminho desejado.
   \end{itemize}
 \end{frame}
 
@@ -525,7 +562,9 @@
 \begin{frame}
   \frametitle{\insertsubsection}
   \begin{itemize}
-    \item 
+    \item Utiliza o algoritmo de interior-point (encontrando o gradiente da função no ponto) para minimizar o descumprimento das restrições através da modificação da variável de interesse.
+    \item Avança iterativamente na direção do gradiente.
+    \item Define os critérios de parada.
   \end{itemize}
 \end{frame}
 
@@ -533,18 +572,18 @@
 
 \begin{frame}
   \frametitle{\insertsection}
+  Utilização do método de Runge-Kutta para comparação dos efeitos das trajetória da base (com controle e sem controle) na trajetória da ponta (bico da impressora).
   \begin{columns}
-    \begin{column}{.3\textwidth}
+    \begin{column}{.4\textwidth}
       \begin{itemize}
-        \item das
-        \item Runge-Kutta
+        \item Sequência de movimentos para as simulações.
       \end{itemize}
     \end{column}
-    \begin{column}{.7\textwidth}
+    \begin{column}{.5\textwidth}
       \begin{figure}[H]
         \centering
         \caption{Movimento base}
-        \includegraphics[width=.7\textwidth]{base_mov}
+        \includegraphics[width=.85\textwidth]{base_mov}
     
         \label{fig:base_mov}
       \end{figure}
@@ -673,19 +712,19 @@
   \end{table}
 \end{frame}
 
-\subsection{\insertsectionnumber .\insertsubsectionnumber . Resultados da Simulação - Variação da Frequência Natural}
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação - Variação da Frequência Natural (50$rad/s$ - 200$rad/s$)}
 
 \begin{frame}
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Caminhos da ponta e da base - Detalhamento 1A.}
-    \subfigure[Detalhamento - Sem controle.]{
+    \caption{Caminhos da ponta e da base - Detalhamento (A).}
+    \subfigure[Sem controle.]{
         \includegraphics[width=0.38\textwidth]{Sim 1A_cam_s_zoom.png}
         \label{fig:1A_cam_s_zoom}
     }
     \hfill
-    \subfigure[Detalhamento - Com controle.]{
+    \subfigure[Com controle.]{
         \includegraphics[width=0.38\textwidth]{Sim 1A_cam_c_zoom.png}
         \label{fig:1A_cam_c_zoom}
     }
@@ -696,24 +735,7 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base - Caso 1A.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim 1A_des_s.png}
-        \label{fig:1A_des_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim 1A_des_c.png}
-        \label{fig:1A_des_c}
-    }
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Caminhos da ponta e da base - Detalhamento 1B}
+    \caption{Caminhos da ponta e da base - Detalhamento (B)}
     \subfigure[Sem controle.]{
         \includegraphics[width=0.38\textwidth]{Sim 1B_cam_s_zoom.png}
         \label{fig:1B_cam_s_zoom}
@@ -730,36 +752,17 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base - Caso 1B.}
+    \caption{Velocidades da ponta e da base (A).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim 1B_des_s.png}
-        \label{fig:1B_des_s}
+        \includegraphics[width=0.38\textwidth]{Sim 1A_vel_s.png}
+        \label{fig:1A_vel_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim 1B_des_c.png}
-        \label{fig:1B_des_c}
+        \includegraphics[width=0.38\textwidth]{Sim 1A_vel_c.png}
+        \label{fig:1A_vel_c}
     }
-  \end{figure}
-\end{frame}
-
-
-\subsection{\insertsectionnumber .\insertsubsectionnumber . Resultados da Simulação - Variação do Coeficiente de Amortecimento}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Caminhos da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s.png}
-        \label{fig:ref_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c.png}
-        \label{fig:ref_cam_c}
-    }
+    \label{fig:1A_vel}
   \end{figure}
 \end{frame}
 
@@ -767,70 +770,35 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Caminhos da ponta e da base - Detalhamento}
+    \caption{Velocidades da ponta e da base (B).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s_zoom.png}
-        \label{fig:ref_cam_s_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 1B_vel_s.png}
+        \label{fig:1B_vel_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c_zoom.png}
-        \label{fig:ref_cam_c_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 1B_vel_c.png}
+        \label{fig:1B_vel_c}
     }
+    \label{fig:1B_vel}
   \end{figure}
 \end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação - Variação do Coeficiente de Amortecimento (0 - 1)}
 
 \begin{frame}
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base.}
+    \caption{Caminhos da ponta e da base (A).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_s.png}
-        \label{fig:ref_des_s}
+        \includegraphics[width=0.38\textwidth]{Sim 2A_cam_s.png}
+        \label{fig:2A_cam_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_c.png}
-        \label{fig:ref_des_c}
-    }
-    \label{fig:ref_des}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_s.png}
-        \label{fig:ref_vel_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_c.png}
-        \label{fig:ref_vel_c}
-    }
-    \label{fig:ref_vel}
-  \end{figure}
-\end{frame}
-
-\subsection{\insertsectionnumber .\insertsubsectionnumber . Resultados da Simulação - Variação na Aceleração}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Caminhos da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s.png}
-        \label{fig:ref_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c.png}
-        \label{fig:ref_cam_c}
+        \includegraphics[width=0.38\textwidth]{Sim 2A_cam_c.png}
+        \label{fig:2A_cam_c}
     }
   \end{figure}
 \end{frame}
@@ -839,15 +807,15 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Caminhos da ponta e da base - Detalhamento}
+    \caption{Caminhos da ponta e da base - Detalhamento (A)}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s_zoom.png}
-        \label{fig:ref_cam_s_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 2A_cam_s_zoom.png}
+        \label{fig:2A_cam_s_zoom}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c_zoom.png}
-        \label{fig:ref_cam_c_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 2A_cam_c_zoom.png}
+        \label{fig:2A_cam_c_zoom}
     }
   \end{figure}
 \end{frame}
@@ -856,53 +824,15 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base.}
+    \caption{Caminhos da ponta e da base (B).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_s.png}
-        \label{fig:ref_des_s}
+        \includegraphics[width=0.38\textwidth]{Sim 2B_cam_s.png}
+        \label{fig:2B_cam_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_c.png}
-        \label{fig:ref_des_c}
-    }
-    \label{fig:ref_des}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_s.png}
-        \label{fig:ref_vel_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_c.png}
-        \label{fig:ref_vel_c}
-    }
-    \label{fig:ref_vel}
-  \end{figure}
-\end{frame}
-
-\subsection{\insertsectionnumber .\insertsubsectionnumber . Resultados da Simulação - Variação da Velocidade desejada}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Caminhos da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s.png}
-        \label{fig:ref_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c.png}
-        \label{fig:ref_cam_c}
+        \includegraphics[width=0.38\textwidth]{Sim 2B_cam_c.png}
+        \label{fig:2B_cam_c}
     }
   \end{figure}
 \end{frame}
@@ -911,15 +841,34 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Caminhos da ponta e da base - Detalhamento}
+    \caption{Caminhos da ponta e da base - Detalhamento (B)}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s_zoom.png}
-        \label{fig:ref_cam_s_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 2B_cam_s_zoom.png}
+        \label{fig:2B_cam_s_zoom}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c_zoom.png}
-        \label{fig:ref_cam_c_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 2B_cam_c_zoom.png}
+        \label{fig:2B_cam_c_zoom}
+    }
+  \end{figure}
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação - Variação na Aceleração (1000$mm/s^2$ - 10000$mm/s^2$)}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Caminhos da ponta e da base - Detalhamento (A)}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 3A_cam_s_zoom.png}
+        \label{fig:3A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 3A_cam_c_zoom.png}
+        \label{fig:3A_cam_c_zoom}
     }
   \end{figure}
 \end{frame}
@@ -928,53 +877,15 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base.}
+    \caption{Caminhos da ponta e da base - Detalhamento (B)}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_s.png}
-        \label{fig:ref_des_s}
+        \includegraphics[width=0.38\textwidth]{Sim 3B_cam_s_zoom.png}
+        \label{fig:3B_cam_s_zoom}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_c.png}
-        \label{fig:ref_des_c}
-    }
-    \label{fig:ref_des}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Velocidades da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_s.png}
-        \label{fig:ref_vel_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_c.png}
-        \label{fig:ref_vel_c}
-    }
-    \label{fig:ref_vel}
-  \end{figure}
-\end{frame}
-
-\subsection{\insertsectionnumber .\insertsubsectionnumber . Resultados da Simulação - Variação do Passo de tempo}
-
-\begin{frame}
-  \frametitle{\insertsubsection}
-  \begin{figure}[H]
-    \centering
-    \caption{Caminhos da ponta e da base.}
-    \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s.png}
-        \label{fig:ref_cam_s}
-    }
-    \hfill
-    \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c.png}
-        \label{fig:ref_cam_c}
+        \includegraphics[width=0.38\textwidth]{Sim 3B_cam_c_zoom.png}
+        \label{fig:3B_cam_c_zoom}
     }
   \end{figure}
 \end{frame}
@@ -983,15 +894,53 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Caminhos da ponta e da base - Detalhamento}
+    \caption{Velocidades da ponta e da base (A).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_s_zoom.png}
-        \label{fig:ref_cam_s_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 3A_vel_s.png}
+        \label{fig:3A_vel_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_cam_c_zoom.png}
-        \label{fig:ref_cam_c_zoom}
+        \includegraphics[width=0.38\textwidth]{Sim 3A_vel_c.png}
+        \label{fig:3A_vel_c}
+    }
+    \label{fig:3A_vel}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Velocidades da ponta e da base (B).}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 3B_vel_s.png}
+        \label{fig:3B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 3B_vel_c.png}
+        \label{fig:3B_vel_c}
+    }
+    \label{fig:3B_vel}
+  \end{figure}
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação - Variação da Velocidade desejada (50$mm/s$ - 200$mm/s$)}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Caminhos da ponta e da base - Detalhamento (A)}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 5A_cam_s_zoom.png}
+        \label{fig:5A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 5A_cam_c_zoom.png}
+        \label{fig:5A_cam_c_zoom}
     }
   \end{figure}
 \end{frame}
@@ -1000,17 +949,16 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Deslocamentos da ponta e da base.}
+    \caption{Caminhos da ponta e da base - Detalhamento (B)}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_s.png}
-        \label{fig:ref_des_s}
+        \includegraphics[width=0.38\textwidth]{Sim 5B_cam_s_zoom.png}
+        \label{fig:5B_cam_s_zoom}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_des_c.png}
-        \label{fig:ref_des_c}
+        \includegraphics[width=0.38\textwidth]{Sim 5B_cam_c_zoom.png}
+        \label{fig:5B_cam_c_zoom}
     }
-    \label{fig:ref_des}
   \end{figure}
 \end{frame}
 
@@ -1018,17 +966,107 @@
   \frametitle{\insertsubsection}
   \begin{figure}[H]
     \centering
-    \caption{Velocidades da ponta e da base.}
+    \caption{Velocidades da ponta e da base (A).}
     \subfigure[Sem controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_s.png}
-        \label{fig:ref_vel_s}
+        \includegraphics[width=0.38\textwidth]{Sim 5A_vel_s.png}
+        \label{fig:5A_vel_s}
     }
     \hfill
     \subfigure[Com controle.]{
-        \includegraphics[width=0.38\textwidth]{Sim ref_vel_c.png}
-        \label{fig:ref_vel_c}
+        \includegraphics[width=0.38\textwidth]{Sim 5A_vel_c.png}
+        \label{fig:5A_vel_c}
     }
-    \label{fig:ref_vel}
+    \label{fig:5A_vel}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Velocidades da ponta e da base (B).}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 5B_vel_s.png}
+        \label{fig:5B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 5B_vel_c.png}
+        \label{fig:5B_vel_c}
+    }
+    \label{fig:5B_vel}
+  \end{figure}
+\end{frame}
+
+\subsection{\insertsectionnumber .\insertsubsectionnumber . Simulação - Variação do Passo de tempo (0,1$s$ - 0,001$s$)}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Caminhos da ponta e da base - Detalhamento (A)}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4A_cam_s_zoom.png}
+        \label{fig:4A_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4A_cam_c_zoom.png}
+        \label{fig:4A_cam_c_zoom}
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Caminhos da ponta e da base - Detalhamento (B)}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4B_cam_s_zoom.png}
+        \label{fig:4B_cam_s_zoom}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4B_cam_c_zoom.png}
+        \label{fig:4B_cam_c_zoom}
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Velocidades da ponta e da base (A).}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4A_vel_s.png}
+        \label{fig:4A_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4A_vel_c.png}
+        \label{fig:4A_vel_c}
+    }
+    \label{fig:4A_vel}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\insertsubsection}
+  \begin{figure}[H]
+    \centering
+    \caption{Velocidades da ponta e da base (B).}
+    \subfigure[Sem controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4B_vel_s.png}
+        \label{fig:4B_vel_s}
+    }
+    \hfill
+    \subfigure[Com controle.]{
+        \includegraphics[width=0.38\textwidth]{Sim 4B_vel_c.png}
+        \label{fig:4B_vel_c}
+    }
+    \label{fig:4B_vel}
   \end{figure}
 \end{frame}
 
@@ -1037,9 +1075,9 @@
 \begin{frame}
   \frametitle{\insertsection}
   \begin{itemize}
-    \item conclusao
-    \item conclusao
-    \item conclusao
+    \item A implementação do método demonstrou uma diminuição notável no desvio do caminho da ponta quando comparado ao caminho simulado sem controle de trajetória.
+    \item Os resultados obtidos por meio de simulações confirmaram a capacidade do controle em atenuar as complexidades dinâmicas do sistema.
+    \item Uma possível melhoria é a utilização de diferentes passos de tempo para reduzir a carga computacional, através de chutes iniciais melhores. 
   \end{itemize}
 \end{frame}
 
