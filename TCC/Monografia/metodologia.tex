@@ -25,7 +25,7 @@ A fase de geração de trajetória inicia-se com a análise do Gcode, que fornec
 
 \subsection{Curva trapezoidal de velocidade}
 
-A próxima etapa  envolve a elaboração da curva trapezoidal de velocidade. Esta etapa se baseia em dados de entrada como deslocamento, velocidades iniciais e finais, e a velocidade almejada. A execução desta velocidade desejada é avaliada através do cálculo da velocidade de pico \(v_p\). Tal velocidade é obtida pela interseção das trajetórias de aceleração e desaceleração, que iniciam nas velocidades iniciais e finais respectivamente, e considerando que a área sob a curva deve ser equivalente ao deslocamento requerido. A fórmula para calcular \(v_p\) é expressa pela Equação \ref{eq:v_p}:
+A próxima etapa  envolve a elaboração da curva trapezoidal de velocidade. Esta etapa se baseia em dados de entrada como deslocamento, velocidades iniciais e finais, e a velocidade almejada. A execução desta velocidade desejada é avaliada através do cálculo da velocidade de pico \(v_p\). Tal velocidade é obtida pela interseção das trajetórias de aceleração e desaceleração, que iniciam nas velocidades iniciais e finais respectivamente, e considerando que a área sob a curva deve ser equivalente ao deslocamento requerido. A velocidade de pico \(v_p\) é calculada a partir da Equação \ref{eq:v_p}:
 
 \begin{equation}
     \label{eq:v_p}
@@ -125,7 +125,7 @@ Para subdividir esses intervalos de maneira eficaz, a Equação \ref{eq:N_steps}
     N = \lceil\frac{\Delta t}{\Delta p}-1\rceil
 \end{equation}
 
-Esta fórmula determina o número \( N \) de passos a serem tomados dentro de um dado intervalo de tempo \( \Delta t \), com cada passo tendo um período \( \Delta p \). Após a divisão dos intervalos, a Equação \ref{eq:dt_interpol_last_step} calcula o tempo restante no último passo de interpolação (\(\Delta t_f\)):
+Esta relação determina o número \( N \) de passos a serem tomados dentro de um dado intervalo de tempo \( \Delta t \), com cada passo tendo um período \( \Delta p \). Após a divisão dos intervalos, a Equação \ref{eq:dt_interpol_last_step} calcula o tempo restante no último passo de interpolação (\(\Delta t_f\)):
 
 \begin{equation}
     \label{eq:dt_interpol_last_step}
@@ -219,14 +219,19 @@ Essas equações fundamentam o modelo dinâmico que empregamos para simular e ot
 \subsection{Espaço de estados}
 A formulação do espaço de estados é adotada neste estudo para simplificar as operações e a solução do sistema dinâmico da impressora 3D. Esta abordagem é eficaz pois transforma uma equação diferencial de ordem superior em um sistema de equações diferenciais de primeira ordem, mas com um número maior de equações. Esta metodologia facilita o entendimento e a manipulação das dinâmicas do sistema.
 
-O modelo dinâmico no espaço de estados é representado na seguinte forma (Equação \ref{eq:simp_state_space_din_model}):
+O modelo dinâmico no espaço de estados é representado na seguinte forma (Equações \ref{eq:simp_state_space_din_model} e \ref{eq:esp_saida}):
 
 \begin{equation}
     \label{eq:simp_state_space_din_model}
-    \dot x = A*x+B*u
+    \dot x = Ax+Bu
 \end{equation}
 
-Nesta equação, \(\dot x\) representa o vetor de estados derivados, \(x\) é o vetor de estados, \(A\) é a matriz do sistema que define a relação entre os estados atuais e suas taxas de mudança, \(u\) é o vetor de entradas externas, e \(B\) é a matriz de controle que relaciona as entradas com os estados.
+\begin{equation}
+    \label{eq:esp_saida}
+    \dot y = Cx
+\end{equation}
+
+Nestas equações, \(\dot x\) representa o vetor de estados derivados, \(x\) é o vetor de estados, \(A\) é a matriz do sistema que define a relação entre os estados atuais e suas taxas de mudança, \(u\) é o vetor de entradas externas, e \(B\) é a matriz de controle que relaciona as entradas com os estados. Enquanto \(y\) representa a saída do sistema e \(C\) a matriz de observação.
 
 Baseado na equação de movimento \ref{eq:equation_simpl}, análogos ao eixo y, expandimos as matrizes e vetores para representar com precisão a dinâmica do sistema no espaço de estados, conforme apresentado na equação \ref{eq:espaco_de_estados_din_model}:
 
@@ -268,14 +273,32 @@ Baseado na equação de movimento \ref{eq:equation_simpl}, análogos ao eixo y, 
 
 Nesta equação, \(x_p\) e \(y_p\) são as posições reais (da ponta) nos eixos X e Y, respectivamente, enquanto \(x_b\) e \(y_b\) são as posições ideais (da base). As variáveis \(\dot{x_p}\) e \(\dot{y_p}\) representam a primeira derivada do tempo das posições nos eixos X e Y, indicando a velocidade e aceleração. \(\omega _x\) e \(\omega _y\) denotam as frequências naturais do sistema nos eixos X e Y respectivamente, enquanto \(\zeta _x\) e \(\zeta _y\) representam os coeficientes de amortecimento dos mesmos.
 
+Enquanto o vetor de saída é igual o vetor de estados, utilizando uma matriz identidade como matriz de observação (Equação \ref{eq:said_espa_esp}).
+
+\begin{equation}
+    \label{eq:said_espa_esp}
+    y
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        x_p \\    
+        y_p \\
+        \dot{x_p} \\    
+        \dot{y_p} \\
+    \end{bmatrix}
+\end{equation}
+
 \section{Controle de Trajetória}
 O Controle de Trajetória desempenha um papel essencial em aperfeiçoar a precisão dos movimentos na impressora 3D. A escolha das estratégias de controle é crucial para maximizar a eficiência operacional. No escopo deste estudo, a técnica de controle adotada se baseia no modelo estabelecido anteriormente, onde aplicamos uma abordagem \textit{feedforward} à trajetória gerada na fase de construção da trajetória.
 
 A metodologia de controle em foco procura resolver as equações de movimento e atender às condições de contorno estipuladas pela modelagem da impressora. O ajuste é feito na trajetória da base do sistema, ajustando-a de forma que a saída do vetor de estados corresponda à trajetória da ponta projetada.
 
-Utiliza-se uma função de otimização iterativa para refinar a trajetória da base, que é a principal variável de interesse. Este refinamento é feito minimizando um conjunto de restrições derivadas das equações de movimento e das condições de contorno. A iteração prossegue até que um critério de parada estabelecido seja alcançado, sugerindo que a trajetória base modificada satisfaz a trajetória da ponta almejada.
-
-Este método assegura uma resposta proativa às dinâmicas da impressora, alinhando-se à trajetória planejada e, consequentemente, elevando a acuidade dos movimentos da impressora 3D. A Figura \ref{fig:controle_de_trajetoria} ilustra o esquema do método de controle proposto.
+Utiliza-se uma função de otimização iterativa para refinar a trajetória da base, que é a principal variável de interesse. Este refinamento é feito minimizando um conjunto de restrições derivadas das equações de movimento e das condições de contorno. A iteração prossegue até que um critério de parada estabelecido seja alcançado, sugerindo que a trajetória base modificada satisfaz a trajetória da ponta almejada, este fluxo é ilustrado na Figura \ref{fig:controle_de_trajetoria}.
 
 \begin{figure}[H]
     \centering
@@ -285,25 +308,31 @@ Este método assegura uma resposta proativa às dinâmicas da impressora, alinha
     \label{fig:controle_de_trajetoria}
 \end{figure}
 
+Este método assegura uma resposta proativa às dinâmicas da impressora, alinhando-se à trajetória planejada e, consequentemente, elevando a acuidade dos movimentos da impressora 3D.
+
 \subsection{Restrições}
 
 A formulação do conjunto de restrições é um componente crucial do método, pois é através dele que as equações de movimento são implementadas. A função de otimização adota um algoritmo para minimizar essas restrições, ou seja, para que se aproximem tanto quanto possível de zero.
 
-As condições de contorno são aplicadas estabelecendo que tanto a posição quanto a velocidade sejam zero no instante inicial e que a velocidade também seja zero ao final do percurso. As equações de movimento são incorporadas nas restrições através do método de programação não linear descrito na Seção \ref{sec:hargraves}. Com base no modelo em espaço de estados especificado na Seção \ref{sec:modelagem}. Utilizamos as Equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:input_value_center_segment} e \ref{eq:defect_calc} para criar um vetor de defeitos, como descrito no Capítulo \ref{sec:hargraves}. A minimização destas diferenças faz com que os polinômios cúbicos dos segmentos da curva se aproximem das soluções das equações de movimento, que são então integradas ao vetor de restrições.
+As condições de contorno são aplicadas estabelecendo que tanto a posição quanto a velocidade sejam zero no instante inicial e que a velocidade também seja zero ao final do percurso, assim como os limites de movimento em x e y (0 a 200 mm). As equações de movimento são incorporadas nas restrições através do método de programação não linear descrito na Seção \ref{sec:hargraves}. Com base no modelo especificado na Seção \ref{sec:modelagem}, utilizamos o desvio calculado a partir das Equações \ref{eq:state_center_segment}, \ref{eq:state_dot_center_segment}, \ref{eq:input_value_center_segment} e \ref{eq:defect_calc} para criar um vetor de defeitos, descrito na Seção \ref{sec:hargraves}. 
+
+\begin{equation}
+    \label{eq:state_center_segment}
+    x_c = \frac{x_{1} + x_{2}}{2} + T\frac{f_{1} - f_{2}}{8}
+\end{equation}
+
+\begin{equation}
+    \label{eq:state_dot_center_segment}
+    \dot{x_{c}} = -3\frac{x_{1} + x_{2}}{2T} + \frac{f_{1} + f_{2}}{4}
+\end{equation}
+
+\begin{equation}
+    \label{eq:defect_calc}
+    \Delta = f_c - \dot{x_c}
+\end{equation}
+
+A minimização destas diferenças faz com que os polinômios cúbicos dos segmentos da curva se aproximem das soluções das equações de movimento, que são então integradas ao vetor de restrições.
 
 \subsection{Função de Otimização}
 
-Os limites da variável de interesse, que neste caso são determinados pela área de trabalho da impressora, também são definidos para que a extrusora não ultrapasse os limites da base de impressão, estabelecendo-se entre o mínimo de 0 e o máximo de 200 mm para os eixos x e y.
-
-A função de otimização adota o algoritmo interior-point, eficaz em resolver problemas de otimização não-linear com restrições. Este método é preferível para grandes conjuntos de dados, por ser mais rápido e numericamente estável do que abordagens tradicionais. Os critérios de parada para o algoritmo são apresentados na Tabela \ref{tab:stop_crit}.
-
-\begin{table}[H]
-    \centering
-    \caption{Critérios de Parada do Algoritmo de Otimização}
-    \label{tab:stop_crit}
-    \begin{tabular}{c c}
-        Opção & Valor \\ \hline
-        Máximo de Iterações & 100000 \\
-        Diferença Mínima entre Iterações & 0.0001 \\ \hline
-    \end{tabular}
-\end{table}
+A função de otimização recebe a variável de interesse e aplica as restrições definidas anteriormente. A partir disso, obtém-se o vetor de restrições, sendo o objetivo da função de otimização alterar os valores da variável de interesse, até que os valores do vetor de restrições se aproximem o máximo possível de zero. Para isso, o algorítimo itera os valores de entrada utilizando o gradiente do vetor de restrições para caminhar os valores de entrada de forma a minimizar o vetor de restrições. Assim, quando algum dos critérios de parada é cumprido o processo se encerra. Foi definido como critério de parada um número máximo de iterações (100000), além disso foi definido um passo mínimo entre iterações de 0.0001 de forma a garantir alterações minimamente relevantes e em tempo hábil.

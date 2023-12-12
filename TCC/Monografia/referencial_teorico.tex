@@ -118,7 +118,7 @@ Para implementar o Input Shaping, são utilizados algoritmos específicos que cr
 
 \section{Espaço de Estados}
 
-Os sistemas dinâmicos podem ser descritos através de uma formulação chamada de espaço de estados, que tem como objetivo expressar modelos de equações diferencias parciais (EDP) ou ordinárias (EDO) de ordem superior como um conjunto de EDPs ou EDOs de primeira ordem. Na equação \ref{eq:edo_ex} podemos observar uma EDO de segunda ordem representando um sistema massa mola simples, logo abaixo (\ref{eq:espaco_de_estados_ex}) a mesma equação representada na formulação de espaço de estados \cite{hamilton94}.
+Os sistemas dinâmicos podem ser descritos através de uma formulação chamada de espaço de estados, que tem como objetivo expressar modelos de equações diferencias parciais (EDP) ou ordinárias (EDO) de ordem superior como um conjunto de EDPs ou EDOs de primeira ordem. Na equação \ref{eq:edo_ex} podemos observar uma EDO de segunda ordem representando um sistema massa mola simples, logo abaixo (Equações \ref{eq:espaco_de_estados_ex} e \ref{eq:saida_ref}) a mesma equação representada na formulação de espaço de estados, considerando a saída como o vetor de estados \cite{hamilton94}.
 
 \begin{equation}
     \label{eq:edo_ex}
@@ -134,7 +134,7 @@ Os sistemas dinâmicos podem ser descritos através de uma formulação chamada 
     =
     \begin{bmatrix}
         0 & 1 \\
-        k/m & c/m
+        -k/m & -c/m
     \end{bmatrix}
     \begin{bmatrix}
         x \\
@@ -146,6 +146,20 @@ Os sistemas dinâmicos podem ser descritos através de uma formulação chamada 
         1
     \end{bmatrix}
     f(t)
+\end{equation}
+
+\begin{equation}
+    \label{eq:saida_ref}
+    y
+    =
+    \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        \dot x
+    \end{bmatrix}
 \end{equation}
 
 \section{Programação Não Linear}
