@@ -1,63 +1,14 @@
 \chapter{REFERENCIAL TEÓRICO}
 
 \section{Manufatura Aditiva}
-O princípio fundamental da manufatura aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual. Este processo começa com um modelo tridimensional digital, frequentemente desenvolvido via \textit{Computer Aided Design} (CAD), cujas especificações são interpretadas por um software fatiador. Este software ajusta parâmetros e gera instruções essenciais para a máquina de manufatura aditiva fabricar o modelo físico. Estas instruções, variando conforme a tecnologia e o modelo específico da impressora, são comumente transmitidas através do Gcode. O Gcode é uma linguagem de programação que direciona a impressora 3D sobre como construir o objeto, incluindo informações sobre movimentos, velocidades e temperaturas. Além do Gcode, informações adicionais como arquivos de imagens podem ser utilizadas para complementar o processo.
+O princípio fundamental da Manufatura Aditiva (MA) consiste em fabricar um modelo tridimensional de forma integrada, dispensando a necessidade de planejar as operações de maneira individual. Este processo começa com um modelo tridimensional digital, frequentemente desenvolvido via \textit{Computer Aided Design} (CAD), cujas especificações são interpretadas por um software fatiador. Este software ajusta parâmetros e gera instruções essenciais para a máquina de manufatura aditiva fabricar o modelo físico. Estas instruções, variando conforme a tecnologia e o modelo específico da impressora, são comumente transmitidas através do Gcode. O Gcode é uma linguagem de programação que direciona a impressora 3D sobre como construir o objeto, incluindo informações sobre movimentos, velocidades e temperaturas. Além do Gcode, informações adicionais como arquivos de imagens podem ser utilizadas para complementar o processo.
 
 Uma das características principais da MA é a rapidez na qual é possível criar protótipos diretamente de modelos digitais, por conta disso, em um contexto de desenvolvimento de produto, o termo prototipagem rápida era utilizado. Entretanto, conforme a MA foi se aperfeiçoando era perceptível a capacidade dessas tecnologias não só se aterem à produção de protótipos, mas também de peças utilizadas em produtos finais. Além disso, o termo prototipagem rápida não considerava o princípio básico que unia essas tecnologias e assim o termo manufatura aditiva foi apresentado e adotado pela \textit{American Society for Testing and Materials} (ASTM) \cite{gibson15}.
 
-Atualmente, existe uma grande variedade de tecnologias e processos de manufatura aditiva. Os métodos de impressão 3D variam na maneira como depositam o material, como extrusão, sinterização a  laser e estereolitografia. Eles também diferem nos princípios físicos que utilizam, como fusão, cura por luz e aglutinação. Além disso, os materiais que podem ser utilizados incluem plásticos, resinas, metais e cerâmicas. Como mencionado anteriormente, um dos métodos de manufatura aditiva mais populares é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade como as tecnologias baseadas na cura seletiva de resinas, \textit{stereolithography} (SLA) e \textit{Masked stereolithography Apparatus} (MSLA), além de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo \textit{selective laser melting} (SLM) e \textit{Selective laser Sintering} (SLS) \cite{bikas16}. Na figura \ref{fig:MA_industrias} podemos observar a distribuição do uso de tecnologias MA por tipo de industria.   
-
-\begin{figure}[H]
-    \begin{center}
-    \caption{Distribuição de uso de MA nas industrias}
-    % \includegraphics[scale=0.6]{bikas15industries}
-    
-    \begin{tikzpicture}
-        \begin{axis}[
-            ybar,
-            width=12cm,
-            height=8cm,
-            enlarge x limits=0.1,
-            ylabel={\%},
-            symbolic x coords={
-                Construção Civil, 
-                Outros, 
-                Governo/Militar, 
-                Instituições Acadêmicas, 
-                Máquinas Industriais/Comerciais, 
-                Aeroespacial, 
-                Médico/Dental, 
-                Veículos Motorizados, 
-                Produtos Eletrônicos
-            },
-            xtick=data,
-            nodes near coords,
-            nodes near coords align={vertical},
-            x tick label style={rotate=45, anchor=east, align=center},
-            ymin=0,
-            ymax=25
-        ]
-        \addplot coordinates {
-            (Construção Civil, 3)
-            (Outros, 5.3)
-            (Governo/Militar, 6)
-            (Instituições Acadêmicas, 8)
-            (Máquinas Industriais/Comerciais, 10.8)
-            (Aeroespacial, 12.1)
-            (Médico/Dental, 15.1)
-            (Veículos Motorizados, 19.5)
-            (Produtos Eletrônicos, 20.3)
-        };
-        \end{axis}
-    \end{tikzpicture}
-
-    {\footnotesize Fonte: Adaptado de \citeauthor{bikas16}, \citeyear{bikas16}}
-    \label{fig:MA_industrias}
-    \end{center}
-\end{figure}
+Atualmente, existe uma grande variedade de tecnologias e processos de manufatura aditiva. Os métodos de impressão 3D variam na maneira como depositam o material, como extrusão que utiliza da fusão e solidificação do material, sinterização a  laser que utiliza a aglutinação entre as partículas do material quando submetidas à um laser de alta potência e estereolitografia que utiliza da cura localizada de resinas através de luz ultravioleta. Além disso, os materiais que podem ser utilizados incluem plásticos, resinas, metais e cerâmicas. Como mencionado anteriormente, um dos métodos de manufatura aditiva mais populares é a tecnologia FDM, entretanto existem diversas outras tecnologias que tem crescido muito em popularidade como as tecnologias baseadas na cura seletiva de resinas, \textit{stereolithography} (SLA) e \textit{Masked stereolithography Apparatus} (MSLA), além de outras tecnologias menos acessíveis, mas com aplicações em diversas industrias, como por exemplo \textit{selective laser melting} (SLM) e \textit{Selective laser Sintering} (SLS) \cite{bikas16}.
 
 \section{\textit{Fused Deposition Modeling}}
-\textit{Fused Deposition Modeling} (FDM) ou \textit{Fused Filament Fabrication} (FFF) é uma das tecnologias MA mais populares como mencionado anteriormente. Ela se consiste por depositar material através de um processo onde um filamento de material é forçado dentro de uma câmara através, geralmente, de rolos dentados onde em uma região específica esse material é liquefeito. Por conta da pressão criada pelo filamento adentrando a câmara dentro do extrusor, ainda no estado sólido, o material liquefeito é extrudado através de um bocal, comumente fabricado de bronze. Então, o filamento liquefeito é depositado em uma plataforma de forma a percorrer a trajetória desejada utilizando mecanismos movidos de forma controlada, geralmente por motores de passos. O processo é repetido camada por camada, de forma que elas estejam apoiadas por camadas anteriores e a primeira camada continue fixa na plataforma ou cama, até que o processo finalize \cite{turner14}. A Figura \ref{fig:fdm_ex} ilustra este processo.
+\textit{Fused Deposition Modeling} (FDM) ou \textit{Fused Filament Fabrication} (FFF) é uma das tecnologias MA mais populares como mencionado anteriormente. Ela consiste em um processo que deposita material, ilustrado pela Figura \ref{fig:fdm_ex}, no qual o suprimento de filamento é forçado para dentro de uma zona de extrusão aquecida, geralmente por meio de rolos dentados. Por conta da pressão criada pelo filamento adentrando a câmara dentro do extrusor, ainda no estado sólido, o material liquefeito pelo aquecimento da câmara é extrudado através de um bocal, comumente fabricado de bronze. Então, o filamento liquefeito é depositado em uma plataforma de forma a percorrer a trajetória desejada utilizando mecanismos movidos de forma controlada, geralmente por motores de passos. O processo é repetido camada por camada, de forma que elas estejam apoiadas por camadas anteriores e a primeira camada continue fixa na plataforma ou cama, até que o processo finalize \cite{turner14}.
 
 \begin{figure}[H]
     \begin{center}
@@ -99,7 +50,7 @@ A Figura \ref{fig:impressora3d_comp} indica alguns destes componentes e a Figura
     \label{fig:slicer_inter}
 \end{figure}
 
-Podemos separar, de maneira simplificada, o \textit{software} de impressoras 3D FDM em algumas etapas: fatiamento (\textit{slicing}) ou geração de comando, geração de trajetória e controle ou controle de trajetória. A etapa de geração de comando, realizado pelo fatiador, onde o volume do modelo é dividido em camadas, definindo um percurso através de uma sequência de comandos. Esses comandos controlam os movimentos a serem realizados, definição de configurações, o controle da temperatura e outros dispositivos. Já na etapa de geração de trajetória, os comandos criados pelo fatiador (\textit{slicer}) na etapa anterior são interpretadas, entretanto esses comandos não descrevem em detalhes. Portanto, é necessário a definição do comportamento que a impressora deve tomar para cumprir o comando interpretado, no caso de um comando de movimento por exemplo precisamos construir a trajetória dos eixos para poder realizar o comando com sucesso, assim chamamos esta etapa de geração de trajetória. Podemos, antes de prosseguir para a próxima etapa, utilizar de técnicas de controle para melhorar a performance da execução dos comandos, por exemplo utilizar os sensores de temperatura para modificar a taxa de aquecimento do bico extrusor, ou utilizar essas técnicas de controle para alterar a trajetória construída na etapa anterior de maneira a contribuir para a qualidade da impressão. Por fim, temos a etapa de geração de sinais, onde a impressora precisa converter as abstrações definidas sobre seus dispositivos em sinais que são responsáveis em controla-los. Por exemplo, converter as características do movimento de um eixo em uma série de pulsos elétricos que controlam os motores de passo. 
+Podemos separar, de maneira simplificada, o \textit{software} de impressoras 3D FDM em algumas etapas: fatiamento (\textit{slicing}) ou geração de comando, geração de trajetória e controle ou controle de trajetória. A etapa de geração de comando, realizado pelo fatiador, onde o volume do modelo é dividido em camadas, definindo um percurso através de uma sequência de comandos. Esses comandos controlam os movimentos a serem realizados, definição de configurações, o controle da temperatura e outros dispositivos. Já na etapa de geração de trajetória, os comandos criados pelo fatiador (\textit{slicer}) na etapa anterior são interpretadas, entretanto esses comandos não descrevem em detalhes. Portanto, é necessária a definição do comportamento que a impressora deve adotar para cumprir o comando interpretado. No caso de um comando de movimento, por exemplo, precisamos construir a trajetória dos eixos para realizar o comando com sucesso. Assim, chamamos esta etapa de geração de trajetória. Podemos, antes de prosseguir para a próxima etapa, utilizar de técnicas de controle para melhorar a performance da execução dos comandos, por exemplo utilizar os sensores de temperatura para modificar a taxa de aquecimento do bico extrusor, ou utilizar essas técnicas de controle para alterar a trajetória construída na etapa anterior de maneira a contribuir para a qualidade da impressão. Por fim, temos a etapa de geração de sinais, onde a impressora precisa converter as abstrações definidas sobre seus dispositivos em sinais que são responsáveis em controla-los. Por exemplo, converter as características do movimento de um eixo em uma série de pulsos elétricos que controlam os motores de passo. 
 
 \subsection{Geração de Comando}
 
@@ -147,11 +98,13 @@ No universo das impressoras 3D, que são tipicamente menos susceptíveis a inter
 Contudo, a implementação do controle \textit{feedforward} em impressoras 3D apresenta desafios. Entre eles, a complexidade em estabelecer um modelo fidedigno, a demanda por capacidade computacional significativa e a obrigação de simular o processo de impressão do começo ao fim, considerando a influência do estado inicial \cite{ramani20,duan18}
 
 \subsubsection{\textit{Input Shaper}}
-Ao entender a trajetória pretendida e as peculiaridades do sistema, podemos deduzir uma sequência de comandos que ajustam o comando de referência com base nessas características. O objetivo é alinhar a trajetória final o máximo possível ao comando de referência. No entanto, em vez de processar todo o comando inicial, podemos adaptá-lo em tempo real usando um filtro especializado. O \textit{Input Shaper} é uma abordagem exemplar desse tipo de filtro, onde diversos \textit{Shapers} são formulados considerando variados propósitos e limitações.
+O \textit{Input Shaping} é uma técnica avançada de controle de vibrações utilizada em sistemas dinâmicos, como impressoras 3D, especialmente útil no contexto de manufatura aditiva onde a precisão e a qualidade da impressão são cruciais. Esta técnica é particularmente relevante para controlar e mitigar as vibrações indesejadas que ocorrem devido a movimentos rápidos e precisos dos eixos de uma impressora 3D.
 
-O \textit{Input Shaping} é uma metodologia de controle criada para atenuar ou anular vibrações indesejadas em sistemas mecânicos ou estruturas manipuladas por atuadores, como em robôs, veículos e equipamentos industriais. Essa estratégia aprimora a sequência de pulsos de entrada, concebendo-os de modo a suprimir a ativação das frequências naturais de ressonância do sistema. Assim, o \textit{Input Shaping} desempenha um papel crucial na diminuição da resposta vibratória, conferindo maior precisão e estabilidade ao sistema durante a realização de movimentos ou operações.
+Em termos técnicos, o \textit{Input Shaping} envolve a modificação do sinal de comando enviado para o sistema de atuação da impressora (como motores de passo ou servomotores) de forma a minimizar as vibrações resultantes. Isso é feito adaptando-se o perfil de velocidade ou aceleração do movimento dos componentes mecânicos. O objetivo é "moldar" a entrada de forma que as respostas vibracionais do sistema sejam atenuadas ou idealmente canceladas.
 
-O valor do \textit{Input Shaping} é evidente em sistemas de controle de alta exatidão, como na robótica, onde a supressão de vibrações é fundamental para a excelência operacional e o posicionamento acurado. Utilizando o entendimento das especificidades do sistema e da trajetória almejada, essa técnica ajusta os comandos de entrada para evitar a ativação das frequências vibratórias intrínsecas, originando sistemas de controle mais robustos e eficientes. \cite{singhose97}. A Figura \ref{fig:degr_vs_esc} ilustra uma comparação entre as respostas ao estímulo de degrau e a função escalonada aplicada pelo \textit{shaper}.
+O processo começa com a identificação das frequências naturais do sistema mecânico da impressora, que são as frequências nas quais o sistema ressoa e, portanto, é mais suscetível a vibrações. Uma vez identificadas essas frequências, o \textit{Input Shaping} é aplicado para ajustar os comandos de movimento de forma a evitar excitar o sistema nessas frequências específicas.
+
+Para implementar o Input Shaping, são utilizados algoritmos específicos que criam uma série de impulsos ou formas de onda que, quando aplicados ao sistema, resultam em um movimento que evita a excitação das frequências de ressonância. Isso é muitas vezes alcançado por meio de uma combinação de atrasos e ponderações aplicados aos comandos de movimento \cite{singhose97}. A Figura \ref{fig:degr_vs_esc} ilustra uma comparação entre as respostas ao estímulo de degrau e a resposta ao estimulo de escada, uma entrada modelada a evitar as vibrações deste sistema.
 
 \begin{figure}[H]
     \centering
