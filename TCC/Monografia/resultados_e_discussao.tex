@@ -52,7 +52,7 @@ As simulações foram executadas em um computador com as especificações listad
 \end{table}
 
 \subsection{Simulação de Referência}
-Nesta etapa, conduz-se uma simulação de referência empregando valores medianos dos parâmetros-chave. Esta simulação serve como base para avaliar o impacto de variações nos parâmetros em simulações subsequentes. Os valores referência utilizados são listados na Tabela \ref{tab:base_params}.
+Nesta etapa, conduz-se uma simulação de referência empregando valores medianos dos parâmetros-chave. Esta simulação serve como base para avaliar o impacto de variações nos parâmetros em simulações subsequentes. Os valores referência utilizados foram definidos de forma a serem valores intermediários aos intervalos dos parâmetros e estão listados na Tabela \ref{tab:base_params}.
 
 \begin{table}
     \begin{center}
@@ -844,9 +844,7 @@ Além disso, o perfil de velocidade no Caso 5B (Figura \ref{fig:4B_vel}) destaca
 % ------------------ end ----------------
 
 \section{Discussão Integrada dos Resultados}
-Realizadas as simulações com a variação dos parâmetros do método proposto no presente trabalho, ressalta-se a relação entre a frequência natural e o passo de tempo. Tal relação é muitas vezes discutida na literatura, se tratando de amostragem de sinais. É observado nestes resultados também, a relação entre a precisão alcançada e a proporcionalidade entre o passo de tempo e a frequência natural. Essa característica vem a tona ao se analisar o intervalo de tempo entre as oscilações e o passo de tempo. Onde um passo de tempo maior do que o período de oscilação, resulta em uma perda grande de informação e compromete a representatividade da curva discretizada. Sendo ideal um ajuste do passo de tempo dada a frequência natural conhecida do sistema.
-
-A respeito dos demais parâmetros, estes se demonstraram mais independentes. Sendo os parâmetros de aceleração e velocidade desejada com efeitos finais similares.
+Realizadas as simulações com a variação dos parâmetros do método proposto no presente trabalho, observa-se o comportamento esperado nas simulações, o que indica a representatividade do método. Enfatiza-se a importância de um passo de tempo adequado dada as características de amostragem do sistema para que os resultados sejam precisos. 
 
 \subsection{Considerações futuras}
 Como comentado anteriormente, nota-se um grande aumento do tempo de execução da etapa de controle de trajetória para vetores maiores e por consequência para passos de tempo mais finos. Entretanto, muitas vezes os passos de tempo mais finos são necessários para se manter um nível de precisão do método aceitável. Uma abordagem a ser explorada para minimizar os tempos de simulação é a realização do controle de trajetória em etapas. Utilizando os resultados da trajetória da base de execuções com passos de tempo mais grosseiros como chute inicial para execuções com passos de tempo mais finos. Possivelmente reduzindo o tempo de execução final.
