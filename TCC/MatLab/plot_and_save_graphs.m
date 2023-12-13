@@ -13,7 +13,7 @@ cam_p_c_ln = plot(p_c(1,:),p_c(2,:),'--');
 cam_b_ln.LineWidth = 3;
 cam_p_c_ln.LineWidth = 3;
 
-lgd = legend({'Caminho da base com controle', 'Caminho da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Caminho da base', 'Caminho da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
 xlabel('Posicao x [mm]')
@@ -43,7 +43,7 @@ cam_p_n_ln = plot(p_n(1,:),p_n(2,:),'--');
 cam_p_d_ln.LineWidth = 3;
 cam_p_n_ln.LineWidth = 3;
 
-lgd = legend({'Caminho da base sem controle', 'Caminho da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Caminho da base', 'Caminho da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
 xlabel('Posicao x [mm]')
@@ -72,7 +72,7 @@ cam_p_c_ln = plot(p_c(1,:),p_c(2,:),'--');
 cam_b_ln.LineWidth = 3;
 cam_p_c_ln.LineWidth = 3;
 
-lgd = legend({'Caminho da base com controle', 'Caminho da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Caminho da base', 'Caminho da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
 xlabel('Posicao x [mm]')
@@ -100,7 +100,7 @@ cam_p_n_ln = plot(p_n(1,:),p_n(2,:),'--');
 cam_p_d_ln.LineWidth = 3;
 cam_p_n_ln.LineWidth = 3;
 
-lgd = legend({'Caminho da base sem controle', 'Caminho da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Caminho da base', 'Caminho da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
 xlabel('Posicao x [mm]')
@@ -135,7 +135,7 @@ des_b_c_y_ln.LineWidth = 3;
 des_p_c_x_ln.LineWidth = 3;
 des_p_c_y_ln.LineWidth = 3;
 
-lgd = legend({'Deslocamento x da base com controle','Deslocamento y da base com controle', 'Deslocamento x da ponta com controle', 'Deslocamento y da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Deslocamento x da base','Deslocamento y da base', 'Deslocamento x da ponta', 'Deslocamento y da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 % lgd = legend({'Velocidade da ponta desejado x', 'Velocidade da ponta desejado y', 'Velocidade da ponta sem controle x', 'Velocidade da ponta sem controle y', 'Velocidade da ponta com controle x', 'Velocidade da ponta com controle y'},'Location', 'southoutside', 'Orientation', 'horizontal');
 lgd.FontSize = 14;
 
@@ -169,7 +169,7 @@ des_b_s_y_ln.LineWidth = 3;
 des_p_s_x_ln.LineWidth = 3;
 des_p_s_y_ln.LineWidth = 3;
 
-lgd = legend({'Deslocamento x da base sem controle','Deslocamento y da base sem controle', 'Deslocamento x da ponta sem controle', 'Deslocamento x da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Deslocamento x da base','Deslocamento y da base', 'Deslocamento x da ponta', 'Deslocamento x da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 % lgd = legend({'Velocidade da ponta desejado x', 'Velocidade da ponta desejado y', 'Velocidade da ponta sem controle x', 'Velocidade da ponta sem controle y', 'Velocidade da ponta com controle x', 'Velocidade da ponta com controle y'},'Location', 'southoutside', 'Orientation', 'horizontal');
 lgd.FontSize = 14;
 
@@ -205,7 +205,7 @@ vel_b_c_y_ln.LineWidth = 3;
 vel_p_c_x_ln.LineWidth = 3;
 vel_p_c_y_ln.LineWidth = 3;
 
-lgd = legend({'Velocidade x da base com controle', 'Velocidade y da base com controle', 'Velocidade x da ponta com controle', 'Velocidade y da ponta com controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Velocidade x da base', 'Velocidade y da base', 'Velocidade x da ponta', 'Velocidade y da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 lgd.FontSize = 14;
 
 xlabel('Tempo [s]')
@@ -240,7 +240,7 @@ vel_b_s_y_ln.LineWidth = 3;
 vel_p_s_x_ln.LineWidth = 3;
 vel_p_s_y_ln.LineWidth = 3;
 
-lgd = legend({'Velocidade x da base sem controle', 'Velocidade y da base sem controle', 'Velocidade x da ponta sem controle', 'Velocidade y da ponta sem controle'},'Location', 'southoutside', 'Orientation', 'vertical');
+lgd = legend({'Velocidade x da base', 'Velocidade y da base', 'Velocidade x da ponta', 'Velocidade y da ponta'},'Location', 'southoutside', 'Orientation', 'vertical');
 % lgd = legend({'Velocidade da ponta desejado x', 'Velocidade da ponta desejado y', 'Velocidade da ponta sem controle x', 'Velocidade da ponta sem controle y', 'Velocidade da ponta com controle x', 'Velocidade da ponta com controle y'},'Location', 'southoutside', 'Orientation', 'horizontal');
 lgd.FontSize = 14;
 
